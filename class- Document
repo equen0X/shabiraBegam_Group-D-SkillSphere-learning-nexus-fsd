@@ -1,0 +1,470 @@
+june 30 class notes
+
+# JWT (JSON Web Token)
+
+## What is JWT?
+
+JWT (JSON Web Token) is a lightweight, compact, and secure way to transmit user information between a client (browser/mobile application) and a server.
+
+After a user logs in successfully:
+
+1. The server verifies the user's credentials.
+2. The server generates a JWT token.
+3. The token is sent to the client.
+4. The client stores the token (usually in Local Storage, Session Storage, or Cookies).
+5. For every future request, the client sends the token to the server.
+6. The server validates the token before allowing access to protected resources.
+
+### Simple Definition
+
+JWT acts like a **digital identity card**.
+
+Once a user logs in, they do not need to send their username and password with every request. Instead, the JWT token proves their identity.
+
+---
+
+# Why is JWT Used?
+
+JWT provides several advantages:
+
+- Secure communication between client and server
+- No need to log in repeatedly
+- Stateless authentication
+- Faster than traditional session-based authentication
+- Easily scalable for distributed applications
+- Widely used in modern web and mobile applications
+
+---
+
+# Client and Server Communication
+
+## Without JWT
+
+```text
+User
+   │
+   ▼
+Enter Username & Password
+   │
+   ▼
+Server verifies credentials
+   │
+   ▼
+Every new request requires authentication again
+```
+
+### Flow
+
+1. User enters username and password.
+2. Server verifies credentials.
+3. Every future request requires authentication again.
+
+---
+
+## With JWT
+
+```text
+User
+   │
+   ▼
+Login
+   │
+   ▼
+Server verifies credentials
+   │
+   ▼
+Generate JWT Token
+   │
+   ▼
+Client stores Token
+   │
+   ▼
+Client sends Token with every request
+   │
+   ▼
+Server validates Token
+   │
+   ▼
+Access Granted
+```
+
+### Flow
+
+1. User logs in.
+2. Server verifies username and password.
+3. Server generates a JWT token.
+4. Client stores the token.
+5. Client sends the token with every request.
+6. Server validates the token.
+7. If valid, access is granted.
+
+---
+
+# Structure of JWT
+
+A JWT consists of **three parts** separated by dots (`.`).
+
+```text
+Header.Payload.Signature
+```
+
+Example:
+
+```text
+xxxxx.yyyyy.zzzzz
+```
+
+---
+
+## 1. Header
+
+The header contains metadata about the token.
+
+Example:
+
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+
+### It contains
+
+- Algorithm used (HS256)
+- Token type (JWT)
+
+---
+
+## 2. Payload
+
+The payload contains the user information (called **Claims**).
+
+Example:
+
+```json
+{
+  "username": "john",
+  "role": "USER",
+  "exp": 1720000000
+}
+```
+
+### Common Claims
+
+- Username
+- User role
+- Expiration time
+- Email
+- User ID
+- Other custom information
+
+---
+
+## 3. Signature
+
+The signature ensures that the JWT has not been modified.
+
+It is created using:
+
+- Header
+- Payload
+- Secret Key
+
+If anyone changes the payload, the signature becomes invalid.
+
+---
+
+# JWT Utility Class
+
+A helper class is usually created to perform JWT operations.
+
+```java
+public class JwtUtil {
+
+    // Generate JWT Token
+    public String generateToken(String username) {
+        ...
+    }
+
+    // Extract Username
+    public String extractUsername(String token) {
+        ...
+    }
+
+    // Validate JWT Token
+    public boolean validateToken(String token) {
+        ...
+    }
+}
+```
+
+---
+
+# Important Methods
+
+## generateToken()
+
+Creates a JWT after successful login.
+
+### Input
+
+- Username
+
+### Output
+
+- JWT Token
+
+---
+
+## extractUsername()
+
+Reads the username stored inside the JWT token.
+
+---
+
+## validateToken()
+
+Checks whether the token is:
+
+- Genuine
+- Not expired
+- Signature is valid
+
+### Returns
+
+```text
+true  → Valid Token
+false → Invalid Token
+```
+
+---
+
+# JWT Service / JwtUtil / JwtTokenProvider
+
+Different projects may use different class names.
+
+Examples:
+
+- JwtService
+- JwtUtil
+- JwtTokenProvider
+
+Although the names differ, they usually perform the same tasks:
+
+- Generate JWT tokens
+- Validate tokens
+- Extract user information
+- Check expiration time
+
+---
+
+# Hashing, Encryption and Decryption
+
+This is a very common interview topic.
+
+---
+
+## Hashing
+
+Hashing converts data into a fixed-length value.
+
+Example:
+
+```text
+Password
+   │
+   ▼
+Hash Function
+   │
+   ▼
+8d969eef6ecad3...
+```
+
+### Characteristics
+
+- One-way process
+- Cannot be reversed
+- Used for storing passwords securely
+
+### Common Algorithms
+
+- BCrypt  (Recommended)
+- Argon2 
+- SHA-256 (Not recommended alone for passwords)
+
+### Password Storage
+
+```text
+User Password
+      │
+      ▼
+BCrypt Hash
+      │
+      ▼
+Stored in Database
+```
+
+---
+
+## Encryption
+
+Encryption converts readable data into unreadable data using a key.
+
+Example:
+
+```text
+Hello
+   │
+   ▼
+Encryption
+   │
+   ▼
+jf82jsn3js...
+```
+
+### Purpose
+
+- Protect sensitive information
+- Data can be converted back using the correct key
+
+---
+
+## Decryption
+
+Decryption converts encrypted data back into its original form.
+
+Example:
+
+```text
+Encrypted Data
+      │
+      ▼
+Decryption
+      │
+      ▼
+Hello
+```
+
+---
+
+# Difference Between Hashing and Encryption
+
+| Hashing                    | Encryption                        |
+|----------------------------|-----------------------------------|
+| One-way process            |  Two-way process                  |
+| Cannot be reversed         | Can be reversed using a key       |
+| Used for storing passwords | Used for secure data transmission |
+| No decryption required     | Requires decryption               |
+
+---
+
+# Google Sign-In
+
+Google Sign-In allows users to authenticate using their Google account instead of creating a separate username and password.
+
+---
+
+## How Google Sign-In Works
+
+```text
+User clicks "Sign in with Google"
+            │
+            ▼
+Google Authentication
+            │
+            ▼
+User selects Google Account
+            │
+            ▼
+Google verifies identity
+            │
+            ▼
+Google returns user information
+            │
+            ▼
+Application Server verifies response
+            │
+            ▼
+Server generates its own JWT
+            │
+            ▼
+User Logged In
+```
+
+### Steps
+
+1. User clicks **Sign in with Google**.
+2. Google asks the user to choose an account.
+3. Google authenticates the user.
+4. Google sends user details (name, email, etc.) to your application.
+5. Your server verifies the information.
+6. Your application creates its own JWT token.
+7. Future requests use your application's JWT.
+
+---
+
+# Benefits of Google Sign-In
+
+- Faster login
+- No need to remember another password
+- More secure authentication
+- Better user experience
+- Trusted authentication provided by Google
+
+---
+
+# Google API (Simple Explanation)
+
+A **Google API** is a service provided by Google that allows your application to access Google's products and services.
+
+Examples include:
+
+- Google Sign-In API
+- Google Maps API
+- Gmail API
+- Google Drive API
+- YouTube API
+- Google Calendar API
+
+---
+
+## Simple Understanding
+
+Think of a Google API as a **bridge** between your application and Google's services.
+
+Instead of building every feature yourself, your application asks Google to perform tasks such as:
+
+- Authenticating users
+- Displaying maps
+- Accessing Gmail
+- Uploading files to Drive
+
+---
+
+## Example Flow
+
+```text
+Application
+      │
+      ▼
+Google Sign-In API
+      │
+      ▼
+Google authenticates the user
+      │
+      ▼
+Returns user profile
+      │
+      ▼
+Application Server verifies profile
+      │
+      ▼
+Server generates JWT
+      │
+      ▼
+User can access protected resources
+```
+
+---
+
