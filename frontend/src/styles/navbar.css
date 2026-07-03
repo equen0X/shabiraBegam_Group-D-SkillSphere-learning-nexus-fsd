@@ -1,0 +1,159 @@
+.navbar{
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 90%;
+    max-width: 1400px;
+    height: 82px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 40px;
+
+    border-radius:18px;
+
+    background:rgba(12,12,16,.75);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    z-index:999;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-family:Orbitron;
+    font-size:32px;
+    font-weight:700;
+}
+
+.logoIcon{
+    color:#00E5FF;
+    text-shadow:0 0 18px cyan;
+    font-size:32px;
+}
+
+.skill{
+    color:white;
+}
+
+.sphere{
+    color:#00E5FF;
+}
+
+.navLinks{
+    display:flex;
+    gap:45px;
+}
+
+.navLinks a{
+
+color:#cfcfcf;
+
+font-size:18px;
+
+transition:.35s;
+
+position:relative;
+
+}
+
+.navLinks a:hover{
+
+color:#00E5FF;
+
+}
+
+.navLinks a::after{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+bottom:-8px;
+
+width:0;
+
+height:2px;
+
+background:#00E5FF;
+
+transition:.4s;
+
+}
+
+.navLinks a:hover::after{
+
+width:100%;
+
+}
+
+.navButtons{
+
+display:flex;
+
+gap:18px;
+
+}
+
+.xpBtn{
+
+padding:12px 24px;
+
+border-radius:10px;
+
+border:none;
+
+background:#101010;
+
+color:#39FF14;
+
+border:1px solid #39FF14;
+
+box-shadow:0 0 20px rgba(57,255,20,.25);
+
+}
+
+.loginBtn{
+
+padding:12px 30px;
+
+background:transparent;
+
+border:2px solid #ff00c8;
+
+color:white;
+
+border-radius:10px;
+
+transition:.35s;
+
+}
+
+.loginBtn:hover{
+
+background:#ff00c8;
+
+box-shadow:0 0 25px #ff00c8;
+
+}
+
+@media(max-width:1000px){
+
+.navLinks{
+
+display:none;
+
+}
+
+}

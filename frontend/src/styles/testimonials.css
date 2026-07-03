@@ -1,0 +1,81 @@
+.testimonials{
+    padding:120px 10%;
+    text-align:center;
+}
+
+.testimonials h2{
+    font-size:55px;
+    color:#fff;
+    margin-bottom:15px;
+    font-family:'Orbitron';
+}
+
+.subtitle{
+    color:#bfbfbf;
+    font-size:20px;
+    margin-bottom:60px;
+}
+
+.testimonialGrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:35px;
+}
+
+.testimonialCard{
+    background:rgba(20,20,25,.65);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(0,229,255,.2);
+    border-radius:20px;
+    padding:35px;
+    transition:.35s;
+}
+
+.testimonialCard:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 35px #00E5FF;
+}
+
+.stars{
+    display:flex;
+    justify-content:center;
+    gap:5px;
+    color:#FFD700;
+    font-size:18px;
+    margin-bottom:20px;
+}
+
+.review{
+    color:#d0d0d0;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    justify-content:center;
+}
+
+.avatar{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#00E5FF;
+    color:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:22px;
+}
+
+.profile h4{
+    color:white;
+    margin-bottom:4px;
+}
+
+.profile span{
+    color:#00E5FF;
+}
