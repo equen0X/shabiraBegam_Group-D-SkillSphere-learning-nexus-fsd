@@ -74,10 +74,71 @@
 //   );
 // }
 
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import HeroCard from "./HeroCard";
 import "../styles/hero.css";
 
 export default function Hero() {
+  const { loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
+  const [showDevBypass, setShowDevBypass] = useState(false);
+  const googleBtnRef = useRef(null);
+
+  useEffect(() => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId || clientId === 'google_mock_client_id_for_testing') {
+      setShowDevBypass(true);
+      return;
+    }
+
+    const initGoogleSignIn = () => {
+      if (window.google) {
+        try {
+          window.google.accounts.id.initialize({
+            client_id: clientId,
+            callback: async (response) => {
+              try {
+                await loginWithGoogle(response.credential);
+                navigate('/');
+              } catch (err) {
+                console.error(err);
+                alert(err.message || 'Google authentication failed');
+              }
+            }
+          });
+          
+          if (googleBtnRef.current) {
+            window.google.accounts.id.renderButton(
+              googleBtnRef.current,
+              { theme: 'filled_blue', size: 'large', width: '280' }
+            );
+          }
+        } catch (err) {
+          console.warn('Google accounts initialization error:', err);
+          setShowDevBypass(true);
+        }
+      } else {
+        setTimeout(initGoogleSignIn, 100);
+      }
+    };
+
+    initGoogleSignIn();
+  }, [loginWithGoogle, navigate]);
+
+  const handleDevBypassClick = async () => {
+    const email = window.prompt("⚠️ Running in Mock Dev Mode. Enter email to bypass Google auth:", "student@skillsphere.com");
+    if (email) {
+      try {
+        await loginWithGoogle(`mock_google_token_${email}`);
+        navigate('/');
+      } catch (err) {
+        alert(err.message || 'Developer bypass login failed');
+      }
+    }
+  };
+
   return (
 
 <section className="hero">
@@ -115,13 +176,13 @@ all in one futuristic workspace.
 
 <div className="heroButtons">
 
-<button className="primaryBtn">
+<button className="primaryBtn" onClick={() => navigate('/login')}>
 
 Student Login
 
 </button>
 
-<button className="secondaryBtn">
+<button className="secondaryBtn" onClick={() => navigate('/login')}>
 
 Workforce Login
 
@@ -129,19 +190,39 @@ Workforce Login
 
 </div>
 
-<button className="googleBtn">
-
-<img
-
-src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-
-alt="google"
-
-/>
-
-Continue with Google
-
-</button>
+{showDevBypass ? (
+  <button className="googleBtn" onClick={handleDevBypassClick}>
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+      alt="google"
+    />
+    Continue with Google
+  </button>
+) : (
+  <div style={{ position: 'relative', display: 'inline-block', marginTop: '25px' }}>
+    <button className="googleBtn" type="button" style={{ margin: 0 }}>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+        alt="google"
+      />
+      Continue with Google
+    </button>
+    <div
+      ref={googleBtnRef}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        opacity: 0,
+        overflow: 'hidden',
+        zIndex: 2,
+        cursor: 'pointer'
+      }}
+    ></div>
+  </div>
+)}
 
 <div className="stats">
 

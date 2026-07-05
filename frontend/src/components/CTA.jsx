@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/cta.css";
 
 export default function CTA() {
+  const navigate = useNavigate();
+
   return (
     <section className="cta">
 
@@ -12,8 +15,7 @@ export default function CTA() {
       </p>
 
       <div className="ctaButtons">
-        <button className="ctaBtn">Get Started</button>
-
+        <button className="ctaBtn" onClick={() => navigate('/register')}>Get Started</button>
       </div>
 
     </section>

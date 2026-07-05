@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/userSelection.css";
 
 export default function UserSelection(){
+  const navigate = useNavigate();
 
-return(
+  return(
 
 <section className="selection">
 
@@ -42,7 +44,7 @@ Leaderboards
 
 </p>
 
-<button>
+<button onClick={() => navigate('/login')}>
 
 Enter Portal
 
@@ -78,7 +80,7 @@ Analytics
 
 </p>
 
-<button>
+<button onClick={() => navigate('/login')}>
 
 Manage Team
 

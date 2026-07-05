@@ -92,6 +92,7 @@
 //   );
 // }
 
+import React from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Background from "../components/Background";
@@ -109,40 +110,34 @@ import Footer from "../components/Footer";
 
 import "../styles/landing.css";
 
-export default function LandingPage(){
+export default function LandingPage() {
+  return (
+    <div className="landing">
+      <Background />
 
-return(
+      <Navbar />
 
-<div className="landing">
+      <Hero />
 
-<Background/>
+      <UserSelection />
 
-<Navbar/>
+      {/* <Features/> */}
 
-<Hero/>
+      {/* <Workforce/> */}
 
-<UserSelection/>
+      <Stats />
 
-{/* <Features/> */}
+      <Gamification />
 
-{/* <Workforce/> */}
+      <Timeline />
 
-<Stats/>
+      <Testimonials />
 
-<Gamification/>
+      {/* <FAQ/> */}
 
-<Timeline/>
+      <CTA />
 
-<Testimonials/>
-
-{/* <FAQ/> */}
-
-<CTA/>
-
-<Footer/>
-
-</div>
-
-)
-
+      <Footer />
+    </div>
+  );
 }

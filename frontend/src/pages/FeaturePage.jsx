@@ -16,6 +16,7 @@
 //   );
 // }
 
+import { useNavigate } from "react-router-dom";
 import "../styles/featurePage.css";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
@@ -30,6 +31,7 @@ import {
 } from "react-icons/fa";
 
 export default function FeaturePage() {
+  const navigate = useNavigate();
   return (
     <>
     <Background />
@@ -63,11 +65,11 @@ export default function FeaturePage() {
 
           <div className="heroButtons">
 
-            <button className="primaryFeatureBtn">
+            <button className="primaryFeatureBtn" onClick={() => navigate('/register')}>
               Get Started
             </button>
 
-            <button className="secondaryFeatureBtn">
+            <button className="secondaryFeatureBtn" onClick={() => navigate('/login')}>
               Login
             </button>
 
