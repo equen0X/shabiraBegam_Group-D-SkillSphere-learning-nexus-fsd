@@ -1,132 +1,712 @@
-.learningHero{
-    min-height:100vh;
-    background:#07070d;
-    color:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:120px 8%;
-    position:relative;
-    overflow:hidden;
+/* Learning Portal - GeeksforGeeks Style Curriculum Styles */
+
+.learning-portal-page {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  background: #050505;
+  color: #ffffff;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 5;
+  overflow-x: hidden;
 }
 
-.learningGlow{
-    position:absolute;
-    width:350px;
-    height:350px;
-    border-radius:50%;
-    filter:blur(120px);
-    opacity:.25;
+.learning-portal-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 110px 24px 40px 24px;
 }
 
-.glow1{
-    background:#7b2cff;
-    top:80px;
-    left:-120px;
+/* Header Grid */
+.lp-header-section {
+  text-align: center;
+  margin-bottom: 35px;
 }
 
-.glow2{
-    background:#00d4ff;
-    right:-120px;
-    bottom:-50px;
+.lp-header-section h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #00e5ff, #8a2eff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
 }
 
-.learningLeft{
-    width:50%;
-    z-index:2;
+.lp-header-section p {
+  font-size: 18px;
+  color: #94a3b8;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.learningBadge{
-    display:inline-block;
-    padding:10px 18px;
-    border:1px solid gold;
-    border-radius:30px;
-    color:gold;
-    margin-bottom:30px;
+/* Track Selector Tabs */
+.lp-track-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
 }
 
-.learningLeft h1{
-    font-size:72px;
-    line-height:1.1;
-    margin-bottom:25px;
+.lp-tab-btn {
+  background: rgba(18, 18, 30, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.learningLeft span{
-    background:linear-gradient(90deg,#00d4ff,#8b5cf6,#d946ef);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+.lp-tab-btn:hover {
+  border-color: rgba(0, 229, 255, 0.3);
+  color: #ffffff;
+  background: rgba(0, 229, 255, 0.02);
 }
 
-.learningLeft p{
-    color:#bdbdbd;
-    max-width:620px;
-    font-size:20px;
-    line-height:1.7;
+.lp-tab-btn.active {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(138, 46, 255, 0.15));
+  border-color: #00e5ff;
+  color: #00e5ff;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
 }
 
-.learningButtons{
-    margin-top:40px;
-    display:flex;
-    gap:20px;
+.lp-tab-btn.active.java {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(249, 115, 22, 0.15));
+  border-color: #ef4444;
+  color: #f97316;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
 }
 
-.primaryBtn{
-    padding:16px 40px;
-    border:none;
-    border-radius:14px;
-    cursor:pointer;
-    font-size:18px;
-    color:white;
-    background:linear-gradient(90deg,#00d4ff,#8b5cf6);
+.lp-tab-btn.active.springboot {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(138, 46, 255, 0.15));
+  border-color: #22c55e;
+  color: #22c55e;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
 }
 
-
-
-.learningRight{
-    width:35%;
-    display:flex;
-    justify-content:center;
+/* Overall Progress Indicator */
+.lp-overall-progress {
+  max-width: 500px;
+  margin: 0 auto 35px auto;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 15px 20px;
+  text-align: center;
 }
 
-.learningCard{
-    width:360px;
-    background:#11111a;
-    border:1px solid #00d4ff33;
-    border-radius:20px;
-    padding:35px;
-    box-shadow:0 0 40px rgba(0,212,255,.15);
+.lp-progress-bar-container {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin: 10px 0;
+  overflow: hidden;
 }
 
-.learningCard h3{
-    text-align:center;
-    margin-bottom:30px;
+.lp-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00e5ff, #8a2eff);
+  border-radius: 4px;
+  transition: width 0.4s ease;
 }
 
-.cardRow{
-    display:flex;
-    align-items:center;
-    gap:18px;
-    margin:22px 0;
-    font-size:18px;
+/* Split Workspace */
+.lp-split-workspace {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 30px;
+  align-items: start;
 }
 
-.cardRow svg{
-    color:#00d4ff;
-    font-size:22px;
+@media (max-width: 900px) {
+  .lp-split-workspace {
+    grid-template-columns: 1fr;
+  }
 }
 
-.unlockBtn{
-    margin-top:35px;
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    background:linear-gradient(90deg,#00d4ff,#8b5cf6);
-    color:white;
-    font-size:17px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
+/* Sidebar Chapter List */
+.lp-sidebar-chapters {
+  background: rgba(18, 18, 30, 0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.lp-chapter-item {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.lp-chapter-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.lp-chapter-item.active {
+  background: rgba(0, 229, 255, 0.08);
+  border-color: rgba(0, 229, 255, 0.25);
+}
+
+.lp-chapter-title {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.lp-chapter-item.active .lp-chapter-title {
+  color: #00e5ff;
+}
+
+.lp-chapter-status {
+  font-size: 14px;
+}
+
+.lp-status-completed {
+  color: #39ff14;
+  text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
+}
+
+.lp-status-pending {
+  color: #64748b;
+}
+
+/* Reading Panel */
+.lp-reading-panel {
+  background: rgba(18, 18, 30, 0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lp-tutorial-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.lp-tutorial-title h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.lp-tutorial-reward {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  background: rgba(57, 255, 20, 0.08);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  color: #39ff14;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  text-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
+}
+
+.lp-tutorial-content {
+  font-size: 17px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 35px;
+}
+
+.lp-tutorial-content p {
+  margin-bottom: 15px;
+}
+
+.lp-tutorial-content code {
+  font-family: 'Consolas', monospace;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #00e5ff;
+  font-size: 15px;
+}
+
+.lp-tutorial-content pre {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 20px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.lp-tutorial-content pre code {
+  background: transparent;
+  padding: 0;
+  color: #cbd5e1;
+  font-size: 14.5px;
+}
+
+/* Completion Actions */
+.lp-completion-area {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 25px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lp-btn-complete {
+  background: linear-gradient(90deg, #00e5ff, #8a2eff);
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);
+}
+
+.lp-btn-complete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(138, 46, 255, 0.35);
+}
+
+.lp-btn-complete:disabled {
+  background: rgba(57, 255, 20, 0.1);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  color: #39ff14;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.lp-guest-warning {
+  font-size: 15px;
+  color: #ff00c8;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(255, 0, 200, 0.2);
+  margin-right: 15px;
+  align-self: center;
+}
+
+/* Quiz Styles */
+.lp-quiz-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 15px;
+}
+
+.lp-quiz-question-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.lp-quiz-question-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.lp-quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-quiz-option-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15.5px;
+  transition: all 0.2s;
+}
+
+.lp-quiz-option-label:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.lp-quiz-option-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #64748b;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.lp-quiz-option-input:checked {
+  border-color: #00e5ff;
+}
+
+.lp-quiz-option-input:checked::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #00e5ff;
+  border-radius: 50%;
+  display: block;
+}
+
+.lp-quiz-option-label.selected {
+  border-color: rgba(0, 229, 255, 0.3);
+  background: rgba(0, 229, 255, 0.03);
+}
+
+.lp-quiz-results {
+  background: rgba(57, 255, 20, 0.03);
+  border: 1px solid rgba(57, 255, 20, 0.15);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.lp-quiz-results.failed {
+  background: rgba(255, 0, 200, 0.03);
+  border-color: rgba(255, 0, 200, 0.15);
+}
+
+.lp-quiz-results-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #39ff14;
+}
+
+.lp-quiz-results.failed .lp-quiz-results-title {
+  color: #ff00c8;
+}
+
+.lp-video-thumbnail-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lp-video-thumbnail-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+}
+
+.lp-video-play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  color: #ffffff;
+  transition: background 0.2s;
+}
+
+.lp-video-thumbnail-container:hover .lp-video-play-overlay {
+  background: rgba(0, 0, 0, 0.25);
+  color: #00e5ff;
+}
+
+/* Public Course Catalog Showcase styles */
+.guest-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.guest-course-card {
+  background: rgba(18, 18, 30, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.guest-course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.guest-course-card.react:hover {
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
+.guest-course-card.java:hover {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.guest-course-card.springboot:hover {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.guest-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.guest-course-icon {
+  font-size: 36px;
+}
+
+.guest-chapters-count {
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: #94a3b8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.guest-course-card h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.guest-course-card.react h3 {
+  color: #00e5ff;
+}
+
+.guest-course-card.java h3 {
+  color: #f97316;
+}
+
+.guest-course-card.springboot h3 {
+  color: #22c55e;
+}
+
+.guest-instructor {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 15px;
+}
+
+.guest-badge-preview {
+  font-size: 14px;
+  color: #e2e8f0;
+  margin-bottom: 20px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border-left: 3px solid #ff00c8;
+}
+
+.guest-syllabus-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 25px;
+}
+
+.guest-syllabus-box h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.guest-syllabus-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.guest-syllabus-box li {
+  font-size: 14px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.guest-syllabus-box li::before {
+  content: "•";
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.guest-unlock-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.react .guest-unlock-btn {
+  background: linear-gradient(135deg, #00e5ff, #8a2eff);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+}
+
+.java .guest-unlock-btn {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+}
+
+.springboot .guest-unlock-btn {
+  background: linear-gradient(135deg, #22c55e, #8a2eff);
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.25);
+}
+
+.guest-unlock-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* Guest Locked Callout Box */
+.guest-locked-callout {
+  margin: 60px auto 40px auto;
+  max-width: 800px;
+  background: rgba(18, 18, 30, 0.45);
+  backdrop-filter: blur(16px);
+  border: 1px dashed rgba(0, 229, 255, 0.25);
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 229, 255, 0.05);
+}
+
+.lock-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  animation: pulse-lock 2s infinite;
+}
+
+.guest-locked-callout h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.guest-locked-callout p {
+  color: #94a3b8;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+}
+
+.guest-cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-register-btn {
+  background: linear-gradient(90deg, #ff00c8, #8a2eff);
+  border: none;
+  color: #ffffff;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 0, 200, 0.3);
+  transition: all 0.3s;
+}
+
+.cta-register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(255, 0, 200, 0.5);
+}
+
+.cta-login-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cta-login-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes pulse-lock {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+  100% { transform: scale(1); }
 }

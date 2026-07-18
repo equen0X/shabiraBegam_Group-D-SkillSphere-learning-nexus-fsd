@@ -1,8 +1,24 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../styles/cta.css";
 
 export default function CTA() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleGetStarted = () => {
+    if (user) {
+      if (user.role === 'STUDENT') {
+        navigate('/student-home');
+      } else if (user.role === 'EMPLOYEE') {
+        navigate('/workforce-home');
+      } else {
+        navigate('/register');
+      }
+    } else {
+      navigate('/register');
+    }
+  };
 
   return (
     <section className="cta">
@@ -15,7 +31,7 @@ export default function CTA() {
       </p>
 
       <div className="ctaButtons">
-        <button className="ctaBtn" onClick={() => navigate('/register')}>Get Started</button>
+        <button className="ctaBtn" onClick={handleGetStarted}>Get Started</button>
       </div>
 
     </section>

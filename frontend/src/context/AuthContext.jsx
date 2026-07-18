@@ -2,11 +2,47 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const AuthContext = createContext(null);
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [xp, setXp] = useState(0);
+  const [completedTopics, setCompletedTopics] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      const savedXp = localStorage.getItem(`xp_${user.email || user.username}`);
+      const savedTopics = localStorage.getItem(`completed_topics_${user.email || user.username}`);
+      if (savedXp) setXp(parseInt(savedXp, 10));
+      else setXp(0);
+      if (savedTopics) setCompletedTopics(JSON.parse(savedTopics));
+      else setCompletedTopics([]);
+    } else {
+      setXp(0);
+      setCompletedTopics([]);
+    }
+  }, [user]);
+
+  const earnXp = (amount) => {
+    if (!user) return;
+    setXp(prev => {
+      const next = prev + amount;
+      localStorage.setItem(`xp_${user.email || user.username}`, next.toString());
+      return next;
+    });
+  };
+
+  const completeTopic = (topicId, xpReward) => {
+    if (!user) return;
+    setCompletedTopics(prev => {
+      if (prev.includes(topicId)) return prev;
+      const next = [...prev, topicId];
+      localStorage.setItem(`completed_topics_${user.email || user.username}`, JSON.stringify(next));
+      earnXp(xpReward);
+      return next;
+    });
+  };
 
   // Authenticate using the ID token returned from Google
   const loginWithGoogle = async (credential, role) => {
@@ -31,6 +67,7 @@ export function AuthProvider({ children }) {
       return data.user;
     } catch (err) {
       console.error('Login error:', err);
+      if (err.message === 'Failed to fetch') throw new Error('Cannot reach the server. Make sure the backend is running on port 5000.');
       throw err;
     }
   };
@@ -46,7 +83,8 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ username, full_name, email, password, role }),
       });
 
-      const data = await response.json();
+      let data;
+      try { data = await response.json(); } catch { throw new Error('Server is not running or returned an invalid response.'); }
 
       if (!response.ok || !data.success) {
         throw new Error(data.message || 'Registration failed');
@@ -58,6 +96,7 @@ export function AuthProvider({ children }) {
       return data.user;
     } catch (err) {
       console.error('Registration error:', err);
+      if (err.message === 'Failed to fetch') throw new Error('Cannot reach the server. Make sure the backend is running on port 5000.');
       throw err;
     }
   };
@@ -73,7 +112,8 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      let data;
+      try { data = await response.json(); } catch { throw new Error('Server is not running or returned an invalid response.'); }
 
       if (!response.ok || !data.success) {
         throw new Error(data.message || 'Login failed');
@@ -85,6 +125,7 @@ export function AuthProvider({ children }) {
       return data.user;
     } catch (err) {
       console.error('Login error:', err);
+      if (err.message === 'Failed to fetch') throw new Error('Cannot reach the server. Make sure the backend is running on port 5000.');
       throw err;
     }
   };
@@ -224,6 +265,10 @@ export function AuthProvider({ children }) {
     loginLocal,
     logout,
     authenticatedFetch,
+    xp,
+    earnXp,
+    completedTopics,
+    completeTopic
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

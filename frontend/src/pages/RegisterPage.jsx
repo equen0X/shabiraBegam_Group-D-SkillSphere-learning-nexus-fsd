@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Background from '../components/Background';
 import '../styles/loginModal.css'; // Reuses modal backdrop elements if needed, though we style the page layout inline
 
 export default function RegisterPage() {
-  const { signupLocal, loginWithGoogle } = useAuth();
+  const { signupLocal, loginWithGoogle, logout } = useAuth();
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // 1 = Role selection, 2 = Form inputs
-  const [role, setRole] = useState('STUDENT');
+  const location = useLocation();
+
+  const initialRole = location.state?.role || 'STUDENT';
+  const initialStep = location.state?.step || 1;
+
+  const [step, setStep] = useState(initialStep); // 1 = Role selection, 2 = Form inputs
+  const [role, setRole] = useState(initialRole);
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,8 +46,21 @@ export default function RegisterPage() {
               try {
                 setError('');
                 // Register user with their selected Google credentials and role
-                await loginWithGoogle(response.credential, roleRef.current);
-                navigate('/');
+                const registeredUser = await loginWithGoogle(response.credential, roleRef.current);
+                if (registeredUser) {
+                  if (roleRef.current === 'EMPLOYEE' && (registeredUser.email.toLowerCase().includes('student') || registeredUser.email.toLowerCase().endsWith('.edu'))) {
+                    setError('Enter valid workplace email id');
+                    await logout();
+                    return;
+                  }
+                  if (registeredUser.role === 'STUDENT') {
+                    navigate('/student-home');
+                  } else if (registeredUser.role === 'EMPLOYEE') {
+                    navigate('/workforce-home');
+                  } else {
+                    navigate('/');
+                  }
+                }
               } catch (err) {
                 setError(err.message || 'Google registration failed');
               }
@@ -69,10 +87,20 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (role === 'EMPLOYEE' && (email.toLowerCase().includes('student') || email.toLowerCase().endsWith('.edu'))) {
+      setError('Enter valid workplace email id');
+      return;
+    }
     try {
       setError('');
-      await signupLocal(username, fullName, email, password, role);
-      navigate('/');
+      const registeredUser = await signupLocal(username, fullName, email, password, role);
+      if (registeredUser && registeredUser.role === 'STUDENT') {
+        navigate('/student-home');
+      } else if (registeredUser && registeredUser.role === 'EMPLOYEE') {
+        navigate('/workforce-home');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err.message || 'Registration failed');
     }
@@ -84,10 +112,20 @@ export default function RegisterPage() {
       setError('Please fill in the Email Address field to bypass Google registration');
       return;
     }
+    if (role === 'EMPLOYEE' && (email.toLowerCase().includes('student') || email.toLowerCase().endsWith('.edu'))) {
+      setError('Enter valid workplace email id');
+      return;
+    }
     try {
       setError('');
-      await loginWithGoogle(`mock_google_token_${email}`, role);
-      navigate('/');
+      const registeredUser = await loginWithGoogle(`mock_google_token_${email}`, role);
+      if (registeredUser && registeredUser.role === 'STUDENT') {
+        navigate('/student-home');
+      } else if (registeredUser && registeredUser.role === 'EMPLOYEE') {
+        navigate('/workforce-home');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err.message || 'Developer bypass registration failed');
     }

@@ -1,0 +1,157 @@
+/* Workforce Features Page Stylesheet - SkillSphere Theme */
+
+.wf-features-page {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  background: #050505;
+  color: #ffffff;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 5;
+  overflow-x: hidden;
+}
+
+.wf-features-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 110px 24px 40px 24px;
+}
+
+/* Header Section */
+.wf-features-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.wf-features-header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg, #ffffff, #ff00c8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 25px rgba(255, 0, 200, 0.2);
+}
+
+.wf-features-header p {
+  font-size: 20px;
+  color: #94a3b8;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Feature Grid */
+.wf-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Feature Card */
+.wf-feature-card {
+  background: rgba(18, 18, 30, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 0, 200, 0.15);
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.wf-feature-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(138, 46, 255, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(138, 46, 255, 0.15);
+}
+
+.wf-feature-icon {
+  font-size: 40px;
+  margin-bottom: 5px;
+  text-shadow: 0 0 15px rgba(255, 0, 200, 0.3);
+}
+
+.wf-feature-card h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.wf-feature-card p {
+  font-size: 15.5px;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.wf-feature-bullets {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wf-feature-bullets li {
+  font-size: 14.5px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wf-feature-bullets li::before {
+  content: '⬢';
+  color: #ff00c8;
+  font-size: 10px;
+  text-shadow: 0 0 5px #ff00c8;
+}
+
+/* Call to action panel */
+.wf-features-cta {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(138, 46, 255, 0.05) 100%);
+  border: 1px dashed rgba(0, 229, 255, 0.3);
+  border-radius: 20px;
+  padding: 35px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.wf-features-cta h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.wf-features-cta p {
+  font-size: 16px;
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+.wf-cta-btn {
+  background: linear-gradient(90deg, #ff00c8, #8a2eff);
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 0, 200, 0.2);
+  transition: all 0.2s;
+}
+
+.wf-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(138, 46, 255, 0.4);
+}
