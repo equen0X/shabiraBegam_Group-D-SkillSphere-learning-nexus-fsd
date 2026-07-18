@@ -4,35 +4,60 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/navbar.css";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, logout, xp } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   return (
     <header className="navbar">
-      <Link to="/" className="logo" style={{ textDecoration: 'none' }}>
+      <Link to={user ? (user.role === 'STUDENT' ? '/student-home' : '/workforce-home') : '/'} className="logo" style={{ textDecoration: 'none' }}>
         <div className="logoIcon">⬢</div>
         <span className="skill">Skill</span>
         <span className="sphere">Sphere</span>
       </Link>
 
       <nav className="navLinks">
-        {location.pathname !== "/" && (
-          <Link to="/" className="backHome">
-            Home
-          </Link>
+        <Link to={user ? (user.role === 'STUDENT' ? '/student-home' : '/workforce-home') : '/'} className="backHome">
+          Home
+        </Link>
+        
+        {user && user.role === 'STUDENT' && (
+          <>
+            <Link to="/student-features" style={{ color: location.pathname === "/student-features" ? "#00e5ff" : "" }}>Features</Link>
+            <Link to="/learning" style={{ color: location.pathname === "/learning" ? "#00e5ff" : "" }}>Learning</Link>
+            <Link to="/dashboard" style={{ color: location.pathname === "/dashboard" ? "#00e5ff" : "" }}>Dashboard</Link>
+            <Link to="/sandbox" style={{ color: location.pathname === "/sandbox" ? "#00e5ff" : "" }}>Sandbox</Link>
+          </>
         )}
-        <Link to="/features">Features</Link>
-        <Link to="/learning">Learning</Link>
-        <Link to="/workforce">Workforce</Link>
-        <Link to="/contact">Contact</Link>
+
+        {user && user.role === 'EMPLOYEE' && (
+          <>
+            <Link to="/workforce-features" style={{ color: location.pathname === "/workforce-features" ? "#ff00c8" : "" }}>Features</Link>
+            <Link to="/workforce-dashboard" style={{ color: location.pathname === "/workforce-dashboard" ? "#ff00c8" : "" }}>Dashboard</Link>
+          </>
+        )}
+
+        {!user && (
+          <>
+            <Link to="/features">Features</Link>
+            <Link to="/learning">Learning</Link>
+            <Link to="/workforce">Workforce</Link>
+            <Link to="/sandbox" style={{ color: location.pathname === "/sandbox" ? "#00e5ff" : "" }}>Sandbox</Link>
+            <Link to="/contact">Contact</Link>
+          </>
+        )}
       </nav>
 
       <div className="navButtons">
-        <button className="xpBtn">⚡ 2450 XP</button>
+        {user && user.role === 'STUDENT' && (
+          <button className="xpBtn" onClick={() => navigate('/dashboard')}>⚡ {xp} XP</button>
+        )}
 
         {user ? (
-          <div className="userProfileContainer">
+          <div className="userProfileContainer" onClick={() => {
+            if (user.role === 'STUDENT') navigate('/dashboard');
+            else if (user.role === 'EMPLOYEE') navigate('/workforce-dashboard');
+          }} style={{ cursor: (user.role === 'STUDENT' || user.role === 'EMPLOYEE') ? 'pointer' : 'default' }}>
             <div className="userProfileBadge">
               <div className="avatarCircle">
                 {user.full_name ? user.full_name.charAt(0).toUpperCase() : user.username.charAt(0).toUpperCase()}
@@ -42,7 +67,7 @@ export default function Navbar() {
                 <span className="userRoleBadge">{user.role}</span>
               </div>
             </div>
-            <button className="logoutBtn" onClick={logout}>
+            <button className="logoutBtn" onClick={async (e) => { e.stopPropagation(); await logout(); navigate('/'); }}>
               Logout
             </button>
           </div>

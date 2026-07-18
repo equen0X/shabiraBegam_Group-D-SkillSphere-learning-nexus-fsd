@@ -1,121 +1,9 @@
-// import { useEffect } from "react";
-// import Navbar from "../components/Navbar";
-// import Hero from "../components/Hero";
-// import Background from "../components/Background";
-//
-// import "../styles/landing.css";
-//
-// export default function LandingPage() {
-//
-//   useEffect(() => {
-//
-//     const glow = document.querySelector(".cursorGlow");
-//
-//     const move = (e) => {
-//       glow.style.left = `${e.clientX}px`;
-//       glow.style.top = `${e.clientY}px`;
-//     };
-//
-//     window.addEventListener("mousemove", move);
-//
-//     return () => window.removeEventListener("mousemove", move);
-//
-//   }, []);
-//
-//   return (
-//     <div className="landing">
-//
-//       <Background />
-//
-//       <div className="cursorGlow"></div>
-//
-//       <Navbar />
-//
-//       <Hero />
-//
-//     </div>
-//   );
-// }
-
-// import Navbar from "../components/Navbar";
-// import Hero from "../components/Hero";
-// import Background from "../components/Background";
-// import UserSelection from "../components/UserSelection";
-//
-// import "../styles/landing.css";
-//
-// export default function LandingPage() {
-//   return (
-//     <div className="landing">
-//
-//       <Background />
-//
-//       <Navbar />
-//
-//       <Hero />
-//
-//       <UserSelection />
-//
-//     </div>
-//   );
-// }
-
-// import Navbar from "../components/Navbar";
-// import Hero from "../components/Hero";
-// import Background from "../components/Background";
-// import UserSelection from "../components/UserSelection";
-// import Features from "../components/Features";
-// import Workforce from "../components/Workforce";
-// import Stats from "../components/Stats";
-//
-// import "../styles/landing.css";
-//
-// export default function LandingPage() {
-//   return (
-//     <div className="landing">
-//
-//       <Background />
-//
-//       <Navbar />
-//
-//       <Hero />
-//
-//       <UserSelection />
-//
-//       <Features />
-//
-//       <Workforce />
-//
-//       <Stats />
-//
-//     </div>
-//   );
-// }
-
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
 import Background from "../components/Background";
-import UserSelection from "../components/UserSelection";
-import Features from "../components/Features";
-import Workforce from "../components/Workforce";
-import Stats from "../components/Stats";
-
-import Gamification from "../components/Gamification";
-import Timeline from "../components/Timeline";
-import Testimonials from "../components/Testimonials";
-// import FAQ from "../components/FAQ";
-import CTA from "../components/CTA";
 import Footer from "../components/Footer";
 
-import "../styles/landing.css";
-
-export default function LandingPage() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
+export default function SandboxPage() {
   const languageTemplates = {
     python: `# Python 3 execution sandbox\ndef greet(name):\n    return f"Hello, {name}! Welcome to SkillSphere."\n\nprint(greet("Student"))`,
     cpp: `// C++ execution sandbox\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello from C++ compiler!" << endl;\n    return 0;\n}`,
@@ -196,36 +84,16 @@ export default function LandingPage() {
     }, 1000);
   };
 
-  useEffect(() => {
-    if (user) {
-      if (user.role === 'STUDENT') {
-        navigate('/student-home');
-      } else if (user.role === 'EMPLOYEE') {
-        navigate('/workforce-home');
-      }
-    }
-  }, [user, navigate]);
-
   return (
-    <div className="landing">
+    <div className="sandbox-page-wrapper" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#0a0b10', color: '#ffffff' }}>
       <Background />
-
       <Navbar />
 
-      <Hero />
-
-      <UserSelection />
-
-      {/* <Features/> */}
-
-      {/* <Workforce/> */}
-
-      <Stats />
-
-      {/* Interactive Code Sandbox Section */}
-      <section className="landing-sandbox" style={{ padding: '80px 20px', maxWidth: '1200px', width: '100%', margin: '0 auto', zIndex: 10, position: 'relative' }}>
-        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <h2 style={{ 
+      <main style={{ flex: 1, maxWidth: '1200px', width: '100%', margin: '0 auto', padding: '120px 20px 60px 20px', zIndex: 10 }}>
+        
+        {/* Header Title */}
+        <section style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h1 style={{ 
             fontFamily: "'Orbitron', sans-serif", 
             fontSize: '48px', 
             fontWeight: '700',
@@ -236,8 +104,8 @@ export default function LandingPage() {
             WebkitTextFillColor: 'transparent', 
             marginBottom: '20px' 
           }}>
-            Try it Out: SkillSphere Code Sandbox
-          </h2>
+            SkillSphere Online Sandbox
+          </h1>
           <p style={{ 
             color: '#94a3b8', 
             fontSize: '18px', 
@@ -247,10 +115,11 @@ export default function LandingPage() {
             margin: '0 auto', 
             lineHeight: '1.6' 
           }}>
-            Write and run your code on the fly! Select a language, modify the code template, and click "Run Code" to view simulated execution outputs instantly.
+            Experiment with code execution directly in your browser. Select a language below and press "Run Code" to compile and view terminal logs.
           </p>
-        </div>
+        </section>
 
+        {/* Editor & Terminal Widget */}
         <div style={{
           background: 'rgba(18, 18, 30, 0.75)',
           backdropFilter: 'blur(12px)',
@@ -259,12 +128,14 @@ export default function LandingPage() {
           padding: '30px',
           boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'
         }}>
+          
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '15px', marginBottom: '20px' }}>
             <h3 style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: '700', fontSize: '20px', color: '#ffffff', margin: 0 }}>Code Workspace</h3>
+            
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <label htmlFor="landing-lang" style={{ fontSize: '15px', fontFamily: "'Rajdhani', sans-serif", fontWeight: '600', color: '#94a3b8' }}>Language:</label>
+              <label htmlFor="sandbox-lang" style={{ fontSize: '15px', fontFamily: "'Rajdhani', sans-serif", fontWeight: '600', color: '#94a3b8' }}>Select Language:</label>
               <select 
-                id="landing-lang"
+                id="sandbox-lang"
                 value={selectedLanguage}
                 onChange={(e) => handleLanguageChange(e.target.value)}
                 style={{
@@ -289,6 +160,8 @@ export default function LandingPage() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '25px' }}>
+            
+            {/* Editor Area */}
             <div style={{ position: 'relative' }}>
               <textarea
                 value={editorCode}
@@ -296,7 +169,7 @@ export default function LandingPage() {
                 placeholder="Write your code here..."
                 style={{
                   width: '100%',
-                  height: '240px',
+                  height: '280px',
                   background: '#0d0e15',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   borderRadius: '16px',
@@ -322,7 +195,8 @@ export default function LandingPage() {
                     fontSize: '14px',
                     fontFamily: "'Orbitron', sans-serif",
                     fontWeight: '700',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    transition: 'all 0.3s'
                   }}
                 >
                   Reset Template
@@ -348,6 +222,7 @@ export default function LandingPage() {
               </div>
             </div>
 
+            {/* Terminal Screen */}
             <div style={{
               background: '#040508',
               border: '1px solid rgba(0, 229, 255, 0.1)',
@@ -382,7 +257,7 @@ export default function LandingPage() {
               </div>
               <pre style={{
                 margin: 0,
-                minHeight: '80px',
+                minHeight: '100px',
                 color: consoleOutput.includes('Error') ? '#ef4444' : '#e2e8f0',
                 fontFamily: 'Courier New, Courier, monospace',
                 fontSize: '14px',
@@ -393,19 +268,12 @@ export default function LandingPage() {
                 {consoleOutput || 'Click "Run Code" to view execution output...'}
               </pre>
             </div>
+
           </div>
+
         </div>
-      </section>
 
-      <Gamification />
-
-      <Timeline />
-
-      <Testimonials />
-
-      {/* <FAQ/> */}
-
-      <CTA />
+      </main>
 
       <Footer />
     </div>

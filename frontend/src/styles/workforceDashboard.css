@@ -1,0 +1,543 @@
+/* Workforce Dashboard Stylesheet - Cyberpunk Glassmorphism Theme */
+
+.wf-dashboard-page {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  color: #ffffff;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 5;
+}
+
+.wf-dashboard-content-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 100px 20px 40px 20px; /* Offset for fixed header navbar */
+}
+
+/* Header greeting & overview cards */
+.wf-welcome-card {
+  background: rgba(18, 18, 30, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(138, 46, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(138, 46, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.wf-welcome-info h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #ffffff, #8a2eff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 15px rgba(138, 46, 255, 0.15);
+}
+
+.wf-welcome-info p {
+  color: #94a3b8;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Stats summary grid */
+.wf-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.wf-stat-card {
+  background: rgba(18, 18, 30, 0.55);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.wf-stat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 229, 255, 0.2);
+}
+
+.wf-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.wf-stat-info h3 {
+  font-size: 17px;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.wf-stat-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* Two-column layout */
+.wf-dashboard-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+@media (max-width: 992px) {
+  .wf-dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wf-main-column, .wf-sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Section Header styling in panels */
+.wf-section-title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wf-section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.wf-section-title::before {
+  content: '⬢';
+  color: #00e5ff;
+  font-size: 14px;
+  text-shadow: 0 0 8px #00e5ff;
+}
+
+/* Panel Design */
+.wf-dashboard-panel {
+  background: rgba(18, 18, 30, 0.55);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Action buttons */
+.wf-btn-add {
+  background: linear-gradient(135deg, #00e5ff, #8a2eff);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+.wf-btn-add:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
+
+/* Directory table */
+.wf-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.wf-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.wf-table th, .wf-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 18px;
+}
+
+.wf-table th {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  color: #94a3b8;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.wf-table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.wf-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wf-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #8a2eff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.wf-status-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.wf-status-badge.active {
+  background: rgba(57, 255, 20, 0.1);
+  color: #39ff14;
+  border: 1px solid rgba(57, 255, 20, 0.2);
+}
+
+.wf-status-badge.on-leave {
+  background: rgba(255, 234, 0, 0.1);
+  color: #ffea00;
+  border: 1px solid rgba(255, 234, 0, 0.2);
+}
+
+.wf-perf-score {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  color: #00e5ff;
+}
+
+/* Interactive Add Modal / Form Overlay */
+.wf-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 5, 10, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.wf-modal {
+  background: rgba(18, 18, 30, 0.95);
+  border: 1px solid rgba(138, 46, 255, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(138, 46, 255, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 480px;
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.wf-modal h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+}
+
+.wf-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.wf-form-group label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.wf-form-input {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 18px;
+  font-family: 'Rajdhani', sans-serif;
+  outline: none;
+}
+
+.wf-form-input:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+}
+
+.wf-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.wf-btn-cancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cfcfcf;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.wf-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Projects allocation layout */
+.wf-projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.wf-project-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.2s;
+}
+
+.wf-project-card:hover {
+  border-color: rgba(138, 46, 255, 0.2);
+}
+
+.wf-project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wf-project-title h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.wf-project-assignee {
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.wf-priority-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.wf-priority-badge.high {
+  background: rgba(255, 0, 200, 0.1);
+  color: #ff00c8;
+  border: 1px solid rgba(255, 0, 200, 0.2);
+}
+
+.wf-priority-badge.medium {
+  background: rgba(138, 46, 255, 0.1);
+  color: #8a2eff;
+  border: 1px solid rgba(138, 46, 255, 0.2);
+}
+
+.wf-priority-badge.low {
+  background: rgba(0, 229, 255, 0.1);
+  color: #00e5ff;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.wf-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wf-progress-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.wf-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8a2eff, #00e5ff);
+  border-radius: 3px;
+}
+
+.wf-progress-pct {
+  font-size: 15px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+/* Leave request items */
+.wf-leave-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wf-leave-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wf-leave-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wf-leave-requester {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.wf-leave-type {
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #94a3b8;
+}
+
+.wf-leave-details {
+  font-size: 16px;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+
+.wf-leave-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.wf-btn-approve {
+  background: rgba(57, 255, 20, 0.1);
+  border: 1px solid rgba(57, 255, 20, 0.3);
+  color: #39ff14;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.wf-btn-approve:hover {
+  background: #39ff14;
+  color: #000;
+}
+
+.wf-btn-reject {
+  background: rgba(255, 0, 200, 0.1);
+  border: 1px solid rgba(255, 0, 200, 0.3);
+  color: #ff00c8;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.wf-btn-reject:hover {
+  background: #ff00c8;
+  color: #fff;
+}
+
+.wf-leave-status-final {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  align-self: flex-end;
+}
+
+.wf-leave-status-final.approved {
+  background: rgba(57, 255, 20, 0.05);
+  color: rgba(57, 255, 20, 0.6);
+  border: 1px solid rgba(57, 255, 20, 0.1);
+}
+
+.wf-leave-status-final.rejected {
+  background: rgba(255, 0, 200, 0.05);
+  color: rgba(255, 0, 200, 0.6);
+  border: 1px solid rgba(255, 0, 200, 0.1);
+}

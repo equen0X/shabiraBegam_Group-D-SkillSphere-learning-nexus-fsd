@@ -1,0 +1,370 @@
+/* Student Home Stylesheet - Cyberpunk Neon Theme */
+
+.student-home-page {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  background: #050505;
+  color: #ffffff;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 5;
+  overflow-x: hidden;
+}
+
+.student-home-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 110px 24px 40px 24px;
+}
+
+/* Welcome Console */
+.sh-welcome-banner {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.4) 100%);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.5), 
+    0 0 30px rgba(0, 229, 255, 0.1);
+  margin-bottom: 40px;
+}
+
+.sh-welcome-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(138, 46, 255, 0.15) 0%, transparent 70%);
+  z-index: 1;
+}
+
+.sh-banner-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.sh-banner-text h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 46px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.15;
+  background: linear-gradient(90deg, #ffffff, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+}
+
+.sh-banner-text p {
+  color: #94a3b8;
+  font-size: 20px;
+  font-weight: 500;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+/* Quick Status Matrix */
+.sh-status-matrix {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.sh-matrix-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s;
+}
+
+.sh-matrix-item:hover {
+  border-color: rgba(0, 229, 255, 0.3);
+  background: rgba(0, 229, 255, 0.02);
+  transform: translateY(-2px);
+}
+
+.sh-matrix-icon {
+  font-size: 28px;
+}
+
+.sh-matrix-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sh-matrix-label {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.sh-matrix-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Grid Layout */
+.sh-grid-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 35px;
+}
+
+@media (max-width: 992px) {
+  .sh-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sh-main-col, .sh-side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* Panel Containers */
+.sh-panel {
+  background: rgba(18, 18, 30, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.sh-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.sh-panel-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sh-panel-title span {
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+/* learning Feed List */
+.sh-learning-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sh-feed-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  transition: all 0.3s;
+}
+
+.sh-feed-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(138, 46, 255, 0.3);
+  transform: scale(1.01);
+}
+
+.sh-feed-details {
+  flex: 1;
+  min-width: 250px;
+}
+
+.sh-feed-details h4 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.sh-feed-meta {
+  font-size: 14px;
+  color: #94a3b8;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.sh-feed-meta span.highlight {
+  color: #00e5ff;
+  font-weight: 600;
+}
+
+.sh-feed-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sh-progress-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sh-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00e5ff, #8a2eff);
+  border-radius: 4px;
+}
+
+.sh-progress-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #8a2eff;
+  min-width: 35px;
+}
+
+.sh-feed-btn {
+  background: linear-gradient(90deg, #00e5ff, #8a2eff);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);
+}
+
+.sh-feed-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(138, 46, 255, 0.4);
+}
+
+/* Quick Navigation Links */
+.sh-shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.sh-shortcut-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sh-shortcut-card:hover {
+  background: rgba(138, 46, 255, 0.05);
+  border-color: #8a2eff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(138, 46, 255, 0.15);
+}
+
+.sh-shortcut-icon {
+  font-size: 32px;
+  text-shadow: 0 0 10px rgba(138, 46, 255, 0.4);
+}
+
+.sh-shortcut-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.sh-shortcut-card p {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+/* Missions/Quests Panel */
+.sh-mission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sh-mission-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.sh-mission-details h5 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.sh-mission-xp {
+  font-size: 14px;
+  color: #39ff14;
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.sh-mission-btn-claim {
+  background: #ff00c8;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 0, 200, 0.3);
+  transition: all 0.2s;
+}
+
+.sh-mission-btn-claim:hover {
+  background: #ff33d2;
+  transform: translateY(-1px);
+}
+
+.sh-mission-btn-claim.completed {
+  background: rgba(57, 255, 20, 0.1);
+  color: #39ff14;
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  cursor: default;
+  box-shadow: none;
+}

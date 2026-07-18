@@ -176,13 +176,13 @@ all in one futuristic workspace.
 
 <div className="heroButtons">
 
-<button className="primaryBtn" onClick={() => navigate('/login')}>
+<button className="primaryBtn" onClick={() => navigate('/register', { state: { role: 'STUDENT', step: 2 } })}>
 
 Student Login
 
 </button>
 
-<button className="secondaryBtn" onClick={() => navigate('/login')}>
+<button className="secondaryBtn" onClick={() => navigate('/register', { state: { role: 'EMPLOYEE', step: 2 } })}>
 
 Workforce Login
 
