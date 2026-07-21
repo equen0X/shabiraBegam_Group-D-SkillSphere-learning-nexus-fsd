@@ -20,11 +20,12 @@ body,
     margin:0;
     padding:0;
     overflow-x:hidden;
-    background:#050505;
+    background: var(--bg-primary, #050505);
+    transition: background 0.4s ease, color 0.4s ease;
 }
 
 body{
-    color:white;
+    color: var(--text-primary, white);
     font-family:'Rajdhani',sans-serif;
 }
 

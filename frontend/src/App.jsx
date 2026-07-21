@@ -9,9 +9,8 @@ import WorkforcePage from "./pages/WorkforcePage";
 import ContactPage from "./pages/ContactPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import StudentDashboard from "./pages/StudentDashboard";
-import WorkforceDashboard from "./pages/WorkforceDashboard";
 import StudentHome from "./pages/StudentHome";
+import WorkforceDashboard from "./pages/WorkforceDashboard";
 import WorkforceHome from "./pages/WorkforceHome";
 import StudentFeatures from "./pages/StudentFeatures";
 import WorkforceFeatures from "./pages/WorkforceFeatures";
@@ -20,6 +19,7 @@ import CoursesPage from "./pages/CoursesPage";
 import CertificatesPage from "./pages/CertificatesPage";
 import DiscussionsPage from "./pages/DiscussionsPage";
 import ProfileSettingsPage from "./pages/ProfileSettingsPage";
+import ProgressPage from "./pages/ProgressPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
 import FloatingChatbot from "./components/FloatingChatbot";
 
@@ -47,7 +47,7 @@ function ProtectedRoute({ children }) {
 
 function App() {
   const location = useLocation();
-  const isDashboardRoute = location.pathname === "/dashboard" || location.pathname === "/workforce-dashboard";
+  const isDashboardRoute = location.pathname === "/workforce-dashboard";
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,7 +67,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
 
         {/* Protected routes */}
-        <Route path="/dashboard" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
+        {/* /dashboard redirects to student-home */}
+        <Route path="/dashboard" element={<Navigate to="/student-home" replace />} />
         <Route path="/workforce-dashboard" element={<ProtectedRoute><WorkforceDashboard /></ProtectedRoute>} />
         <Route path="/student-home" element={<ProtectedRoute><StudentHome /></ProtectedRoute>} />
         <Route path="/workforce-home" element={<ProtectedRoute><WorkforceHome /></ProtectedRoute>} />
@@ -78,6 +79,7 @@ function App() {
         <Route path="/resources" element={<ProtectedRoute><ComingSoonPage title="Resources" /></ProtectedRoute>} />
         <Route path="/certificate" element={<ProtectedRoute><CertificatesPage /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
+        <Route path="/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
       </Routes>
       {!isDashboardRoute && <FloatingChatbot />}
     </>

@@ -16,13 +16,14 @@
 
     border-radius:18px;
 
-    background:rgba(12,12,16,.75);
+    background: var(--navbar-bg, rgba(12,12,16,.75));
 
     backdrop-filter:blur(18px);
 
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid var(--border-color, rgba(255,255,255,.08));
 
     z-index:999;
+    transition: background 0.4s ease, border-color 0.4s ease;
 }
 
 .logo{
@@ -36,17 +37,17 @@
 }
 
 .logoIcon{
-    color:#00E5FF;
-    text-shadow:0 0 18px cyan;
+    color: var(--accent, #00E5FF);
+    text-shadow: 0 0 18px var(--accent, cyan);
     font-size:32px;
 }
 
 .skill{
-    color:white;
+    color: var(--text-primary, white);
 }
 
 .sphere{
-    color:#00E5FF;
+    color: var(--accent, #00E5FF);
 }
 
 .navLinks{
@@ -55,7 +56,7 @@
 }
 
 .navLinks a{
-    color:#cfcfcf;
+    color: var(--text-secondary, #cfcfcf);
     font-size:18px;
     transition:.35s;
     position:relative;
@@ -63,7 +64,7 @@
 }
 
 .navLinks a:hover{
-    color:#00E5FF;
+    color: var(--accent, #00E5FF);
 }
 
 .navLinks a::after{
@@ -73,7 +74,7 @@
     bottom:-8px;
     width:0;
     height:2px;
-    background:#00E5FF;
+    background: var(--accent, #00E5FF);
     transition:.4s;
 }
 
@@ -118,7 +119,7 @@
 }
 
 .backHome {
-    color: #00E5FF;
+    color: var(--accent, #00E5FF);
     font-weight: 600;
     text-decoration: none;
     transition: 0.3s ease;
@@ -128,8 +129,8 @@
 }
 
 .backHome:hover {
-    color: white;
-    text-shadow: 0 0 10px #00E5FF;
+    color: var(--text-primary, white);
+    text-shadow: 0 0 10px var(--accent, #00E5FF);
 }
 
 /* Logged-in User Profile Styles */
@@ -174,7 +175,7 @@
 .userName {
   font-size: 13px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary, #ffffff);
   max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -183,7 +184,7 @@
 
 .userRoleBadge {
   font-size: 9px;
-  color: #00E5FF;
+  color: var(--accent, #00E5FF);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;

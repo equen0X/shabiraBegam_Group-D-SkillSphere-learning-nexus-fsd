@@ -174,8 +174,12 @@ export default function CoursesPage() {
       const savedIds = localStorage.getItem("enrolled_course_ids");
       const savedProgress = localStorage.getItem("course_progress_map");
       const progressMap = savedProgress ? JSON.parse(savedProgress) : {};
-      const enrolledIds = savedIds ? JSON.parse(savedIds) : [1, 2, 3]; // Default demo
-      
+
+      // Default: enroll 3 premium courses + all free courses for a rich demo
+      const freeIds = initialCoursesData.filter(c => !c.isPremium).map(c => c.id); // [3, 6, 10]
+      const defaultEnrolled = [2, 4, ...freeIds]; // React, DSA + all free
+      const enrolledIds = savedIds ? JSON.parse(savedIds) : defaultEnrolled;
+
       return initialCoursesData.map(course => {
         const isEnrolled = enrolledIds.includes(course.id);
         const progress = isEnrolled ? (progressMap[course.id] !== undefined ? progressMap[course.id] : 0) : 0;
@@ -548,9 +552,39 @@ export default function CoursesPage() {
               />
             ))
           ) : (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
-              <h3>No courses found</h3>
-              <p>Try adjusting your search query or filter selection.</p>
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '70px 20px' }}>
+              <div style={{ fontSize: '52px', marginBottom: '16px' }}>
+                {activeFilter === 'enrolled' ? '📚' : activeFilter === 'free' ? '🆓' : activeFilter === 'premium' ? '👑' : '🔍'}
+              </div>
+              <h3 style={{ fontFamily: 'Orbitron, sans-serif', color: '#ffffff', fontSize: '20px', marginBottom: '10px' }}>
+                {activeFilter === 'enrolled' && 'No Courses Enrolled Yet'}
+                {activeFilter === 'free' && 'No Free Courses Match'}
+                {activeFilter === 'premium' && 'No Premium Tracks Match'}
+                {activeFilter === 'all' && 'No Courses Found'}
+              </h3>
+              <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '20px' }}>
+                {activeFilter === 'enrolled' && 'Browse all courses and enroll to start your learning journey!'}
+                {activeFilter === 'free' && 'Try clearing your search or browse all courses.'}
+                {activeFilter === 'premium' && 'Try clearing your search query to see all premium tracks.'}
+                {activeFilter === 'all' && 'No results found for your search. Try a different keyword.'}
+              </p>
+              {activeFilter !== 'all' && (
+                <button
+                  onClick={() => { setActiveFilter('all'); setSearchQuery(''); }}
+                  style={{
+                    background: 'linear-gradient(90deg, #00e5ff, #8a2eff)',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '10px 24px',
+                    borderRadius: '20px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  Browse All Courses
+                </button>
+              )}
             </div>
           )}
         </div>

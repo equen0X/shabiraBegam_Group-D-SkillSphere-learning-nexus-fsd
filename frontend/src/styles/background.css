@@ -20,6 +20,8 @@ background-size:60px 60px;
 
 z-index:0;
 
+pointer-events:none;
+
 animation:gridMove 20s linear infinite;
 
 }
@@ -49,6 +51,8 @@ border-radius:50%;
 filter:blur(140px);
 
 opacity:.35;
+
+pointer-events:none;
 
 animation:blobFloat 12s ease-in-out infinite;
 

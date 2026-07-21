@@ -9,6 +9,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen, showSidebarToggle
   const location = useLocation();
   const navigate = useNavigate();
 
+
   return (
     <header className="navbar">
       <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -38,7 +39,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen, showSidebarToggle
             <Link to="/student-features" style={{ color: location.pathname === "/student-features" ? "#00e5ff" : "" }}>Features</Link>
             <Link to="/courses" style={{ color: location.pathname === "/courses" ? "#00e5ff" : "" }}>Courses</Link>
             <Link to="/learning" style={{ color: location.pathname === "/learning" ? "#00e5ff" : "" }}>Learning</Link>
-            <Link to="/dashboard" style={{ color: location.pathname === "/dashboard" ? "#00e5ff" : "" }}>Dashboard</Link>
+            <Link to="/progress" style={{ color: location.pathname === "/progress" ? "#00e5ff" : "" }}>Progress</Link>
             <Link to="/sandbox" style={{ color: location.pathname === "/sandbox" ? "#00e5ff" : "" }}>Sandbox</Link>
           </>
         )}
@@ -62,12 +63,12 @@ export default function Navbar({ toggleSidebar, isSidebarOpen, showSidebarToggle
 
       <div className="navButtons">
         {user && user.role === 'STUDENT' && (
-          <button className="xpBtn" onClick={() => navigate('/dashboard')}>⚡ {xp} XP</button>
+          <button className="xpBtn" onClick={() => navigate('/student-home')}>⚡ {xp} XP</button>
         )}
 
         {user ? (
           <div className="userProfileContainer" onClick={() => {
-            if (user.role === 'STUDENT') navigate('/dashboard');
+            if (user.role === 'STUDENT') navigate('/student-home');
             else if (user.role === 'EMPLOYEE') navigate('/workforce-dashboard');
           }} style={{ cursor: (user.role === 'STUDENT' || user.role === 'EMPLOYEE') ? 'pointer' : 'default' }}>
             <div className="userProfileBadge">

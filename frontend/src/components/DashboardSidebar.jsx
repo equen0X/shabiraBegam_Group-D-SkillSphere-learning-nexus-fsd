@@ -22,7 +22,7 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
           </button>
         </div>
         <nav className="sidebar-nav">
-          <NavLink to="/dashboard" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} end>
+          <NavLink to="/student-home" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} end>
             <FiHome className="sidebar-icon" />
             <span>Dashboard</span>
           </NavLink>

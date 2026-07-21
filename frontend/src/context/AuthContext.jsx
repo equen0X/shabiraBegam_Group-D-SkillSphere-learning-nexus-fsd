@@ -5,12 +5,72 @@ const AuthContext = createContext(null);
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+// ─── Theme CSS variable maps ───────────────────────────────────────────────
+const THEME_VARS = {
+  dark: {
+    '--bg-primary':     '#05060b',
+    '--bg-secondary':   '#0a0e1e',
+    '--bg-panel':       'rgba(15, 23, 42, 0.85)',
+    '--bg-card':        'rgba(10, 14, 30, 0.9)',
+    '--text-primary':   '#ffffff',
+    '--text-secondary': '#94a3b8',
+    '--text-muted':     '#475569',
+    '--border-color':   'rgba(255,255,255,0.08)',
+    '--border-subtle':  'rgba(255,255,255,0.04)',
+    '--navbar-bg':      'rgba(12,12,16,0.75)',
+    '--input-bg':       'rgba(0,0,0,0.5)',
+    '--shadow-panel':   '0 10px 35px rgba(0,0,0,0.5)',
+  },
+  light: {
+    '--bg-primary':     '#f0f4f8',
+    '--bg-secondary':   '#e2e8f0',
+    '--bg-panel':       'rgba(255,255,255,0.95)',
+    '--bg-card':        'rgba(248,250,252,0.98)',
+    '--text-primary':   '#0f172a',
+    '--text-secondary': '#475569',
+    '--text-muted':     '#94a3b8',
+    '--border-color':   'rgba(0,0,0,0.12)',
+    '--border-subtle':  'rgba(0,0,0,0.05)',
+    '--navbar-bg':      'rgba(240,244,248,0.92)',
+    '--input-bg':       'rgba(255,255,255,0.9)',
+    '--shadow-panel':   '0 10px 35px rgba(0,0,0,0.12)',
+  }
+};
+
+function applyTheme(mode, accent) {
+  const vars = THEME_VARS[mode] || THEME_VARS.dark;
+  const root = document.documentElement;
+  Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+  root.style.setProperty('--accent', accent || '#00e5ff');
+  root.setAttribute('data-theme', mode);
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [xp, setXp] = useState(0);
   const [completedTopics, setCompletedTopics] = useState([]);
   const navigate = useNavigate();
+
+  // ─── Theme state ──────────────────────────────────────────────────────
+  const [themeMode, setThemeMode] = useState(() =>
+    localStorage.getItem('skillsphere_theme_mode') || 'dark'
+  );
+  const [themeAccent, setThemeAccent] = useState(() =>
+    localStorage.getItem('skillsphere_theme_accent') || '#00e5ff'
+  );
+
+  // Apply on mount + whenever theme changes
+  useEffect(() => {
+    applyTheme(themeMode, themeAccent);
+    localStorage.setItem('skillsphere_theme_mode', themeMode);
+    localStorage.setItem('skillsphere_theme_accent', themeAccent);
+  }, [themeMode, themeAccent]);
+
+  const updateTheme = ({ mode, accent }) => {
+    if (mode !== undefined) setThemeMode(mode);
+    if (accent !== undefined) setThemeAccent(accent);
+  };
 
   useEffect(() => {
     if (user) {
@@ -50,7 +110,6 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  // Helper to attempt refreshing the access token
   const refreshSession = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) throw new Error('No refresh token');
@@ -62,7 +121,6 @@ export function AuthProvider({ children }) {
     });
 
     const data = await response.json();
-
     if (!response.ok || !data.accessToken) {
       clearSession();
       throw new Error('Session expired. Please log in again.');
@@ -73,14 +131,12 @@ export function AuthProvider({ children }) {
     return data.accessToken;
   };
 
-  // Fetch the current user profile using the access token
   const fetchProfile = async (token, isRetry = false) => {
     try {
       const response = await fetch(`${API_URL}/me`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
 
-      // Handle non-JSON responses (e.g. backend not running)
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         throw new Error('Backend not reachable');
@@ -89,7 +145,6 @@ export function AuthProvider({ children }) {
       const data = await response.json();
 
       if ((response.status === 401 || response.status === 403) && !isRetry) {
-        // Token expired or invalid — try refresh once
         const newToken = await refreshSession();
         return fetchProfile(newToken, true);
       }
@@ -119,13 +174,10 @@ export function AuthProvider({ children }) {
     });
   };
 
-  // Initialize session on mount
   useEffect(() => {
     const initializeAuth = async () => {
       const token = localStorage.getItem('accessToken');
-      if (token) {
-        await fetchProfile(token);
-      }
+      if (token) await fetchProfile(token);
       setLoading(false);
     };
     initializeAuth();
@@ -137,10 +189,8 @@ export function AuthProvider({ children }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credential, role }),
     });
-
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message || 'Authentication failed');
-
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     setUser(data.user);
@@ -153,11 +203,9 @@ export function AuthProvider({ children }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, full_name, email, password, role }),
     });
-
     let data;
     try { data = await response.json(); } catch { throw new Error('Server returned an invalid response.'); }
     if (!response.ok || !data.success) throw new Error(data.message || 'Registration failed');
-
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     setUser(data.user);
@@ -170,11 +218,9 @@ export function AuthProvider({ children }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-
     let data;
     try { data = await response.json(); } catch { throw new Error('Server returned an invalid response.'); }
     if (!response.ok || !data.success) throw new Error(data.message || 'Login failed');
-
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     setUser(data.user);
@@ -188,10 +234,7 @@ export function AuthProvider({ children }) {
       if (accessToken && refreshToken) {
         await fetch(`${API_URL}/auth/logout`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-          },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
           body: JSON.stringify({ refreshToken }),
         });
       }
@@ -203,17 +246,13 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Wrapper for authenticated fetch requests (with auto token refresh)
   const authenticatedFetch = async (url, options = {}) => {
     let token = localStorage.getItem('accessToken');
-
     const makeRequest = (t) => fetch(url, {
       ...options,
       headers: { ...options.headers, 'Authorization': `Bearer ${t}` },
     });
-
     let response = await makeRequest(token);
-
     if (response.status === 401 || response.status === 403) {
       try {
         const newToken = await refreshSession();
@@ -223,23 +262,16 @@ export function AuthProvider({ children }) {
         throw err;
       }
     }
-
     return response;
   };
 
   const value = {
-    user,
-    loading,
-    loginWithGoogle,
-    signupLocal,
-    loginLocal,
-    logout,
-    authenticatedFetch,
-    xp,
-    earnXp,
-    completedTopics,
-    completeTopic,
+    user, loading,
+    loginWithGoogle, signupLocal, loginLocal, logout, authenticatedFetch,
+    xp, earnXp,
+    completedTopics, completeTopic,
     updateUserProfile,
+    themeMode, themeAccent, updateTheme,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
