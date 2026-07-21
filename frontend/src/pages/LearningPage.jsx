@@ -4,12 +4,14 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Background from "../components/Background";
+import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/learningPage.css";
 
 export default function LearningPage() {
   const { user, completedTopics, completeTopic, earnXp } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const queryParams = new URLSearchParams(location.search);
   const trackFromUrl = queryParams.get('track') || location.state?.track;
@@ -1050,9 +1052,14 @@ public class SecurityConfig {
   };
 
   return (
-    <div className="learning-portal-page">
+    <div className={`learning-portal-page ${isSidebarOpen ? 'with-sidebar' : ''}`}>
       <Background />
-      <Navbar />
+      <Navbar 
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSidebarOpen={isSidebarOpen} 
+        showSidebarToggle={true} 
+      />
+      <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <main className="learning-portal-content">
         

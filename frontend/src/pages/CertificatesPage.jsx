@@ -4,11 +4,13 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
 import Footer from "../components/Footer";
+import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/dashboard.css";
 
 export default function CertificatesPage() {
   const { user, completedTopics } = useAuth();
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const getCompletedCountForCert = (trackKey) => {
     if (!completedTopics) return 0;
@@ -158,9 +160,14 @@ export default function CertificatesPage() {
   };
 
   return (
-    <div className="dashboard-page" style={{ minHeight: '100vh', background: '#05060b', color: '#fff' }}>
+    <div className={`dashboard-page ${isSidebarOpen ? 'with-sidebar' : ''}`} style={{ minHeight: '100vh', background: '#05060b', color: '#fff' }}>
       <Background />
-      <Navbar />
+      <Navbar 
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSidebarOpen={isSidebarOpen} 
+        showSidebarToggle={true} 
+      />
+      <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <main className="dashboard-container" style={{ maxWidth: '1250px', margin: '0 auto', padding: '110px 24px 60px 24px' }}>
         

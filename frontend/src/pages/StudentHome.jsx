@@ -4,11 +4,13 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Background from "../components/Background";
+import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/studentHome.css";
 
 export default function StudentHome() {
   const { user, xp, earnXp, completedTopics } = useAuth();
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Dynamic state for mock gamification
   const [streak, setStreak] = useState(7);
@@ -45,9 +47,14 @@ export default function StudentHome() {
   ];
 
   return (
-    <div className="student-home-page">
+    <div className={`student-home-page ${isSidebarOpen ? 'with-sidebar' : ''}`}>
       <Background />
-      <Navbar />
+      <Navbar 
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSidebarOpen={isSidebarOpen} 
+        showSidebarToggle={true} 
+      />
+      <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <main className="student-home-content">
         

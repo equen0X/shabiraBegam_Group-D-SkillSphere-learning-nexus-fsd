@@ -15,6 +15,17 @@
   max-width: 1300px;
   margin: 0 auto;
   padding: 110px 24px 40px 24px;
+  transition: padding-left 0.3s ease;
+}
+
+.learning-portal-page.with-sidebar .learning-portal-content {
+  padding-left: 280px;
+}
+
+@media (max-width: 768px) {
+  .learning-portal-page.with-sidebar .learning-portal-content {
+    padding-left: 24px;
+  }
 }
 
 /* Header Grid */

@@ -19,6 +19,7 @@ import SandboxPage from "./pages/SandboxPage";
 import CoursesPage from "./pages/CoursesPage";
 import CertificatesPage from "./pages/CertificatesPage";
 import DiscussionsPage from "./pages/DiscussionsPage";
+import ProfileSettingsPage from "./pages/ProfileSettingsPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
 import FloatingChatbot from "./components/FloatingChatbot";
 
@@ -76,6 +77,7 @@ function App() {
         <Route path="/discussions" element={<ProtectedRoute><DiscussionsPage /></ProtectedRoute>} />
         <Route path="/resources" element={<ProtectedRoute><ComingSoonPage title="Resources" /></ProtectedRoute>} />
         <Route path="/certificate" element={<ProtectedRoute><CertificatesPage /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
       </Routes>
       {!isDashboardRoute && <FloatingChatbot />}
     </>

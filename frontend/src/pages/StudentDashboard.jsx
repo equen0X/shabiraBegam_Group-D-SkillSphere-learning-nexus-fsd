@@ -416,8 +416,29 @@ export default function StudentDashboard() {
         {/* Welcome Section */}
         <section className="welcome-card">
           <div className="welcome-info">
-            <h1>Welcome back, {user?.full_name || user?.username || "Student"}!</h1>
-            <p>Ready to unlock your potentials and level up your skills today?</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px' }}>
+              <div>
+                <h1>Welcome back, {user?.full_name || user?.username || "Student"}!</h1>
+                <p>Ready to unlock your potentials and level up your skills today?</p>
+              </div>
+              <button 
+                onClick={() => navigate('/settings')}
+                style={{
+                  background: 'linear-gradient(90deg, #00e5ff, #8a2eff)',
+                  color: '#ffffff',
+                  border: 'none',
+                  padding: '10px 20px',
+                  borderRadius: '24px',
+                  fontSize: '13px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 15px rgba(0, 229, 255, 0.4)',
+                  height: 'fit-content'
+                }}
+              >
+                ⚙️ Edit Profile Settings
+              </button>
+            </div>
           </div>
           
           <div className="xp-tracker">

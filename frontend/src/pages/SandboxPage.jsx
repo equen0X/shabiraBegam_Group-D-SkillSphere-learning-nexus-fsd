@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
 import Footer from "../components/Footer";
+import DashboardSidebar from "../components/DashboardSidebar";
 
 export default function SandboxPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const languageTemplates = {
     python: `# Python 3 execution sandbox\ndef greet(name):\n    return f"Hello, {name}! Welcome to SkillSphere."\n\nprint(greet("Student"))`,
     cpp: `// C++ execution sandbox\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello from C++ compiler!" << endl;\n    return 0;\n}`,
@@ -87,9 +89,23 @@ export default function SandboxPage() {
   return (
     <div className="sandbox-page-wrapper" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#0a0b10', color: '#ffffff' }}>
       <Background />
-      <Navbar />
+      <Navbar 
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSidebarOpen={isSidebarOpen} 
+        showSidebarToggle={true} 
+      />
+      <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-      <main style={{ flex: 1, maxWidth: '1200px', width: '100%', margin: '0 auto', padding: '120px 20px 60px 20px', zIndex: 10 }}>
+      <main style={{ 
+        flex: 1, 
+        maxWidth: '1200px', 
+        width: '100%', 
+        margin: '0 auto', 
+        padding: '120px 20px 60px 20px', 
+        zIndex: 10,
+        transition: 'padding-left 0.3s ease',
+        paddingLeft: isSidebarOpen ? '280px' : '20px'
+      }}>
         
         {/* Header Title */}
         <section style={{ textAlign: 'center', marginBottom: '60px' }}>

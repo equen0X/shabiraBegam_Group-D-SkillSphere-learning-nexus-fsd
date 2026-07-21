@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
@@ -7,6 +8,7 @@ import "../styles/workforceDashboard.css";
 
 export default function WorkforceDashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   // Employee Directory State
   const [employees, setEmployees] = useState([
@@ -180,11 +182,27 @@ export default function WorkforceDashboard() {
       <main className="wf-dashboard-content-wrapper">
         
         {/* Welcome Banner */}
-        <section className="wf-welcome-card">
+        <section className="wf-welcome-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
           <div className="wf-welcome-info">
             <h1>Welcome to Workforce Hub, {user?.full_name || user?.username || "Manager"}!</h1>
             <p>Monitor employee efficiency, assign development projects, and review leave requests from your operations panel.</p>
           </div>
+          <button 
+            onClick={() => navigate('/settings')}
+            style={{
+              background: 'linear-gradient(90deg, #ff00c8, #8a2eff)',
+              color: '#ffffff',
+              border: 'none',
+              padding: '12px 24px',
+              borderRadius: '24px',
+              fontSize: '14px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              boxShadow: '0 0 15px rgba(255, 0, 200, 0.4)'
+            }}
+          >
+            ⚙️ Edit Profile Settings
+          </button>
         </section>
 
         {/* Stats Grid */}

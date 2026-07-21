@@ -98,11 +98,25 @@ export function AuthProvider({ children }) {
         throw new Error(data.message || 'Failed to fetch profile');
       }
 
-      setUser(data.user);
+      const storedOverride = localStorage.getItem(`profile_override_${data.user.email || data.user.username}`);
+      if (storedOverride) {
+        setUser({ ...data.user, ...JSON.parse(storedOverride) });
+      } else {
+        setUser(data.user);
+      }
     } catch (err) {
       console.error('Session restore failed:', err.message);
       clearSession();
     }
+  };
+
+  const updateUserProfile = (details) => {
+    if (!user) return;
+    setUser(prev => {
+      const updated = { ...prev, ...details };
+      localStorage.setItem(`profile_override_${prev.email || prev.username}`, JSON.stringify(updated));
+      return updated;
+    });
   };
 
   // Initialize session on mount
@@ -225,6 +239,7 @@ export function AuthProvider({ children }) {
     earnXp,
     completedTopics,
     completeTopic,
+    updateUserProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

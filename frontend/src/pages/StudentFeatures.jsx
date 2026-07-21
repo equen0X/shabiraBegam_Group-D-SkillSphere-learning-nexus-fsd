@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Background from "../components/Background";
+import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/studentFeatures.css";
 
 export default function StudentFeatures() {
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   const badgesList = [
     { name: "🔥 Daily Streak", desc: "Logged in 5 days straight to build momentum", icon: "🔥" },
@@ -76,9 +78,14 @@ export default function StudentFeatures() {
   ];
 
   return (
-    <div className="sf-features-page">
+    <div className={`sf-features-page ${isSidebarOpen ? 'with-sidebar' : ''}`}>
       <Background />
-      <Navbar />
+      <Navbar 
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSidebarOpen={isSidebarOpen} 
+        showSidebarToggle={true} 
+      />
+      <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <main className="sf-features-content">
         

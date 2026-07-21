@@ -42,6 +42,11 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
           <span>Certificate</span>
         </NavLink>
 
+        <NavLink to="/settings" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+          <FiSettings className="sidebar-icon" />
+          <span>Settings</span>
+        </NavLink>
+
       </nav>
     </aside>
     </>
