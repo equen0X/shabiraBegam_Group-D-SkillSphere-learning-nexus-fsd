@@ -56,6 +56,7 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
         <Route path="/learning" element={<LearningPage />} />
         <Route path="/workforce" element={<WorkforcePage />} />
         <Route path="/contact" element={<ContactPage />} />
@@ -70,7 +71,6 @@ function App() {
         <Route path="/student-features" element={<ProtectedRoute><StudentFeatures /></ProtectedRoute>} />
         <Route path="/workforce-features" element={<ProtectedRoute><WorkforceFeatures /></ProtectedRoute>} />
         <Route path="/sandbox" element={<ProtectedRoute><SandboxPage /></ProtectedRoute>} />
-        <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
         <Route path="/discussions" element={<ProtectedRoute><ComingSoonPage title="Discussions" /></ProtectedRoute>} />
         <Route path="/resources" element={<ProtectedRoute><ComingSoonPage title="Resources" /></ProtectedRoute>} />
         <Route path="/certificate" element={<ProtectedRoute><ComingSoonPage title="Certificate" /></ProtectedRoute>} />

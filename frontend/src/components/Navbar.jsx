@@ -36,6 +36,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen, showSidebarToggle
         {user && user.role === 'STUDENT' && (
           <>
             <Link to="/student-features" style={{ color: location.pathname === "/student-features" ? "#00e5ff" : "" }}>Features</Link>
+            <Link to="/courses" style={{ color: location.pathname === "/courses" ? "#00e5ff" : "" }}>Courses</Link>
             <Link to="/learning" style={{ color: location.pathname === "/learning" ? "#00e5ff" : "" }}>Learning</Link>
             <Link to="/dashboard" style={{ color: location.pathname === "/dashboard" ? "#00e5ff" : "" }}>Dashboard</Link>
             <Link to="/sandbox" style={{ color: location.pathname === "/sandbox" ? "#00e5ff" : "" }}>Sandbox</Link>
@@ -45,6 +46,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen, showSidebarToggle
         {user && user.role === 'EMPLOYEE' && (
           <>
             <Link to="/workforce-features" style={{ color: location.pathname === "/workforce-features" ? "#ff00c8" : "" }}>Features</Link>
+            <Link to="/courses" style={{ color: location.pathname === "/courses" ? "#ff00c8" : "" }}>Courses</Link>
             <Link to="/workforce-dashboard" style={{ color: location.pathname === "/workforce-dashboard" ? "#ff00c8" : "" }}>Dashboard</Link>
           </>
         )}
@@ -52,6 +54,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen, showSidebarToggle
         {!user && (
           <>
             <Link to="/features">Features</Link>
+            <Link to="/courses" style={{ color: location.pathname === "/courses" ? "#00e5ff" : "" }}>Courses</Link>
             <Link to="/learning">Learning</Link>
             <Link to="/workforce">Workforce</Link>
             <Link to="/sandbox" style={{ color: location.pathname === "/sandbox" ? "#00e5ff" : "" }}>Sandbox</Link>

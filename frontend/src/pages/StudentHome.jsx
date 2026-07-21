@@ -96,8 +96,8 @@ export default function StudentHome() {
             <div className="sh-panel">
               <div className="sh-panel-header">
                 <h3 className="sh-panel-title">Active <span>Learning Hub</span></h3>
-                <button className="sh-feed-btn" onClick={() => navigate('/dashboard')} style={{ background: 'transparent', border: '1px solid #00e5ff', color: '#00e5ff', padding: '8px 16px' }}>
-                  Manage Courses
+                <button className="sh-feed-btn" onClick={() => navigate('/courses')} style={{ background: 'transparent', border: '1px solid #00e5ff', color: '#00e5ff', padding: '8px 16px' }}>
+                  Explore Courses
                 </button>
               </div>
 
