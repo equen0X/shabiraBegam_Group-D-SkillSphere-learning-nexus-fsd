@@ -106,19 +106,19 @@ export default function ProfileSettingsPage() {
       "--bg-secondary":   "#e2e8f0",
       "--bg-panel":       "rgba(255,255,255,0.95)",
       "--bg-card":        "rgba(248,250,252,0.98)",
-      "--text-primary":   "#0f172a",
+      "--text-primary":   "var(--bg-secondary)",
       "--text-secondary": "#475569",
-      "--text-muted":     "#94a3b8",
+      "--text-muted":     "var(--text-secondary)",
       "--border-color":   "rgba(0,0,0,0.12)",
       "--navbar-bg":      "rgba(240,244,248,0.92)",
       "--input-bg":       "rgba(255,255,255,0.9)",
     } : {
-      "--bg-primary":     "#05060b",
-      "--bg-secondary":   "#0a0e1e",
+      "--bg-primary":     "var(--bg-primary)",
+      "--bg-secondary":   "var(--bg-secondary)",
       "--bg-panel":       "rgba(15,23,42,0.85)",
       "--bg-card":        "rgba(10,14,30,0.9)",
-      "--text-primary":   "#ffffff",
-      "--text-secondary": "#94a3b8",
+      "--text-primary":   "var(--text-primary)",
+      "--text-secondary": "var(--text-secondary)",
       "--text-muted":     "#475569",
       "--border-color":   "rgba(255,255,255,0.08)",
       "--navbar-bg":      "rgba(12,12,16,0.75)",
@@ -146,17 +146,17 @@ export default function ProfileSettingsPage() {
   const accent    = selectedAccent;
 
   const panel = {
-    background: isDark ? "rgba(15,23,42,0.9)" : "rgba(255,255,255,0.96)",
-    border:     `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)"}`,
-    color:      isDark ? "#ffffff" : "#0f172a",
+    background: "var(--bg-panel)",
+    border:     `1px solid ${"var(--border-color)"}`,
+    color:      "var(--text-primary)",
     boxShadow:  isDark ? "0 10px 35px rgba(0,0,0,0.5)" : "0 10px 35px rgba(0,0,0,0.1)",
   };
 
   const inputStyle = {
     width:        "100%",
-    background:   isDark ? "rgba(0,0,0,0.45)" : "rgba(240,244,248,0.9)",
-    border:       `1px solid ${isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)"}`,
-    color:        isDark ? "#ffffff" : "#0f172a",
+    background:   "var(--input-bg)",
+    border:       `1px solid ${"var(--border-color)"}`,
+    color:        "var(--text-primary)",
     padding:      "10px 14px",
     borderRadius: "8px",
     fontSize:     "14px",
@@ -167,7 +167,7 @@ export default function ProfileSettingsPage() {
 
   const labelStyle = {
     display:      "block",
-    color:        isDark ? "#94a3b8" : "#475569",
+    color:        "var(--text-secondary)",
     fontSize:     "13px",
     marginBottom: "6px",
     fontWeight:   "700",
@@ -179,13 +179,13 @@ export default function ProfileSettingsPage() {
     gap:           "10px",
     marginBottom:  "22px",
     paddingBottom: "14px",
-    borderBottom:  `1px solid ${isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)"}`,
+    borderBottom:  `1px solid ${"var(--border-subtle)"}`,
   };
 
   return (
     <div
       className={`dashboard-page ${isSidebarOpen && isStudent ? "with-sidebar" : ""}`}
-      style={{ minHeight: "100vh", color: isDark ? "#fff" : "#0f172a", transition: "background 0.3s, color 0.3s" }}
+      style={{ minHeight: "100vh", color: "var(--text-primary)", transition: "background 0.3s, color 0.3s" }}
     >
       <Background />
       <Navbar
@@ -210,7 +210,7 @@ export default function ProfileSettingsPage() {
           background:   toastType === "error"
                           ? "linear-gradient(135deg,#ef4444,#dc2626)"
                           : `linear-gradient(135deg,${accent},#8a2eff)`,
-          color:        "#fff",
+          color:        "var(--text-primary)",
           padding:      "14px 24px",
           borderRadius: "14px",
           boxShadow:    `0 10px 30px ${accent}50`,
@@ -236,7 +236,7 @@ export default function ProfileSettingsPage() {
           }}>
             ⚙️ Profile Settings
           </h1>
-          <p style={{ color: isDark ? "#64748b" : "#94a3b8", fontSize: "14px", margin: 0 }}>
+          <p style={{ color: "var(--text-muted)", fontSize: "14px", margin: 0 }}>
             Manage your personal info, social links, skills, and customize your dashboard theme.
           </p>
         </div>
@@ -246,7 +246,7 @@ export default function ProfileSettingsPage() {
           display:       "flex",
           gap:           "4px",
           marginBottom:  "28px",
-          borderBottom:  `2px solid ${isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)"}`,
+          borderBottom:  `2px solid ${"var(--border-subtle)"}`,
         }}>
           {[
             { id: "profile",      label: "👤 Profile Info" },
@@ -261,7 +261,7 @@ export default function ProfileSettingsPage() {
                 background:   "transparent",
                 border:       "none",
                 borderBottom: activeTab === tab.id ? `3px solid ${accent}` : "3px solid transparent",
-                color:        activeTab === tab.id ? accent : (isDark ? "#64748b" : "#94a3b8"),
+                color:        activeTab === tab.id ? accent : ("var(--text-muted)"),
                 fontWeight:   "700",
                 fontSize:     "14px",
                 cursor:       "pointer",
@@ -287,7 +287,7 @@ export default function ProfileSettingsPage() {
               <div style={{ ...panel, borderRadius: "16px", padding: "26px" }}>
                 <div style={sectionHeadStyle}>
                   <FiUser size={18} style={{ color: accent }} />
-                  <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: isDark ? "#fff" : "#0f172a", margin: 0 }}>
+                  <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: "var(--text-primary)", margin: 0 }}>
                     Personal Info
                   </h3>
                 </div>
@@ -329,7 +329,7 @@ export default function ProfileSettingsPage() {
               <div style={{ ...panel, borderRadius: "16px", padding: "26px" }}>
                 <div style={sectionHeadStyle}>
                   <FiGlobe size={18} style={{ color: accent }} />
-                  <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: isDark ? "#fff" : "#0f172a", margin: 0 }}>
+                  <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: "var(--text-primary)", margin: 0 }}>
                     Social & Links
                   </h3>
                 </div>
@@ -353,7 +353,7 @@ export default function ProfileSettingsPage() {
               <div style={{ ...panel, borderRadius: "16px", padding: "26px" }}>
                 <div style={sectionHeadStyle}>
                   <FiBriefcase size={18} style={{ color: accent }} />
-                  <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: isDark ? "#fff" : "#0f172a", margin: 0 }}>
+                  <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: "var(--text-primary)", margin: 0 }}>
                     Technical Skills
                   </h3>
                 </div>
@@ -388,7 +388,7 @@ export default function ProfileSettingsPage() {
                 type="submit"
                 style={{
                   background:    `linear-gradient(90deg, ${accent}, #8a2eff)`,
-                  color:         "#fff",
+                  color:         "var(--text-primary)",
                   border:        "none",
                   padding:       "14px 30px",
                   borderRadius:  "12px",
@@ -436,7 +436,7 @@ export default function ProfileSettingsPage() {
                   height:        "82px",
                   borderRadius:  "50%",
                   background:    `linear-gradient(135deg, ${accent}, #8a2eff)`,
-                  color:         "#fff",
+                  color:         "var(--text-primary)",
                   fontSize:      "28px",
                   fontWeight:    "800",
                   display:       "flex",
@@ -444,26 +444,26 @@ export default function ProfileSettingsPage() {
                   justifyContent:"center",
                   margin:        "0 auto 14px",
                   boxShadow:     `0 0 22px ${accent}60`,
-                  border:        `3px solid ${isDark ? "#05060b" : "#f0f4f8"}`,
+                  border:        `3px solid ${"var(--bg-primary)"}`,
                 }}>
                   {(fullName || user?.username || "U").charAt(0).toUpperCase()}
                 </div>
 
-                <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "18px", color: isDark ? "#fff" : "#0f172a", margin: "0 0 4px" }}>
+                <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "18px", color: "var(--text-primary)", margin: "0 0 4px" }}>
                   {fullName || "Your Name"}
                 </h3>
                 <div style={{ fontSize: "11px", color: accent, fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", fontFamily: "Orbitron, sans-serif", marginBottom: "4px" }}>
                   {user?.role || "ROLE"}
                 </div>
-                <div style={{ fontSize: "12px", color: isDark ? "#64748b" : "#94a3b8", marginBottom: "8px" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "8px" }}>
                   {title || "Your title here"}
                 </div>
                 {location && (
-                  <div style={{ fontSize: "12px", color: isDark ? "#64748b" : "#94a3b8", marginBottom: "8px" }}>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "8px" }}>
                     📍 {location}
                   </div>
                 )}
-                <p style={{ color: isDark ? "#94a3b8" : "#475569", fontSize: "13px", lineHeight: "1.6", margin: "10px 0", minHeight: "44px" }}>
+                <p style={{ color: "var(--text-secondary)", fontSize: "13px", lineHeight: "1.6", margin: "10px 0", minHeight: "44px" }}>
                   {bio || "Your bio will appear here..."}
                 </p>
 
@@ -472,9 +472,9 @@ export default function ProfileSettingsPage() {
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center", margin: "10px 0" }}>
                     {skills.split(",").slice(0, 5).map((s, i) => s.trim() && (
                       <span key={i} style={{
-                        background:   isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)",
-                        border:       `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-                        color:        isDark ? "#94a3b8" : "#475569",
+                        background:   "var(--bg-secondary)",
+                        border:       `1px solid ${"var(--border-color)"}`,
+                        color:        "var(--text-secondary)",
                         padding:      "3px 9px",
                         borderRadius: "12px",
                         fontSize:     "11px",
@@ -491,7 +491,7 @@ export default function ProfileSettingsPage() {
                   display:       "flex",
                   gap:           "12px",
                   justifyContent:"center",
-                  borderTop:     `1px solid ${isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)"}`,
+                  borderTop:     `1px solid ${"var(--border-subtle)"}`,
                   paddingTop:    "12px",
                   marginTop:     "12px",
                   flexWrap:      "wrap",
@@ -500,7 +500,7 @@ export default function ProfileSettingsPage() {
                   {linkedin  && <a href={linkedin}  target="_blank" rel="noreferrer" style={{ color: accent, textDecoration: "none", fontSize: "12px", fontWeight: "700" }}>LinkedIn ↗</a>}
                   {portfolio && <a href={portfolio} target="_blank" rel="noreferrer" style={{ color: accent, textDecoration: "none", fontSize: "12px", fontWeight: "700" }}>Portfolio ↗</a>}
                   {!github && !linkedin && !portfolio && (
-                    <span style={{ color: isDark ? "#334155" : "#94a3b8", fontSize: "12px" }}>No social links yet</span>
+                    <span style={{ color: isDark ? "#334155" : "var(--text-secondary)", fontSize: "12px" }}>No social links yet</span>
                   )}
                 </div>
               </div>
@@ -515,7 +515,7 @@ export default function ProfileSettingsPage() {
 
             {/* Dark / Light mode */}
             <div style={{ ...panel, borderRadius: "16px", padding: "26px" }}>
-              <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: isDark ? "#fff" : "#0f172a", margin: "0 0 20px" }}>
+              <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: "var(--text-primary)", margin: "0 0 20px" }}>
                 🌗 Display Mode
               </h3>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
@@ -530,8 +530,8 @@ export default function ProfileSettingsPage() {
                       type="button"
                       onClick={() => handleModeChange(mode)}
                       style={{
-                        background:   active ? `${accent}18` : (isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.05)"),
-                        border:       active ? `2px solid ${accent}` : `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                        background:   active ? `${accent}18` : ("var(--bg-secondary)"),
+                        border:       active ? `2px solid ${accent}` : `2px solid ${"var(--border-color)"}`,
                         borderRadius: "14px",
                         padding:      "20px 14px",
                         cursor:       "pointer",
@@ -540,13 +540,13 @@ export default function ProfileSettingsPage() {
                         boxShadow:    active ? `0 0 18px ${accent}35` : "none",
                       }}
                     >
-                      <div style={{ color: active ? accent : (isDark ? "#64748b" : "#94a3b8"), display: "flex", justifyContent: "center", marginBottom: "10px" }}>
+                      <div style={{ color: active ? accent : ("var(--text-muted)"), display: "flex", justifyContent: "center", marginBottom: "10px" }}>
                         {icon}
                       </div>
-                      <div style={{ fontFamily: "Orbitron, sans-serif", fontSize: "12px", color: active ? accent : (isDark ? "#64748b" : "#94a3b8"), fontWeight: "700" }}>
+                      <div style={{ fontFamily: "Orbitron, sans-serif", fontSize: "12px", color: active ? accent : ("var(--text-muted)"), fontWeight: "700" }}>
                         {label}
                       </div>
-                      <div style={{ fontSize: "11px", color: isDark ? "#475569" : "#94a3b8", marginTop: "4px" }}>{sub}</div>
+                      <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "4px" }}>{sub}</div>
                       {active && <FiCheck size={13} style={{ color: accent, marginTop: "8px" }} />}
                     </button>
                   );
@@ -555,23 +555,23 @@ export default function ProfileSettingsPage() {
 
               {/* Mini preview strip */}
               <div style={{ marginTop: "18px", borderRadius: "10px", overflow: "hidden", border: `1px solid ${accent}30` }}>
-                <div style={{ background: selectedMode === "dark" ? "#05060b" : "#f0f4f8", padding: "10px 14px", display: "flex", gap: "8px", alignItems: "center" }}>
+                <div style={{ background: "var(--bg-primary)", padding: "10px 14px", display: "flex", gap: "8px", alignItems: "center" }}>
                   <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#ef4444" }} />
                   <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#facc15" }} />
                   <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#22c55e" }} />
-                  <span style={{ marginLeft: "6px", fontSize: "10px", color: selectedMode === "dark" ? "#475569" : "#94a3b8", fontFamily: "Orbitron, sans-serif" }}>PREVIEW</span>
+                  <span style={{ marginLeft: "6px", fontSize: "10px", color: "var(--text-muted)", fontFamily: "Orbitron, sans-serif" }}>PREVIEW</span>
                 </div>
-                <div style={{ background: selectedMode === "dark" ? "rgba(10,14,30,0.95)" : "rgba(255,255,255,0.95)", padding: "14px", display: "flex", flexDirection: "column", gap: "7px" }}>
-                  <div style={{ height: "9px", borderRadius: "4px", background: selectedMode === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)", width: "60%" }} />
+                <div style={{ background: "var(--bg-card)", padding: "14px", display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <div style={{ height: "9px", borderRadius: "4px", background: "var(--border-color)", width: "60%" }} />
                   <div style={{ height: "7px", borderRadius: "4px", background: accent, width: "40%" }} />
-                  <div style={{ height: "7px", borderRadius: "4px", background: selectedMode === "dark" ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)", width: "80%" }} />
+                  <div style={{ height: "7px", borderRadius: "4px", background: "var(--border-subtle)", width: "80%" }} />
                 </div>
               </div>
             </div>
 
             {/* Accent color */}
             <div style={{ ...panel, borderRadius: "16px", padding: "26px" }}>
-              <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: isDark ? "#fff" : "#0f172a", margin: "0 0 20px" }}>
+              <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: "var(--text-primary)", margin: "0 0 20px" }}>
                 🎨 Accent Color
               </h3>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
@@ -584,7 +584,7 @@ export default function ProfileSettingsPage() {
                       onClick={() => handleAccentChange(item.color)}
                       style={{
                         background:    active ? `${item.color}18` : "transparent",
-                        border:        active ? `2px solid ${item.color}` : `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+                        border:        active ? `2px solid ${item.color}` : `1px solid ${"var(--border-color)"}`,
                         borderRadius:  "12px",
                         padding:       "11px 13px",
                         cursor:        "pointer",
@@ -597,7 +597,7 @@ export default function ProfileSettingsPage() {
                     >
                       <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
                         <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: item.color, boxShadow: `0 0 8px ${item.color}80`, flexShrink: 0 }} />
-                        <span style={{ fontSize: "12px", fontWeight: "700", color: isDark ? "#cbd5e1" : "#334155" }}>
+                        <span style={{ fontSize: "12px", fontWeight: "700", color: "var(--text-secondary)" }}>
                           {item.label}
                         </span>
                       </div>
@@ -608,11 +608,11 @@ export default function ProfileSettingsPage() {
               </div>
 
               {/* Accent preview */}
-              <div style={{ marginTop: "16px", background: isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.05)", borderRadius: "10px", padding: "12px" }}>
-                <div style={{ fontSize: "10px", color: isDark ? "#475569" : "#94a3b8", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px" }}>Accent Preview</div>
+              <div style={{ marginTop: "16px", background: "var(--bg-secondary)", borderRadius: "10px", padding: "12px" }}>
+                <div style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px" }}>Accent Preview</div>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   {[
-                    { label: "Button",  bg: accent,          color: "#000",  border: "none",                        shadow: "none" },
+                    { label: "Button",  bg: accent,          color: "var(--bg-primary)",  border: "none",                        shadow: "none" },
                     { label: "Badge",   bg: `${accent}20`,   color: accent,  border: `1px solid ${accent}40`,       shadow: "none" },
                     { label: "Outline", bg: "transparent",   color: accent,  border: `1px solid ${accent}`,         shadow: "none" },
                     { label: "Glow",    bg: "transparent",   color: accent,  border: `1px solid ${accent}`,         shadow: `0 0 10px ${accent}60` },
@@ -633,7 +633,7 @@ export default function ProfileSettingsPage() {
                 style={{
                   width:         "100%",
                   background:    `linear-gradient(90deg, ${accent}, #8a2eff)`,
-                  color:         "#fff",
+                  color:         "var(--text-primary)",
                   border:        "none",
                   padding:       "14px",
                   borderRadius:  "12px",
@@ -652,7 +652,7 @@ export default function ProfileSettingsPage() {
                 <FiSave size={17} />
                 Apply &amp; Save Theme
               </button>
-              <p style={{ textAlign: "center", color: isDark ? "#475569" : "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+              <p style={{ textAlign: "center", color: "var(--text-muted)", fontSize: "12px", marginTop: "10px" }}>
                 Theme is previewed live above. Click Save to persist across sessions.
               </p>
             </div>
@@ -699,10 +699,10 @@ export default function ProfileSettingsPage() {
                     fontSize: "22px", boxShadow: `0 0 16px ${accent}50`,
                   }}>🏆</div>
                   <div>
-                    <div style={{ fontFamily: "Orbitron, sans-serif", fontSize: "18px", color: isDark ? "#fff" : "#0f172a", fontWeight: "800" }}>
+                    <div style={{ fontFamily: "Orbitron, sans-serif", fontSize: "18px", color: "var(--text-primary)", fontWeight: "800" }}>
                       {earnedCount} / {CERTS.length} Certificates Earned
                     </div>
-                    <div style={{ fontSize: "13px", color: isDark ? "#64748b" : "#94a3b8", marginTop: "2px" }}>
+                    <div style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}>
                       Complete all 6 modules in a course to unlock its certificate
                     </div>
                   </div>
@@ -710,10 +710,10 @@ export default function ProfileSettingsPage() {
                 {/* Progress bar */}
                 <div style={{ minWidth: "200px", flex: 1, maxWidth: "300px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                    <span style={{ fontSize: "11px", color: isDark ? "#64748b" : "#94a3b8", fontFamily: "Orbitron, sans-serif" }}>PROGRESS</span>
+                    <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "Orbitron, sans-serif" }}>PROGRESS</span>
                     <span style={{ fontSize: "11px", color: accent, fontFamily: "Orbitron, sans-serif", fontWeight: "700" }}>{Math.round((earnedCount / CERTS.length) * 100)}%</span>
                   </div>
-                  <div style={{ height: "8px", background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)", borderRadius: "4px", overflow: "hidden" }}>
+                  <div style={{ height: "8px", background: "var(--border-color)", borderRadius: "4px", overflow: "hidden" }}>
                     <div style={{ height: "100%", width: `${(earnedCount / CERTS.length) * 100}%`, background: `linear-gradient(90deg, ${accent}, #8a2eff)`, borderRadius: "4px", transition: "width 0.6s ease", boxShadow: `0 0 8px ${accent}60` }} />
                   </div>
                 </div>
@@ -731,7 +731,7 @@ export default function ProfileSettingsPage() {
                       ...panel,
                       borderRadius:  "16px",
                       padding:       "0",
-                      border:        isEarned ? `1px solid ${cert.color}50` : `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.07)"}`,
+                      border:        isEarned ? `1px solid ${cert.color}50` : `1px solid ${"var(--border-subtle)"}`,
                       overflow:      "hidden",
                       opacity:       isEarned ? 1 : 0.65,
                       transition:    "all 0.3s",
@@ -742,10 +742,10 @@ export default function ProfileSettingsPage() {
                       {/* Colored top banner */}
                       <div style={{
                         background:  isEarned
-                          ? `linear-gradient(135deg, ${cert.color}30 0%, ${isDark ? "#0a0e1e" : "#e2e8f0"} 100%)`
-                          : (isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.04)"),
+                          ? `linear-gradient(135deg, ${cert.color}30 0%, ${isDark ? "var(--bg-secondary)" : "#e2e8f0"} 100%)`
+                          : ("var(--bg-secondary)"),
                         padding:     "18px 20px 14px",
-                        borderBottom:`1px solid ${isEarned ? cert.color + "20" : (isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)")}`,
+                        borderBottom:`1px solid ${isEarned ? cert.color + "20" : ("var(--bg-secondary)")}`,
                         display:     "flex",
                         alignItems:  "center",
                         gap:         "14px",
@@ -753,8 +753,8 @@ export default function ProfileSettingsPage() {
                         {/* Icon */}
                         <div style={{
                           width: "48px", height: "48px", borderRadius: "12px", flexShrink: 0,
-                          background: isEarned ? `linear-gradient(135deg, ${cert.color}30, ${cert.color}10)` : (isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"),
-                          border: `2px solid ${isEarned ? cert.color + "60" : (isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)")}`,
+                          background: isEarned ? `linear-gradient(135deg, ${cert.color}30, ${cert.color}10)` : ("var(--bg-secondary)"),
+                          border: `2px solid ${isEarned ? cert.color + "60" : ("var(--border-color)")}`,
                           display: "flex", alignItems: "center", justifyContent: "center",
                           fontSize: "22px",
                           boxShadow: isEarned ? `0 0 12px ${cert.color}40` : "none",
@@ -762,17 +762,17 @@ export default function ProfileSettingsPage() {
                           {isEarned ? "🎓" : "🔒"}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: "14px", fontWeight: "700", color: isDark ? (isEarned ? "#e2e8f0" : "#475569") : (isEarned ? "#0f172a" : "#94a3b8"), lineHeight: "1.4", marginBottom: "4px" }}>
+                          <div style={{ fontSize: "14px", fontWeight: "700", color: (isEarned ? "var(--text-primary)" : "var(--text-muted)"), lineHeight: "1.4", marginBottom: "4px" }}>
                             {cert.title}
                           </div>
-                          <div style={{ fontSize: "11px", color: isEarned ? cert.color : (isDark ? "#475569" : "#94a3b8"), fontFamily: "Orbitron, sans-serif", fontWeight: "700" }}>
+                          <div style={{ fontSize: "11px", color: isEarned ? cert.color : ("var(--text-muted)"), fontFamily: "Orbitron, sans-serif", fontWeight: "700" }}>
                             {cert.courseName}
                           </div>
                         </div>
                         {/* VALID / LOCKED badge */}
                         {isEarned ? (
                           <div style={{
-                            background: cert.color, color: "#000",
+                            background: cert.color, color: "var(--bg-primary)",
                             fontSize: "9px", fontWeight: "900",
                             padding: "4px 10px", borderRadius: "20px",
                             fontFamily: "Orbitron, sans-serif", letterSpacing: "1px",
@@ -780,8 +780,8 @@ export default function ProfileSettingsPage() {
                           }}>✓ VALID</div>
                         ) : (
                           <div style={{
-                            background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
-                            color: isDark ? "#64748b" : "#94a3b8",
+                            background: "var(--border-color)",
+                            color: "var(--text-muted)",
                             fontSize: "9px", fontWeight: "900",
                             padding: "4px 10px", borderRadius: "20px",
                             fontFamily: "Orbitron, sans-serif", letterSpacing: "1px", flexShrink: 0,
@@ -794,8 +794,8 @@ export default function ProfileSettingsPage() {
                         {isEarned ? (
                           <>
                             {/* Issue date */}
-                            <div style={{ fontSize: "12px", color: isDark ? "#64748b" : "#94a3b8", marginBottom: "6px" }}>
-                              📅 Issued: <strong style={{ color: isDark ? "#94a3b8" : "#475569" }}>{dateFormatted}</strong>
+                            <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "6px" }}>
+                              📅 Issued: <strong style={{ color: "var(--text-secondary)" }}>{dateFormatted}</strong>
                             </div>
                             {/* Verification ID */}
                             <div style={{
@@ -843,14 +843,14 @@ export default function ProfileSettingsPage() {
                             {/* Progress bar */}
                             <div style={{ marginBottom: "10px" }}>
                               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                                <span style={{ fontSize: "12px", color: isDark ? "#64748b" : "#94a3b8" }}>Modules Completed</span>
-                                <span style={{ fontSize: "12px", color: isDark ? "#94a3b8" : "#475569", fontWeight: "700" }}>{done} / 6</span>
+                                <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>Modules Completed</span>
+                                <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: "700" }}>{done} / 6</span>
                               </div>
-                              <div style={{ height: "6px", background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)", borderRadius: "3px", overflow: "hidden" }}>
+                              <div style={{ height: "6px", background: "var(--border-color)", borderRadius: "3px", overflow: "hidden" }}>
                                 <div style={{ height: "100%", width: `${(done / 6) * 100}%`, background: cert.color, borderRadius: "3px", transition: "width 0.5s" }} />
                               </div>
                             </div>
-                            <div style={{ fontSize: "12px", color: isDark ? "#475569" : "#94a3b8", marginBottom: "14px" }}>
+                            <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "14px" }}>
                               Complete {6 - done} more module{6 - done !== 1 ? "s" : ""} to unlock this certificate
                             </div>
                             {/* Module topics */}
@@ -858,8 +858,8 @@ export default function ProfileSettingsPage() {
                               {cert.topics.map((t, i) => (
                                 <span key={t} style={{
                                   background: i < done ? `${cert.color}15` : (isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"),
-                                  border: i < done ? `1px solid ${cert.color}30` : `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
-                                  color: i < done ? cert.color : (isDark ? "#334155" : "#94a3b8"),
+                                  border: i < done ? `1px solid ${cert.color}30` : `1px solid ${"var(--border-subtle)"}`,
+                                  color: i < done ? cert.color : (isDark ? "#334155" : "var(--text-secondary)"),
                                   padding: "3px 9px",
                                   borderRadius: "20px", fontSize: "11px", fontWeight: "700",
                                   textDecoration: i < done ? "none" : "none",

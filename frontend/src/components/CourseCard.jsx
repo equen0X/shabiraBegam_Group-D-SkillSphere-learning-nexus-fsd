@@ -13,7 +13,8 @@ export default function CourseCard({ course, onEnroll, onContinue }) {
     reviews, 
     description, 
     isEnrolled, 
-    progress 
+    progress,
+    price 
   } = course;
 
   return (
@@ -36,7 +37,7 @@ export default function CourseCard({ course, onEnroll, onContinue }) {
             if (isEnrolled && onContinue) onContinue(id);
             else if (onEnroll) onEnroll(id);
           }}
-          style={{ cursor: 'pointer', color: '#ffffff', transition: 'color 0.2s' }}
+          style={{ cursor: 'pointer', color: 'var(--text-primary)', transition: 'color 0.2s' }}
         >
           {title}
         </h3>
@@ -44,7 +45,7 @@ export default function CourseCard({ course, onEnroll, onContinue }) {
         <div className="course-meta">
           {isPremium ? (
             <span className="badge premium">
-              <FaCrown /> Premium
+              <FaCrown /> Premium • ₹{price}
             </span>
           ) : (
             <span className="badge free">Free</span>
@@ -84,7 +85,7 @@ export default function CourseCard({ course, onEnroll, onContinue }) {
                 style={{
                   marginTop: '12px',
                   background: 'linear-gradient(90deg, #00e5ff, #8a2be2)',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   border: 'none',
                   padding: '10px 18px',
                   borderRadius: '20px',
@@ -114,10 +115,17 @@ export default function CourseCard({ course, onEnroll, onContinue }) {
               style={{
                 position: 'relative',
                 zIndex: 20,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                background: isPremium ? 'linear-gradient(90deg, #ff00c8, #8a2eff)' : undefined,
+                color: 'var(--text-primary)',
+                border: isPremium ? 'none' : undefined,
+                padding: '10px 20px',
+                borderRadius: '20px',
+                fontWeight: 'bold',
+                boxShadow: isPremium ? '0 4px 15px rgba(255, 0, 200, 0.3)' : undefined
               }}
             >
-              Enroll Now
+              {isPremium ? `Buy Now - ₹${price}` : 'Enroll Now'}
             </button>
           )}
         </div>

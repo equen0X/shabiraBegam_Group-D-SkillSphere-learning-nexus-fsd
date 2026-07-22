@@ -203,7 +203,7 @@ export default function LoginPage() {
             padding: '4px',
             borderRadius: '12px',
             marginBottom: '25px',
-            border: '1px solid rgba(255, 255, 255, 0.05)'
+            border: "1px solid var(--border-color)"
           }}>
             <button
               type="button"
@@ -214,7 +214,7 @@ export default function LoginPage() {
                 background: role === 'STUDENT' ? 'rgba(0, 229, 255, 0.15)' : 'transparent',
                 border: 'none',
                 borderRadius: '8px',
-                color: role === 'STUDENT' ? '#00e5ff' : '#94a3b8',
+                color: role === 'STUDENT' ? '#00e5ff' : 'var(--text-secondary)',
                 fontWeight: '700',
                 fontSize: '15px',
                 cursor: 'pointer',
@@ -234,7 +234,7 @@ export default function LoginPage() {
                 background: role === 'EMPLOYEE' ? 'rgba(255, 0, 200, 0.15)' : 'transparent',
                 border: 'none',
                 borderRadius: '8px',
-                color: role === 'EMPLOYEE' ? '#ff00c8' : '#94a3b8',
+                color: role === 'EMPLOYEE' ? '#ff00c8' : 'var(--text-secondary)',
                 fontWeight: '700',
                 fontSize: '15px',
                 cursor: 'pointer',

@@ -20,7 +20,7 @@ body,
     margin:0;
     padding:0;
     overflow-x:hidden;
-    background: var(--bg-primary, #050505);
+    background: var(--bg-primary, var(--bg-primary));
     transition: background 0.4s ease, color 0.4s ease;
 }
 

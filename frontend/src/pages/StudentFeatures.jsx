@@ -116,7 +116,7 @@ export default function StudentFeatures() {
           marginTop: '60px',
           background: 'rgba(18, 18, 30, 0.75)',
           backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
+          border: "1px solid var(--border-color)",
           borderRadius: '24px',
           padding: '40px 30px',
           boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'
@@ -133,7 +133,7 @@ export default function StudentFeatures() {
             Badge Achievement Sequence
           </h2>
           <p style={{
-            color: '#94a3b8',
+            color: 'var(--text-secondary)',
             fontSize: '16px',
             textAlign: 'center',
             marginBottom: '40px',
@@ -216,11 +216,11 @@ export default function StudentFeatures() {
                   <h4 style={{
                     fontFamily: "'Orbitron', sans-serif",
                     fontSize: '18px',
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     margin: '0 0 4px 0'
                   }}>{badge.name}</h4>
                   <p style={{
-                    color: '#94a3b8',
+                    color: 'var(--text-secondary)',
                     fontFamily: "'Rajdhani', sans-serif",
                     fontSize: '15px',
                     fontWeight: '500',

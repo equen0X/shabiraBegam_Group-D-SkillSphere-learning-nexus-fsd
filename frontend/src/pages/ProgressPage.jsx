@@ -142,7 +142,7 @@ export default function ProgressPage() {
             <div style={{ fontSize: '48px', fontFamily: 'Orbitron, sans-serif', color: '#00e5ff', fontWeight: '900', lineHeight: 1 }}>
               {overallPct}%
             </div>
-            <div style={{ color: '#94a3b8', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
               Overall Progress
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function ProgressPage() {
             <div style={{ fontSize: '48px', fontFamily: 'Orbitron, sans-serif', color: '#8a2eff', fontWeight: '900', lineHeight: 1 }}>
               {currentData.filter(c => c.pct >= 100).length}
             </div>
-            <div style={{ color: '#94a3b8', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
               Courses Completed
             </div>
           </div>
@@ -174,7 +174,7 @@ export default function ProgressPage() {
             <div style={{ fontSize: '48px', fontFamily: 'Orbitron, sans-serif', color: '#ff00c8', fontWeight: '900', lineHeight: 1 }}>
               {currentData.reduce((s, c) => s + c.completed, 0)}
             </div>
-            <div style={{ color: '#94a3b8', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
               Topics Completed
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function ProgressPage() {
             <div style={{ fontSize: '48px', fontFamily: 'Orbitron, sans-serif', color: '#facc15', fontWeight: '900', lineHeight: 1 }}>
               {COURSES.reduce((s, c) => s + c.totalTopics, 0)}
             </div>
-            <div style={{ color: '#94a3b8', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginTop: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
               Total Topics
             </div>
           </div>
@@ -207,7 +207,7 @@ export default function ProgressPage() {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '12px' }}>
             <div>
-              <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: '#ffffff', margin: 0 }}>
+              <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: 'var(--text-primary)', margin: 0 }}>
                 Overall Progress — Day by Day
               </h2>
               <p style={{ color: '#64748b', fontSize: '13px', margin: '4px 0 0 0' }}>
@@ -317,12 +317,12 @@ export default function ProgressPage() {
         {/* Per-course progress bars */}
         <div style={{
           background: 'rgba(10, 14, 30, 0.9)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          border: "1px solid var(--border-color)",
           borderRadius: '20px',
           padding: '30px',
           marginBottom: '35px'
         }}>
-          <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: '#ffffff', marginBottom: '25px' }}>
+          <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '25px' }}>
             Per-Course Breakdown
           </h2>
 
@@ -331,7 +331,7 @@ export default function ProgressPage() {
               <div key={c.id}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                   <div>
-                    <span style={{ color: '#ffffff', fontWeight: '700', fontSize: '15px' }}>{c.label}</span>
+                    <span style={{ color: 'var(--text-primary)', fontWeight: '700', fontSize: '15px' }}>{c.label}</span>
                     <span style={{ color: '#475569', fontSize: '12px', marginLeft: '10px' }}>
                       {c.completed} / {c.totalTopics} topics completed
                     </span>
@@ -366,12 +366,12 @@ export default function ProgressPage() {
         {/* Day-by-day table */}
         <div style={{
           background: 'rgba(10, 14, 30, 0.9)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          border: "1px solid var(--border-color)",
           borderRadius: '20px',
           padding: '30px',
           overflowX: 'auto'
         }}>
-          <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: '#ffffff', marginBottom: '20px' }}>
+          <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '20px' }}>
             Progress Log — Course Detail
           </h2>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>

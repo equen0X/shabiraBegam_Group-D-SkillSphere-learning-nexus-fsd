@@ -4,8 +4,8 @@
   position: relative;
   min-height: 100vh;
   padding-bottom: 60px;
-  background: #050505;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Rajdhani', sans-serif;
   z-index: 5;
   overflow-x: hidden;
@@ -48,7 +48,7 @@
 
 .lp-header-section p {
   font-size: 18px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   max-width: 700px;
   margin: 0 auto;
 }
@@ -64,8 +64,8 @@
 
 .lp-tab-btn {
   background: rgba(18, 18, 30, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #94a3b8;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
   padding: 12px 28px;
   border-radius: 12px;
   font-family: 'Orbitron', sans-serif;
@@ -80,7 +80,7 @@
 
 .lp-tab-btn:hover {
   border-color: rgba(0, 229, 255, 0.3);
-  color: #ffffff;
+  color: var(--text-primary);
   background: rgba(0, 229, 255, 0.02);
 }
 
@@ -110,7 +110,7 @@
   max-width: 500px;
   margin: 0 auto 35px auto;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: "1px solid var(--border-color)";
   border-radius: 12px;
   padding: 15px 20px;
   text-align: center;
@@ -149,7 +149,7 @@
 .lp-sidebar-chapters {
   background: rgba(18, 18, 30, 0.75);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-radius: 18px;
   padding: 20px;
   display: flex;
@@ -208,7 +208,7 @@
 .lp-reading-panel {
   background: rgba(18, 18, 30, 0.75);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-radius: 18px;
   padding: 35px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -233,7 +233,7 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 5px;
 }
 
@@ -262,7 +262,7 @@
 
 .lp-tutorial-content code {
   font-family: 'Consolas', monospace;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--border-color);
   padding: 3px 6px;
   border-radius: 4px;
   color: #00e5ff;
@@ -270,8 +270,8 @@
 }
 
 .lp-tutorial-content pre {
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--bg-secondary);
+  border: "1px solid var(--border-color)";
   border-radius: 10px;
   padding: 20px;
   overflow-x: auto;
@@ -295,7 +295,7 @@
 
 .lp-btn-complete {
   background: linear-gradient(90deg, #00e5ff, #8a2eff);
-  color: #ffffff;
+  color: var(--text-primary);
   border: none;
   padding: 12px 30px;
   border-radius: 10px;
@@ -339,7 +339,7 @@
 
 .lp-quiz-question-card {
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: "1px solid var(--border-color)";
   border-radius: 12px;
   padding: 20px;
 }
@@ -347,7 +347,7 @@
 .lp-quiz-question-text {
   font-size: 18px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 15px;
 }
 
@@ -363,7 +363,7 @@
   gap: 12px;
   padding: 12px 16px;
   background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   cursor: pointer;
   font-size: 15.5px;
@@ -458,7 +458,7 @@
   align-items: center;
   justify-content: center;
   font-size: 50px;
-  color: #ffffff;
+  color: var(--text-primary);
   transition: background 0.2s;
 }
 
@@ -479,7 +479,7 @@
 .guest-course-card {
   background: rgba(18, 18, 30, 0.75);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-radius: 20px;
   padding: 30px;
   display: flex;
@@ -523,7 +523,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 4px 12px;
   border-radius: 20px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -550,7 +550,7 @@
 
 .guest-instructor {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 15px;
 }
 
@@ -566,7 +566,7 @@
 
 .guest-syllabus-box {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-radius: 12px;
   padding: 18px;
   margin-bottom: 25px;
@@ -578,7 +578,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 12px;
 }
 
@@ -612,7 +612,7 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -660,12 +660,12 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 26px;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 12px;
 }
 
 .guest-locked-callout p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.6;
   max-width: 600px;
@@ -682,7 +682,7 @@
 .cta-register-btn {
   background: linear-gradient(90deg, #ff00c8, #8a2eff);
   border: none;
-  color: #ffffff;
+  color: var(--text-primary);
   padding: 14px 32px;
   border-radius: 30px;
   font-family: 'Orbitron', sans-serif;
@@ -701,7 +701,7 @@
 .cta-login-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  color: var(--text-primary);
   padding: 14px 32px;
   border-radius: 30px;
   font-family: 'Orbitron', sans-serif;

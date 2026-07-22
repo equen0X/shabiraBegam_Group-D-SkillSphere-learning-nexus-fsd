@@ -186,7 +186,7 @@ export default function WorkforceHome() {
               <div className="wh-panel-header">
                 <h3 className="wh-panel-title">SphereHR <span>Advisor</span></h3>
               </div>
-              <p style={{ color: '#94a3b8', fontSize: '15px', lineHeight: '1.5', marginBottom: '15px' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.5', marginBottom: '15px' }}>
                 Need help with employee allocation or training recomendation? Launch a chat session with your AI resource assistant 🤖 in the bottom right corner of the page!
               </p>
               <div style={{ display: 'flex', gap: '10px' }}>

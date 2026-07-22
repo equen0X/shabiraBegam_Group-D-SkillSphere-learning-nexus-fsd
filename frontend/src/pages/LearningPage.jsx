@@ -1133,7 +1133,7 @@ public class SecurityConfig {
             <h2 style={{ fontFamily: 'Orbitron, sans-serif', color: '#ef4444', fontSize: '28px', marginBottom: '14px' }}>
               Course Content Locked — Enrollment Required
             </h2>
-            <p style={{ color: '#94a3b8', fontSize: '17px', maxWidth: '650px', margin: '0 auto 25px auto', lineHeight: '1.6' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '17px', maxWidth: '650px', margin: '0 auto 25px auto', lineHeight: '1.6' }}>
               You haven't enrolled in <strong>{currentTrack.name}</strong> yet. Please complete the quick enrollment checkout to unlock all 6 video modules, GFG reference notes, and cyber-badge assessments!
             </p>
             <button
@@ -1141,7 +1141,7 @@ public class SecurityConfig {
               onClick={() => navigate('/courses')}
               style={{
                 background: 'linear-gradient(90deg, #ef4444, #f97316)',
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 border: 'none',
                 padding: '14px 36px',
                 borderRadius: '30px',
@@ -1204,7 +1204,7 @@ public class SecurityConfig {
                 <div className="lp-tutorial-header">
                   <div className="lp-tutorial-title">
                     <h2>Track Quiz Challenge: {currentTrack.name}</h2>
-                    <span style={{ fontSize: '14px', color: '#94a3b8' }}>Total Marks: 20 (5 questions * 4 marks each). Needs 85% (17+ marks) to unlock the badge!</span>
+                    <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Total Marks: 20 (5 questions * 4 marks each). Needs 85% (17+ marks) to unlock the badge!</span>
                   </div>
                 </div>
 
@@ -1214,7 +1214,7 @@ public class SecurityConfig {
                       {quizScore >= 17 ? "🎉 Assessment Passed!" : "⚠️ Assessment Failed"}
                     </h3>
                     <p style={{ fontSize: '18px', fontWeight: '700' }}>Your Score: {quizScore} / 20 Marks ({Math.round((quizScore / 20) * 100)}%)</p>
-                    <p style={{ fontSize: '15px', color: '#94a3b8', marginTop: '8px' }}>
+                    <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginTop: '8px' }}>
                       {quizScore >= 17 
                         ? `Congratulations! You unlocked the ${currentTrack.badgeName}! View it in your dashboard.`
                         : "You scored less than 85%. Review the chapters and try again to unlock your badge."
@@ -1315,7 +1315,7 @@ public class SecurityConfig {
                       style={{
                         background: 'rgba(255, 255, 255, 0.15)',
                         border: 'none',
-                        color: '#ffffff',
+                        color: 'var(--text-primary)',
                         padding: '6px 14px',
                         borderRadius: '6px',
                         fontSize: '12px',
@@ -1352,7 +1352,7 @@ public class SecurityConfig {
                   <div className="lp-tutorial-header">
                     <div className="lp-tutorial-title">
                       <h2>{currentTopic.title}</h2>
-                      <span style={{ fontSize: '14px', color: '#94a3b8' }}>Course: {currentTrack.name}</span>
+                      <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Course: {currentTrack.name}</span>
                     </div>
                     <div className="lp-tutorial-reward">
                       +{currentTopic.xp} XP REWARD
@@ -1415,9 +1415,9 @@ public class SecurityConfig {
                   </div>
 
                   {/* GFG Key Interview Takeaways */}
-                  <div style={{ background: 'rgba(15, 23, 42, 0.6)', padding: '16px', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                  <div style={{ background: 'rgba(15, 23, 42, 0.6)', padding: '16px', borderRadius: '10px', border: "1px solid var(--border-color)" }}>
                     <h4 style={{ margin: '0 0 10px 0', color: '#f8fafc', fontSize: '14px' }}>💡 Top GFG Interview Takeaways:</h4>
-                    <ul style={{ margin: 0, paddingLeft: '20px', color: '#94a3b8', fontSize: '13px', lineHeight: '1.7' }}>
+                    <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-secondary)', fontSize: '13px', lineHeight: '1.7' }}>
                       <li>Understand the core underlying memory lifecycle and execution flow before optimizing code.</li>
                       <li>Avoid unnecessary re-renders or object allocations inside loop constructs.</li>
                       <li>Refer to official GFG problem sets to practice coding problems based on this topic.</li>
@@ -1484,7 +1484,7 @@ public class SecurityConfig {
                       </div>
 
                       {isPlayingVideo ? (
-                        <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', borderRadius: '10px', overflow: 'hidden', background: '#000', boxShadow: '0 10px 30px rgba(0,0,0,0.8)' }}>
+                        <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', borderRadius: '10px', overflow: 'hidden', background: 'var(--bg-primary)', boxShadow: '0 10px 30px rgba(0,0,0,0.8)' }}>
                           <iframe
                             src={`https://www.youtube.com/embed/${activeTopicVideoId}?autoplay=1&rel=0`}
                             title={activeTopicVideoTitle}
@@ -1504,7 +1504,7 @@ public class SecurityConfig {
                         <div 
                           className="lp-video-thumbnail-container"
                           onClick={() => setIsPlayingVideo(true)}
-                          style={{ position: 'relative', width: '100%', height: '300px', overflow: 'hidden', borderRadius: '10px', background: '#000', cursor: 'pointer' }}
+                          style={{ position: 'relative', width: '100%', height: '300px', overflow: 'hidden', borderRadius: '10px', background: 'var(--bg-primary)', cursor: 'pointer' }}
                         >
                           <img 
                             src={`https://img.youtube.com/vi/${activeTopicVideoId}/hqdefault.jpg`} 
@@ -1522,7 +1522,7 @@ public class SecurityConfig {
                             padding: '6px 12px',
                             borderRadius: '6px',
                             fontSize: '12px',
-                            color: '#ffffff',
+                            color: 'var(--text-primary)',
                             fontWeight: '600'
                           }}>
                             Click to Play Video Inline

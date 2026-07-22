@@ -6,7 +6,7 @@
   width: 95%;
   max-width: 1440px;
   height: 70px;
-  background: #ffffff;
+  background: var(--text-primary);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
 }
 
 .search-icon {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 16px;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .dash-search-input::placeholder {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 /* Center Section: Navigation Links */
@@ -100,7 +100,7 @@
 }
 
 .dash-link.active {
-  color: #1e293b;
+  color: var(--bg-secondary);
   font-weight: 600;
 }
 
@@ -154,7 +154,7 @@
   height: 8px;
   background: #ef4444;
   border-radius: 50%;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--text-primary);
 }
 
 .dash-user-profile {
@@ -175,7 +175,7 @@
 .dash-user-name {
   font-size: 14px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--bg-secondary);
 }
 
 .dash-user-role {
@@ -197,7 +197,7 @@
 }
 
 .dash-dropdown-icon {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 16px;
 }
 

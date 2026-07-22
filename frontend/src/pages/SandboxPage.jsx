@@ -87,7 +87,7 @@ export default function SandboxPage() {
   };
 
   return (
-    <div className="sandbox-page-wrapper" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#0a0b10', color: '#ffffff' }}>
+    <div className="sandbox-page-wrapper" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>
       <Background />
       <Navbar 
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
@@ -123,7 +123,7 @@ export default function SandboxPage() {
             SkillSphere Online Sandbox
           </h1>
           <p style={{ 
-            color: '#94a3b8', 
+            color: 'var(--text-secondary)', 
             fontSize: '18px', 
             fontFamily: "'Rajdhani', sans-serif",
             fontWeight: '500',
@@ -139,17 +139,17 @@ export default function SandboxPage() {
         <div style={{
           background: 'rgba(18, 18, 30, 0.75)',
           backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
+          border: "1px solid var(--border-color)",
           borderRadius: '24px',
           padding: '30px',
           boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'
         }}>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '15px', marginBottom: '20px' }}>
-            <h3 style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: '700', fontSize: '20px', color: '#ffffff', margin: 0 }}>Code Workspace</h3>
+            <h3 style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: '700', fontSize: '20px', color: 'var(--text-primary)', margin: 0 }}>Code Workspace</h3>
             
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <label htmlFor="sandbox-lang" style={{ fontSize: '15px', fontFamily: "'Rajdhani', sans-serif", fontWeight: '600', color: '#94a3b8' }}>Select Language:</label>
+              <label htmlFor="sandbox-lang" style={{ fontSize: '15px', fontFamily: "'Rajdhani', sans-serif", fontWeight: '600', color: 'var(--text-secondary)' }}>Select Language:</label>
               <select 
                 id="sandbox-lang"
                 value={selectedLanguage}
@@ -158,7 +158,7 @@ export default function SandboxPage() {
                   background: 'rgba(18, 18, 30, 0.75)',
                   border: '1px solid rgba(0, 229, 255, 0.2)',
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   padding: '8px 16px',
                   fontFamily: "'Orbitron', sans-serif",
                   fontWeight: '700',
@@ -167,10 +167,10 @@ export default function SandboxPage() {
                   outline: 'none'
                 }}
               >
-                <option value="python" style={{ fontFamily: "'Rajdhani', sans-serif", background: '#0d0e15' }}>Python 3</option>
-                <option value="cpp" style={{ fontFamily: "'Rajdhani', sans-serif", background: '#0d0e15' }}>C++</option>
-                <option value="c" style={{ fontFamily: "'Rajdhani', sans-serif", background: '#0d0e15' }}>C</option>
-                <option value="java" style={{ fontFamily: "'Rajdhani', sans-serif", background: '#0d0e15' }}>Java</option>
+                <option value="python" style={{ fontFamily: "'Rajdhani', sans-serif", background: 'var(--bg-secondary)' }}>Python 3</option>
+                <option value="cpp" style={{ fontFamily: "'Rajdhani', sans-serif", background: 'var(--bg-secondary)' }}>C++</option>
+                <option value="c" style={{ fontFamily: "'Rajdhani', sans-serif", background: 'var(--bg-secondary)' }}>C</option>
+                <option value="java" style={{ fontFamily: "'Rajdhani', sans-serif", background: 'var(--bg-secondary)' }}>Java</option>
               </select>
             </div>
           </div>
@@ -186,8 +186,8 @@ export default function SandboxPage() {
                 style={{
                   width: '100%',
                   height: '280px',
-                  background: '#0d0e15',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: 'var(--bg-secondary)',
+                  border: "1px solid var(--border-color)",
                   borderRadius: '16px',
                   padding: '20px',
                   color: '#39ff14',
@@ -206,7 +206,7 @@ export default function SandboxPage() {
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.1)',
                     borderRadius: '8px',
-                    color: '#94a3b8',
+                    color: 'var(--text-secondary)',
                     padding: '8px 16px',
                     fontSize: '14px',
                     fontFamily: "'Orbitron', sans-serif",
@@ -240,7 +240,7 @@ export default function SandboxPage() {
 
             {/* Terminal Screen */}
             <div style={{
-              background: '#040508',
+              background: 'var(--bg-secondary)',
               border: '1px solid rgba(0, 229, 255, 0.1)',
               borderRadius: '16px',
               padding: '20px',

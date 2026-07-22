@@ -191,7 +191,7 @@ export default function WorkforceDashboard() {
             onClick={() => navigate('/settings')}
             style={{
               background: 'linear-gradient(90deg, #ff00c8, #8a2eff)',
-              color: '#ffffff',
+              color: 'var(--text-primary)',
               border: 'none',
               padding: '12px 24px',
               borderRadius: '24px',
@@ -332,7 +332,7 @@ export default function WorkforceDashboard() {
                 <h2 className="wf-section-title">Sprint Capacity & Operations Health</h2>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', padding: '10px 0' }}>
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '15px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '15px', borderRadius: '12px', border: "1px solid var(--border-color)" }}>
                   <span style={{ fontSize: '12px', color: '#ff00c8', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sprint Velocity</span>
                   <h4 style={{ margin: '5px 0 10px 0', fontSize: '20px', fontFamily: 'Orbitron' }}>88% Capacity</h4>
                   <div className="wf-progress-bar-bg" style={{ height: '6px' }}>
@@ -340,7 +340,7 @@ export default function WorkforceDashboard() {
                   </div>
                 </div>
 
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '15px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '15px', borderRadius: '12px', border: "1px solid var(--border-color)" }}>
                   <span style={{ fontSize: '12px', color: '#00e5ff', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Team Allocation Load</span>
                   <h4 style={{ margin: '5px 0 10px 0', fontSize: '20px', fontFamily: 'Orbitron' }}>72% Engaged</h4>
                   <div className="wf-progress-bar-bg" style={{ height: '6px' }}>
@@ -348,7 +348,7 @@ export default function WorkforceDashboard() {
                   </div>
                 </div>
 
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '15px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '15px', borderRadius: '12px', border: "1px solid var(--border-color)" }}>
                   <span style={{ fontSize: '12px', color: '#39ff14', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Pipeline Status</span>
                   <h4 style={{ margin: '5px 0 5px 0', fontSize: '20px', fontFamily: 'Orbitron', color: '#39ff14' }}>● Healthy</h4>
                   <span style={{ fontSize: '12px', color: '#64748b' }}>Uptime: 99.98%</span>
@@ -436,7 +436,7 @@ export default function WorkforceDashboard() {
                   ))}
                   {isChatLoading && (
                     <div className="chat-bubble assistant" style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(138, 46, 255, 0.08)' }}>
-                      <span style={{ fontSize: '11px', color: '#94a3b8' }}>SphereHR is thinking...</span>
+                      <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>SphereHR is thinking...</span>
                     </div>
                   )}
                   <div ref={chatEndRef} />
@@ -611,7 +611,7 @@ export default function WorkforceDashboard() {
                 <label>Assignee</label>
                 <select 
                   className="wf-form-input" 
-                  style={{ background: "#0f172a" }}
+                  style={{ background: "var(--bg-secondary)" }}
                   value={newProj.assignee}
                   onChange={(e) => setNewProj({ ...newProj, assignee: e.target.value })}
                   required
@@ -626,7 +626,7 @@ export default function WorkforceDashboard() {
                 <label>Priority</label>
                 <select 
                   className="wf-form-input" 
-                  style={{ background: "#0f172a" }}
+                  style={{ background: "var(--bg-secondary)" }}
                   value={newProj.priority}
                   onChange={(e) => setNewProj({ ...newProj, priority: e.target.value })}
                   required

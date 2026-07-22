@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useAdmin } from "../context/AdminContext";
 import Navbar from "../components/Navbar";
 import DashboardSidebar from "../components/DashboardSidebar";
 import Background from "../components/Background";
@@ -8,156 +9,9 @@ import CourseCard from "../components/CourseCard";
 import { FiSearch, FiCheckCircle, FiShoppingCart, FiX, FiLock, FiBookOpen, FiAward, FiZap } from "react-icons/fi";
 import "../styles/courses.css";
 
-// 12 Mock Courses based on trending topics
-const initialCoursesData = [
-  {
-    id: 1,
-    title: "Frontend System Design",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.8",
-    reviews: "5K+",
-    description: "Go from Zero to Hero in Frontend System Design. Master large-scale application architecture.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 2,
-    title: "React",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.7",
-    reviews: "40K+",
-    description: "Master React.js. Learn from the ground up and build real-world applications with ease.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 3,
-    title: "JavaScript",
-    image: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=600&h=400&fit=crop",
-    isPremium: false,
-    language: "English",
-    rating: "4.8",
-    reviews: "50K+",
-    description: "A pure in-depth JavaScript Course released for Free.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 4,
-    title: "Data Structures & Algorithms (DSA)",
-    image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.9",
-    reviews: "100K+",
-    description: "Comprehensive DSA bootcamp for FAANG interviews. Covers arrays, trees, dynamic programming and more.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 5,
-    title: "Generative AI Engineering",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.9",
-    reviews: "12K+",
-    description: "Learn to build LLM applications, RAG pipelines, and integrate AI into your software.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 6,
-    title: "Machine Learning Foundations",
-    image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600&h=400&fit=crop",
-    isPremium: false,
-    language: "English",
-    rating: "4.6",
-    reviews: "25K+",
-    description: "A beginner-friendly guide to Machine Learning concepts, models, and Python implementation.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 7,
-    title: "Advanced Node.js & Microservices",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.7",
-    reviews: "18K+",
-    description: "Scale your backend architecture. Learn Docker, Kubernetes, and Node.js microservices.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 8,
-    title: "Fullstack Next.js 14",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.8",
-    reviews: "30K+",
-    description: "Build SEO-friendly, highly performant web applications using App Router and Server Actions.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 9,
-    title: "Web3 & Solidity Development",
-    image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.5",
-    reviews: "8K+",
-    description: "Master blockchain development, smart contracts, and decentralized application (dApp) design.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 10,
-    title: "Cloud Computing with AWS",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
-    isPremium: false,
-    language: "English",
-    rating: "4.7",
-    reviews: "55K+",
-    description: "Get certified. Learn EC2, S3, Lambda, and complete AWS infrastructure management.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 11,
-    title: "Python for Data Science",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.8",
-    reviews: "60K+",
-    description: "Master Pandas, NumPy, Matplotlib, and data analysis techniques using Python.",
-    isEnrolled: false,
-    progress: 0
-  },
-  {
-    id: 12,
-    title: "UI/UX Design Masterclass",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop",
-    isPremium: true,
-    language: "English",
-    rating: "4.9",
-    reviews: "22K+",
-    description: "Learn Figma, design thinking, user research, and build stunning user interfaces.",
-    isEnrolled: false,
-    progress: 0
-  }
-];
-
 export default function CoursesPage() {
   const { user, earnXp, completedTopics } = useAuth();
+  const { courses: adminCourses } = useAdmin();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
@@ -168,19 +22,19 @@ export default function CoursesPage() {
   const [checkoutCourse, setCheckoutCourse] = useState(null);
   const [isProcessingCheckout, setIsProcessingCheckout] = useState(false);
 
-  // Initialize course list with persisted enrollments from localStorage
-  const [courses, setCourses] = useState(() => {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
     try {
       const savedIds = localStorage.getItem("enrolled_course_ids");
       const savedProgress = localStorage.getItem("course_progress_map");
       const progressMap = savedProgress ? JSON.parse(savedProgress) : {};
 
-      // Default: enroll 3 premium courses + all free courses for a rich demo
-      const freeIds = initialCoursesData.filter(c => !c.isPremium).map(c => c.id); // [3, 6, 10]
-      const defaultEnrolled = [2, 4, ...freeIds]; // React, DSA + all free
+      const freeIds = adminCourses.filter(c => !c.isPremium).map(c => c.id); 
+      const defaultEnrolled = [2, 4, ...freeIds]; 
       const enrolledIds = savedIds ? JSON.parse(savedIds) : defaultEnrolled;
 
-      return initialCoursesData.map(course => {
+      setCourses(adminCourses.map(course => {
         const isEnrolled = enrolledIds.includes(course.id);
         const progress = isEnrolled ? (progressMap[course.id] !== undefined ? progressMap[course.id] : 0) : 0;
         return {
@@ -188,11 +42,11 @@ export default function CoursesPage() {
           isEnrolled,
           progress
         };
-      });
+      }));
     } catch {
-      return initialCoursesData;
+      setCourses(adminCourses.map(c => ({...c, isEnrolled: false, progress: 0})));
     }
-  });
+  }, [adminCourses]);
 
   // Calculate real-time progress strictly isolated per specific course ID out of 6 modules
   const getDynamicProgress = (courseId, fallbackProgress) => {
@@ -266,11 +120,11 @@ export default function CoursesPage() {
       setCheckoutCourse(null);
 
       // Trigger toast message
-      setToastMessage(`🎉 Checkout Complete! Successfully enrolled in "${checkoutCourse.title}" with 0% progress! +100 XP awarded!`);
+      setToastMessage(checkoutCourse.isPremium ? `🎉 Checkout Complete! Successfully purchased "${checkoutCourse.title}"!` : `🎉 Successfully enrolled in "${checkoutCourse.title}"!`);
       setTimeout(() => {
         setToastMessage("");
       }, 4500);
-    }, 600);
+    }, 1200);
   };
 
   const handleContinue = (courseId) => {
@@ -330,7 +184,7 @@ export default function CoursesPage() {
             right: '25px',
             zIndex: 9999,
             background: 'linear-gradient(135deg, #00e5ff, #8a2be2)',
-            color: '#ffffff',
+            color: 'var(--text-primary)',
             padding: '14px 24px',
             borderRadius: '12px',
             boxShadow: '0 10px 30px rgba(0, 229, 255, 0.4)',
@@ -363,7 +217,7 @@ export default function CoursesPage() {
             padding: '20px'
           }}>
             <div style={{
-              background: 'linear-gradient(145deg, #0f172a, #1e1b4b)',
+              background: 'linear-gradient(145deg, var(--bg-secondary), #1e1b4b)',
               border: '1px solid rgba(0, 229, 255, 0.3)',
               borderRadius: '20px',
               maxWidth: '540px',
@@ -381,7 +235,7 @@ export default function CoursesPage() {
                   right: '20px',
                   background: 'rgba(255, 255, 255, 0.1)',
                   border: 'none',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   width: '34px',
                   height: '34px',
                   borderRadius: '50%',
@@ -407,7 +261,7 @@ export default function CoursesPage() {
                 background: 'rgba(0, 0, 0, 0.3)',
                 padding: '15px',
                 borderRadius: '14px',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                border: "1px solid var(--border-color)",
                 marginBottom: '20px'
               }}>
                 <img 
@@ -416,8 +270,8 @@ export default function CoursesPage() {
                   style={{ width: '90px', height: '70px', objectFit: 'cover', borderRadius: '8px' }} 
                 />
                 <div>
-                  <h4 style={{ margin: '0 0 6px 0', fontSize: '17px', color: '#ffffff' }}>{checkoutCourse.title}</h4>
-                  <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#94a3b8', lineHeight: '1.3' }}>{checkoutCourse.description}</p>
+                  <h4 style={{ margin: '0 0 6px 0', fontSize: '17px', color: 'var(--text-primary)' }}>{checkoutCourse.title}</h4>
+                  <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.3' }}>{checkoutCourse.description}</p>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <span style={{ fontSize: '11px', background: 'rgba(0, 229, 255, 0.15)', color: '#00e5ff', padding: '3px 8px', borderRadius: '10px' }}>GFG Study Notes Included</span>
                     <span style={{ fontSize: '11px', background: 'rgba(255, 0, 200, 0.15)', color: '#ff00c8', padding: '3px 8px', borderRadius: '10px' }}>Certificate Unlocked</span>
@@ -427,23 +281,27 @@ export default function CoursesPage() {
 
               {/* Pricing Breakdown */}
               <div style={{ background: 'rgba(0, 0, 0, 0.2)', padding: '16px', borderRadius: '12px', marginBottom: '22px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px', color: '#94a3b8' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px', color: 'var(--text-secondary)' }}>
                   <span>Course Tuition Fee:</span>
-                  <span style={{ textDecoration: 'line-through' }}>₹4,999.00</span>
+                  <span>{checkoutCourse.isPremium ? `₹${checkoutCourse.price}` : '₹4,999.00'}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px', color: '#22c55e' }}>
-                  <span>SkillSphere Scholarship Grant (100% OFF):</span>
-                  <span>-₹4,999.00</span>
-                </div>
+                {!checkoutCourse.isPremium && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px', color: '#22c55e' }}>
+                    <span>SkillSphere Scholarship Grant (100% OFF):</span>
+                    <span>-₹4,999.00</span>
+                  </div>
+                )}
                 <hr style={{ border: 'none', borderTop: '1px solid rgba(255, 255, 255, 0.1)', margin: '12px 0' }} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: '700', color: '#ffffff' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: '700', color: 'var(--text-primary)' }}>
                   <span>Total Due Today:</span>
-                  <span style={{ color: '#00e5ff' }}>₹0.00</span>
+                  <span style={{ color: checkoutCourse.isPremium ? '#ff00c8' : '#00e5ff' }}>
+                    {checkoutCourse.isPremium ? `₹${checkoutCourse.price}` : '₹0.00'}
+                  </span>
                 </div>
               </div>
 
               {/* Included Perks */}
-              <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '12px', color: '#94a3b8', marginBottom: '25px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '25px' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><FiLock /> Instant Access</span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><FiZap /> +100 XP Bonus</span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><FiBookOpen /> GFG Notes</span>
@@ -457,7 +315,7 @@ export default function CoursesPage() {
                   width: '100%',
                   padding: '14px',
                   background: 'linear-gradient(90deg, #00e5ff, #8a2be2)',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   border: 'none',
                   borderRadius: '25px',
                   fontWeight: '700',
@@ -472,10 +330,10 @@ export default function CoursesPage() {
                 }}
               >
                 {isProcessingCheckout ? (
-                  <span>Processing Checkout...</span>
+                  <span>Processing...</span>
                 ) : (
                   <>
-                    <span>Complete Checkout & Enroll (0% Progress)</span>
+                    <span>{checkoutCourse.isPremium ? `Pay ₹${checkoutCourse.price} & Unlock Access` : 'Complete Enrollment (Free)'}</span>
                     <FiCheckCircle />
                   </>
                 )}
@@ -492,7 +350,7 @@ export default function CoursesPage() {
 
           {/* Search Box */}
           <div style={{ position: 'relative', width: '320px', maxWidth: '100%' }}>
-            <FiSearch style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            <FiSearch style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
             <input 
               type="text" 
               placeholder="Search courses..." 
@@ -504,7 +362,7 @@ export default function CoursesPage() {
                 background: 'rgba(15, 23, 42, 0.8)',
                 border: '1px solid rgba(0, 229, 255, 0.2)',
                 borderRadius: '25px',
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 fontSize: '14px',
                 outline: 'none',
                 transition: 'border-color 0.2s'
@@ -529,7 +387,7 @@ export default function CoursesPage() {
                 borderRadius: '20px',
                 border: activeFilter === tab.id ? '1px solid #00e5ff' : '1px solid rgba(255, 255, 255, 0.1)',
                 background: activeFilter === tab.id ? 'rgba(0, 229, 255, 0.15)' : 'rgba(15, 23, 42, 0.6)',
-                color: activeFilter === tab.id ? '#00e5ff' : '#94a3b8',
+                color: activeFilter === tab.id ? '#00e5ff' : 'var(--text-secondary)',
                 fontWeight: '600',
                 fontSize: '14px',
                 cursor: 'pointer',
@@ -556,7 +414,7 @@ export default function CoursesPage() {
               <div style={{ fontSize: '52px', marginBottom: '16px' }}>
                 {activeFilter === 'enrolled' ? '📚' : activeFilter === 'free' ? '🆓' : activeFilter === 'premium' ? '👑' : '🔍'}
               </div>
-              <h3 style={{ fontFamily: 'Orbitron, sans-serif', color: '#ffffff', fontSize: '20px', marginBottom: '10px' }}>
+              <h3 style={{ fontFamily: 'Orbitron, sans-serif', color: 'var(--text-primary)', fontSize: '20px', marginBottom: '10px' }}>
                 {activeFilter === 'enrolled' && 'No Courses Enrolled Yet'}
                 {activeFilter === 'free' && 'No Free Courses Match'}
                 {activeFilter === 'premium' && 'No Premium Tracks Match'}
@@ -573,7 +431,7 @@ export default function CoursesPage() {
                   onClick={() => { setActiveFilter('all'); setSearchQuery(''); }}
                   style={{
                     background: 'linear-gradient(90deg, #00e5ff, #8a2eff)',
-                    color: '#fff',
+                    color: 'var(--text-primary)',
                     border: 'none',
                     padding: '10px 24px',
                     borderRadius: '20px',

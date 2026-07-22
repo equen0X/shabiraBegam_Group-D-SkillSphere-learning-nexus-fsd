@@ -152,7 +152,7 @@ export default function DiscussionsPage() {
   });
 
   return (
-    <div className="dashboard-page" style={{ minHeight: '100vh', background: '#05060b', color: '#fff' }}>
+    <div className="dashboard-page" style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       <Background />
       <Navbar showSidebarToggle={true} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
       <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
@@ -165,7 +165,7 @@ export default function DiscussionsPage() {
             <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '36px', color: '#00e5ff', margin: '0 0 8px 0' }}>
               💬 Community Discussions
             </h1>
-            <p style={{ color: '#94a3b8', fontSize: '16px', margin: 0 }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '16px', margin: 0 }}>
               Ask technical questions, share code architecture insights, and learn with fellow SkillSphere developers!
             </p>
           </div>
@@ -174,7 +174,7 @@ export default function DiscussionsPage() {
             onClick={() => setShowCreateModal(true)}
             style={{
               background: 'linear-gradient(90deg, #00e5ff, #8a2eff)',
-              color: '#ffffff',
+              color: 'var(--text-primary)',
               border: 'none',
               padding: '14px 28px',
               borderRadius: '30px',
@@ -199,7 +199,7 @@ export default function DiscussionsPage() {
                 style={{
                   background: activeCategory === cat ? 'linear-gradient(90deg, rgba(0,229,255,0.2), rgba(138,46,255,0.2))' : 'rgba(15, 23, 42, 0.7)',
                   border: activeCategory === cat ? '1px solid #00e5ff' : '1px solid rgba(255, 255, 255, 0.1)',
-                  color: activeCategory === cat ? '#00e5ff' : '#94a3b8',
+                  color: activeCategory === cat ? '#00e5ff' : 'var(--text-secondary)',
                   padding: '8px 18px',
                   borderRadius: '20px',
                   fontSize: '13px',
@@ -220,7 +220,7 @@ export default function DiscussionsPage() {
             style={{
               background: 'rgba(15, 23, 42, 0.8)',
               border: '1px solid rgba(255, 255, 255, 0.15)',
-              color: '#ffffff',
+              color: 'var(--text-primary)',
               padding: '10px 18px',
               borderRadius: '20px',
               fontSize: '14px',
@@ -233,7 +233,7 @@ export default function DiscussionsPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
           {filteredPosts.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '50px 20px', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '16px' }}>
-              <p style={{ color: '#94a3b8', fontSize: '16px' }}>No discussions found for "{searchTerm}". Be the first to start a topic!</p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '16px' }}>No discussions found for "{searchTerm}". Be the first to start a topic!</p>
             </div>
           ) : (
             filteredPosts.map(post => (
@@ -254,7 +254,7 @@ export default function DiscussionsPage() {
                     <div style={{
                       width: '40px', height: '40px', borderRadius: '50%',
                       background: 'linear-gradient(135deg, #00e5ff, #8a2eff)',
-                      color: '#ffffff', fontWeight: '800', display: 'flex',
+                      color: 'var(--text-primary)', fontWeight: '800', display: 'flex',
                       alignItems: 'center', justifyContent: 'center', fontSize: '16px'
                     }}>
                       {post.avatar}
@@ -279,7 +279,7 @@ export default function DiscussionsPage() {
                 </div>
 
                 {/* Title & Body */}
-                <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '20px', color: '#ffffff', marginBottom: '10px', lineHeight: '1.4' }}>
+                <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '20px', color: 'var(--text-primary)', marginBottom: '10px', lineHeight: '1.4' }}>
                   {post.title}
                 </h3>
                 <p style={{ color: '#cbd5e1', fontSize: '15px', lineHeight: '1.6', marginBottom: '20px' }}>
@@ -294,7 +294,7 @@ export default function DiscussionsPage() {
                     style={{
                       background: post.isUpvoted ? 'rgba(0, 229, 255, 0.2)' : 'rgba(255, 255, 255, 0.05)',
                       border: post.isUpvoted ? '1px solid #00e5ff' : '1px solid rgba(255, 255, 255, 0.1)',
-                      color: post.isUpvoted ? '#00e5ff' : '#94a3b8',
+                      color: post.isUpvoted ? '#00e5ff' : 'var(--text-secondary)',
                       padding: '6px 14px',
                       borderRadius: '16px',
                       fontSize: '13px',
@@ -308,7 +308,7 @@ export default function DiscussionsPage() {
                     <span>▲ Upvote ({post.upvotes})</span>
                   </button>
 
-                  <span style={{ color: '#94a3b8', fontSize: '13px', fontWeight: '600' }}>
+                  <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontWeight: '600' }}>
                     💬 {post.comments.length} Comments
                   </span>
                 </div>
@@ -342,7 +342,7 @@ export default function DiscussionsPage() {
                       flex: 1,
                       background: 'rgba(0, 0, 0, 0.4)',
                       border: '1px solid rgba(255, 255, 255, 0.1)',
-                      color: '#ffffff',
+                      color: 'var(--text-primary)',
                       padding: '8px 14px',
                       borderRadius: '16px',
                       fontSize: '13px'
@@ -392,29 +392,29 @@ export default function DiscussionsPage() {
                 <h3 style={{ fontFamily: 'Orbitron, sans-serif', color: '#00e5ff', fontSize: '22px', margin: 0 }}>
                   Start New Technical Discussion
                 </h3>
-                <button type="button" onClick={() => setShowCreateModal(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '20px', cursor: 'pointer' }}>
+                <button type="button" onClick={() => setShowCreateModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '20px', cursor: 'pointer' }}>
                   ✖
                 </button>
               </div>
 
               <div style={{ marginBottom: '18px' }}>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '6px', fontWeight: '700' }}>Topic Title:</label>
+                <label style={{ display: 'block', color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '6px', fontWeight: '700' }}>Topic Title:</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. How to optimize React re-renders with useMemo?"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  style={{ width: '100%', background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.15)', color: '#fff', padding: '10px 14px', borderRadius: '10px', fontSize: '14px' }}
+                  style={{ width: '100%', background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.15)', color: 'var(--text-primary)', padding: '10px 14px', borderRadius: '10px', fontSize: '14px' }}
                 />
               </div>
 
               <div style={{ marginBottom: '18px' }}>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '6px', fontWeight: '700' }}>Category:</label>
+                <label style={{ display: 'block', color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '6px', fontWeight: '700' }}>Category:</label>
                 <select
                   value={newCategory}
                   onChange={(e) => setNewCategory(e.target.value)}
-                  style={{ width: '100%', background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255, 255, 255, 0.15)', color: '#fff', padding: '10px 14px', borderRadius: '10px', fontSize: '14px' }}
+                  style={{ width: '100%', background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255, 255, 255, 0.15)', color: 'var(--text-primary)', padding: '10px 14px', borderRadius: '10px', fontSize: '14px' }}
                 >
                   <option value="React & Frontend">React & Frontend</option>
                   <option value="Java & Backend">Java & Backend</option>
@@ -424,14 +424,14 @@ export default function DiscussionsPage() {
               </div>
 
               <div style={{ marginBottom: '24px' }}>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '6px', fontWeight: '700' }}>Discussion Content:</label>
+                <label style={{ display: 'block', color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '6px', fontWeight: '700' }}>Discussion Content:</label>
                 <textarea
                   required
                   rows={5}
                   placeholder="Describe your question or code architecture scenario in detail..."
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
-                  style={{ width: '100%', background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.15)', color: '#fff', padding: '10px 14px', borderRadius: '10px', fontSize: '14px', resize: 'vertical' }}
+                  style={{ width: '100%', background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.15)', color: 'var(--text-primary)', padding: '10px 14px', borderRadius: '10px', fontSize: '14px', resize: 'vertical' }}
                 />
               </div>
 
@@ -439,13 +439,13 @@ export default function DiscussionsPage() {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  style={{ background: 'rgba(255, 255, 255, 0.1)', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '20px', fontSize: '14px', cursor: 'pointer' }}
+                  style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'var(--text-primary)', border: 'none', padding: '10px 20px', borderRadius: '20px', fontSize: '14px', cursor: 'pointer' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  style={{ background: 'linear-gradient(90deg, #00e5ff, #8a2eff)', color: '#fff', border: 'none', padding: '10px 26px', borderRadius: '20px', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}
+                  style={{ background: 'linear-gradient(90deg, #00e5ff, #8a2eff)', color: 'var(--text-primary)', border: 'none', padding: '10px 26px', borderRadius: '20px', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}
                 >
                   Publish Post 🚀
                 </button>

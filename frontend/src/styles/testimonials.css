@@ -5,7 +5,7 @@
 
 .testimonials h2{
     font-size:55px;
-    color:#fff;
+    color:var(--text-primary);
     margin-bottom:15px;
     font-family:'Orbitron';
 }
@@ -23,7 +23,7 @@
 }
 
 .testimonialCard{
-    background:rgba(20,20,25,.65);
+    background:var(--bg-panel);
     backdrop-filter:blur(18px);
     border:1px solid rgba(0,229,255,.2);
     border-radius:20px;
@@ -63,7 +63,7 @@
     height:55px;
     border-radius:50%;
     background:#00E5FF;
-    color:#000;
+    color:var(--bg-primary);
     display:flex;
     align-items:center;
     justify-content:center;

@@ -18,13 +18,13 @@ gap:25px;
 
 padding:45px;
 
-background:rgba(20,20,28,.8);
+background:var(--bg-panel);
 
 border-radius:20px;
 
 text-align:center;
 
-border:1px solid rgba(255,255,255,.08);
+border:1px solid var(--border-color);
 
 transition:.35s;
 
