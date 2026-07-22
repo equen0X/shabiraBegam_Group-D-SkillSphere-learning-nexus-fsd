@@ -137,7 +137,7 @@ export default function RegisterPage() {
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      color: '#ffffff',
+      color: 'var(--text-primary)',
       fontFamily: "'Outfit', 'Inter', sans-serif",
       padding: '20px',
       boxSizing: 'border-box'
@@ -157,7 +157,7 @@ export default function RegisterPage() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontFamily: 'Orbitron' }} onClick={() => navigate('/')}>
           <span style={{ color: '#00E5FF', fontSize: '28px', textShadow: '0 0 10px cyan' }}>⬢</span>
-          <span style={{ color: '#ffffff', fontWeight: 'bold', fontSize: '22px' }}>Skill</span>
+          <span style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '22px' }}>Skill</span>
           <span style={{ color: '#00E5FF', fontWeight: 'bold', fontSize: '22px' }}>Sphere</span>
         </div>
         <button 
@@ -192,7 +192,7 @@ export default function RegisterPage() {
         {step === 1 && (
           <div style={{
             background: 'rgba(18, 18, 30, 0.8)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: "1px solid var(--border-color)",
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(99, 102, 241, 0.1)',
             borderRadius: '20px',
             padding: '40px 30px',
@@ -210,7 +210,7 @@ export default function RegisterPage() {
             }}>
               Join SkillSphere
             </h1>
-            <p style={{ color: '#94a3b8', fontSize: '15px', marginBottom: '40px' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '15px', marginBottom: '40px' }}>
               Choose your account type to get started
             </p>
 
@@ -225,7 +225,7 @@ export default function RegisterPage() {
               <div style={{
                 flex: 1,
                 background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                border: "1px solid var(--border-color)",
                 borderRadius: '16px',
                 padding: '30px 20px',
                 display: 'flex',
@@ -235,7 +235,7 @@ export default function RegisterPage() {
               }}>
                 <div style={{ fontSize: '40px', marginBottom: '15px' }}>🎓</div>
                 <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>Student</h3>
-                <p style={{ fontSize: '12px', color: '#94a3b8', height: '40px', marginBottom: '20px', textAlign: 'center' }}>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', height: '40px', marginBottom: '20px', textAlign: 'center' }}>
                   Enroll in courses, complete quizzes, earn XP and badges.
                 </p>
                 <button
@@ -245,7 +245,7 @@ export default function RegisterPage() {
                     padding: '12px',
                     background: 'transparent',
                     border: '2px solid #ff00c8',
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     fontWeight: '600',
                     borderRadius: '8px',
                     cursor: 'pointer',
@@ -260,7 +260,7 @@ export default function RegisterPage() {
               <div style={{
                 flex: 1,
                 background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                border: "1px solid var(--border-color)",
                 borderRadius: '16px',
                 padding: '30px 20px',
                 display: 'flex',
@@ -270,7 +270,7 @@ export default function RegisterPage() {
               }}>
                 <div style={{ fontSize: '40px', marginBottom: '15px' }}>💼</div>
                 <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>Workforce</h3>
-                <p style={{ fontSize: '12px', color: '#94a3b8', height: '40px', marginBottom: '20px', textAlign: 'center' }}>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', height: '40px', marginBottom: '20px', textAlign: 'center' }}>
                   Manage workspace profiles, assign projects, track attendance and scores.
                 </p>
                 <button
@@ -280,7 +280,7 @@ export default function RegisterPage() {
                     padding: '12px',
                     background: 'linear-gradient(135deg, #ff00c8, #b0008c)',
                     border: 'none',
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     fontWeight: '600',
                     borderRadius: '8px',
                     cursor: 'pointer',
@@ -298,7 +298,7 @@ export default function RegisterPage() {
         {step === 2 && (
           <div style={{
             background: 'rgba(18, 18, 30, 0.8)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: "1px solid var(--border-color)",
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(99, 102, 241, 0.1)',
             borderRadius: '20px',
             padding: '35px 30px',
@@ -316,7 +316,7 @@ export default function RegisterPage() {
             }}>
               {role === 'STUDENT' ? 'Student Registration' : 'Workforce Registration'}
             </h1>
-            <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '25px' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '25px' }}>
               Create your profile using the HTML form or Google
             </p>
 
@@ -331,7 +331,7 @@ export default function RegisterPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }}
               />
 
               <label style={{ fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '500' }}>Full Name</label>
@@ -341,7 +341,7 @@ export default function RegisterPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }}
               />
 
               <label style={{ fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '500' }}>Email Address</label>
@@ -351,7 +351,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }}
               />
 
               <label style={{ fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '500' }}>Password</label>
@@ -361,12 +361,12 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                style={{ width: '100%', padding: '10px 12px', marginBottom: '15px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '10px 12px', marginBottom: '15px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }}
               />
 
               <button
                 type="submit"
-                style={{ width: '100%', padding: '12px', background: '#ff00c8', border: 'none', borderRadius: '8px', color: '#fff', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}
+                style={{ width: '100%', padding: '12px', background: '#ff00c8', border: 'none', borderRadius: '8px', color: 'var(--text-primary)', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}
               >
                 Complete {role === 'STUDENT' ? 'Student' : 'Workforce'} Sign-Up
               </button>
@@ -386,7 +386,7 @@ export default function RegisterPage() {
                 <p style={{ fontSize: '11px', color: '#fbbf24', margin: '5px 0' }}>⚠️ Mock Dev Mode Bypass for Google Signup:</p>
                 <button
                   onClick={handleDevBypass}
-                  style={{ width: '100%', padding: '10px', background: '#4f46e5', border: 'none', borderRadius: '6px', color: '#fff', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}
+                  style={{ width: '100%', padding: '10px', background: '#4f46e5', border: 'none', borderRadius: '6px', color: 'var(--text-primary)', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}
                 >
                   Bypass Google Sign-Up (Uses Email field above)
                 </button>
@@ -399,7 +399,7 @@ export default function RegisterPage() {
                 marginTop: '25px',
                 background: 'transparent',
                 border: 'none',
-                color: '#94a3b8',
+                color: 'var(--text-secondary)',
                 cursor: 'pointer',
                 fontSize: '13px',
                 textDecoration: 'underline'

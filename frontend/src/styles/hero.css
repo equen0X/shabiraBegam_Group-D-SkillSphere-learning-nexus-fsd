@@ -214,7 +214,7 @@ font-size:18px;
 
 width:380px;
 
-background:rgba(20,20,28,.72);
+background:var(--bg-panel);
 
 backdrop-filter:blur(25px);
 
@@ -316,7 +316,7 @@ justify-content:space-between;
 
 padding:15px 0;
 
-border-bottom:1px solid rgba(255,255,255,.08);
+border-bottom:1px solid var(--border-color);
 
 }
 

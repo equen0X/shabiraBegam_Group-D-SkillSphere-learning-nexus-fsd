@@ -34,11 +34,11 @@ gap:40px;
 
 padding:50px;
 
-background:rgba(18,18,24,.75);
+background:var(--bg-panel);
 
 border-radius:22px;
 
-border:1px solid rgba(255,255,255,.08);
+border:1px solid var(--border-color);
 
 transition:.4s;
 

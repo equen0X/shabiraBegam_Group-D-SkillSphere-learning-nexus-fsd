@@ -102,11 +102,11 @@ export default function CertificatesPage() {
     ctx.fillText("⬢ SKILLSPHERE ACADEMY", 500, 100);
 
     // Title
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "var(--text-primary)";
     ctx.font = "bold 28px Orbitron, sans-serif";
     ctx.fillText("CERTIFICATE OF COMPLETION", 500, 170);
 
-    ctx.fillStyle = "#94a3b8";
+    ctx.fillStyle = "var(--text-secondary)";
     ctx.font = "18px Rajdhani, sans-serif";
     ctx.fillText("This official credential certifies that", 500, 240);
 
@@ -121,7 +121,7 @@ export default function CertificatesPage() {
     ctx.font = "18px Rajdhani, sans-serif";
     ctx.fillText(`has successfully mastered all requirements and chapters for`, 500, 370);
 
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "var(--text-primary)";
     ctx.font = "bold 24px Orbitron, sans-serif";
     ctx.fillText(cert.title, 500, 420);
 
@@ -160,7 +160,7 @@ export default function CertificatesPage() {
   };
 
   return (
-    <div className={`dashboard-page ${isSidebarOpen ? 'with-sidebar' : ''}`} style={{ minHeight: '100vh', background: '#05060b', color: '#fff' }}>
+    <div className={`dashboard-page ${isSidebarOpen ? 'with-sidebar' : ''}`} style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       <Background />
       <Navbar 
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
@@ -176,7 +176,7 @@ export default function CertificatesPage() {
           <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '36px', color: '#00e5ff', marginBottom: '10px' }}>
             📜 Official Verified Certificates
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '16px', maxWidth: '650px', margin: '0 auto' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '16px', maxWidth: '650px', margin: '0 auto' }}>
             View, verify, and download high-resolution PNG certificates for all your completed SkillSphere learning tracks.
           </p>
         </section>
@@ -207,7 +207,7 @@ export default function CertificatesPage() {
                     ✓ Verified Hash
                   </span>
                 </div>
-                <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: '#ffffff', marginBottom: '10px', lineHeight: '1.4' }}>
+                <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '10px', lineHeight: '1.4' }}>
                   {cert.title}
                 </h3>
                 <p style={{ fontSize: '13px', color: '#64748b', fontFamily: 'monospace', marginBottom: '20px' }}>
@@ -223,7 +223,7 @@ export default function CertificatesPage() {
                     flex: 1,
                     background: 'rgba(255, 255, 255, 0.08)',
                     border: '1px solid rgba(255, 255, 255, 0.2)',
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     padding: '10px',
                     borderRadius: '8px',
                     fontSize: '13px',
@@ -243,7 +243,7 @@ export default function CertificatesPage() {
                     flex: 1,
                     background: `linear-gradient(90deg, ${cert.color}, #8a2eff)`,
                     border: 'none',
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     padding: '10px',
                     borderRadius: '8px',
                     fontSize: '13px',
@@ -291,11 +291,11 @@ export default function CertificatesPage() {
               </div>
 
               {/* Title */}
-              <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '32px', color: '#ffffff', letterSpacing: '2px', margin: '0 0 15px 0', textTransform: 'uppercase' }}>
+              <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '32px', color: 'var(--text-primary)', letterSpacing: '2px', margin: '0 0 15px 0', textTransform: 'uppercase' }}>
                 Certificate of Completion
               </h2>
 
-              <p style={{ color: '#94a3b8', fontSize: '16px', margin: '0 0 20px 0', fontStyle: 'italic' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '16px', margin: '0 0 20px 0', fontStyle: 'italic' }}>
                 This official credential certifies that
               </p>
 
@@ -309,14 +309,14 @@ export default function CertificatesPage() {
               </p>
 
               {/* Course Title */}
-              <div style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '30px' }}>
+              <div style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '24px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '30px' }}>
                 {previewedCert.title}
               </div>
 
               {/* Seal and Signatures Row */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '40px', padding: '0 30px', flexWrap: 'wrap', gap: '20px' }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'sans-serif', fontSize: '18px', fontStyle: 'italic', color: '#94a3b8', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '4px', width: '160px' }}>
+                  <div style={{ fontFamily: 'sans-serif', fontSize: '18px', fontStyle: 'italic', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '4px', width: '160px' }}>
                     Alexis Mangin
                   </div>
                   <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', display: 'block', marginTop: '4px' }}>Director of Curriculum</span>
@@ -335,7 +335,7 @@ export default function CertificatesPage() {
                 </div>
 
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'sans-serif', fontSize: '18px', fontStyle: 'italic', color: '#94a3b8', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '4px', width: '160px' }}>
+                  <div style={{ fontFamily: 'sans-serif', fontSize: '18px', fontStyle: 'italic', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '4px', width: '160px' }}>
                     SphereAI Engine
                   </div>
                   <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', display: 'block', marginTop: '4px' }}>Verification Authority</span>
@@ -355,7 +355,7 @@ export default function CertificatesPage() {
                 onClick={() => handleDownloadCertificate(previewedCert)}
                 style={{
                   background: `linear-gradient(90deg, ${previewedCert.color}, #8a2eff)`,
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   border: 'none',
                   padding: '16px 42px',
                   borderRadius: '30px',
@@ -415,7 +415,7 @@ export default function CertificatesPage() {
                     }}
                     style={{
                       background: 'linear-gradient(90deg, #ef4444, #f97316)',
-                      color: '#ffffff',
+                      color: 'var(--text-primary)',
                       border: 'none',
                       padding: '12px 28px',
                       borderRadius: '30px',
@@ -434,7 +434,7 @@ export default function CertificatesPage() {
                   onClick={() => setDownloadModalInfo(null)}
                   style={{
                     background: downloadModalInfo.status === "SUCCESS" ? 'linear-gradient(90deg, #00e5ff, #8a2eff)' : 'rgba(255, 255, 255, 0.15)',
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     border: 'none',
                     padding: '12px 28px',
                     borderRadius: '30px',

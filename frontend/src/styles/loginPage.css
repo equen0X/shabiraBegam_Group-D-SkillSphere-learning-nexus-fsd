@@ -7,7 +7,7 @@
     background:
         radial-gradient(circle at top left,#37206b 0%,transparent 35%),
         radial-gradient(circle at bottom right,#55126e 0%,transparent 35%),
-        #080811;
+        var(--bg-primary);
     overflow-x: hidden;
     width: 100%;
     box-sizing: border-box;
@@ -34,7 +34,7 @@
     padding: 45px;
     background: rgba(18, 18, 28, 0.88);
     backdrop-filter: blur(18px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
     border-radius: 22px;
     box-shadow:
         0 20px 45px rgba(0, 0, 0, 0.55),
@@ -52,7 +52,7 @@
 /* Heading */
 .login-page-wrapper .login-card h1 {
     text-align: center;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 40px;
     margin-top: 0;
     margin-bottom: 10px;
@@ -86,8 +86,8 @@
 .login-page-wrapper .input-group input {
     width: 100%;
     padding: 15px 18px;
-    background: #15151f;
-    border: 1px solid #2e2e3b;
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-secondary);
     border-radius: 14px;
     color: white;
     font-size: 15px;
@@ -96,7 +96,7 @@
 }
 
 .login-page-wrapper .input-group input::placeholder {
-    color: #888;
+    color: var(--text-secondary);
 }
 
 .login-page-wrapper .input-group input:focus {
@@ -204,8 +204,8 @@
     justify-content: center;
     align-items: center;
     gap: 12px;
-    background: #111118;
-    border: 1px solid #2f2f3d;
+    background: var(--bg-primary);
+    border: 1px solid var(--bg-secondary);
     border-radius: 14px;
     color: white;
     font-size: 16px;
@@ -220,7 +220,7 @@
 }
 
 .login-page-wrapper .google-btn:hover {
-    background: #181822;
+    background: var(--bg-secondary);
     border-color: #56566d;
 }
 
@@ -233,7 +233,7 @@
 }
 
 .login-page-wrapper .signup-text a {
-    color: #fff;
+    color: var(--text-primary);
     text-decoration: none;
     font-weight: 600;
 }
@@ -269,7 +269,7 @@
 }
 
 .login-page-wrapper .logo-text-skill {
-    color: #ffffff;
+    color: var(--text-primary);
     font-weight: bold;
     font-size: 22px;
 }
@@ -296,7 +296,7 @@
 .login-page-wrapper .back-btn:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.25);
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .login-page-wrapper .errorMessage {
@@ -326,8 +326,8 @@
 .login-page-wrapper .devInput {
     width: 100%;
     padding: 10px 12px;
-    background: #15151f;
-    border: 1px solid #2e2e3b;
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-secondary);
     border-radius: 8px;
     color: white;
     font-size: 13px;
@@ -341,7 +341,7 @@
     background: #4f46e5;
     border: none;
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;

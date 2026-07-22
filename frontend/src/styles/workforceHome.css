@@ -4,8 +4,8 @@
   position: relative;
   min-height: 100vh;
   padding-bottom: 60px;
-  background: #050505;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Rajdhani', sans-serif;
   z-index: 5;
   overflow-x: hidden;
@@ -58,7 +58,7 @@
   font-weight: 800;
   margin-bottom: 12px;
   line-height: 1.15;
-  background: linear-gradient(90deg, #ffffff, #ff00c8);
+  background: linear-gradient(90deg, var(--text-primary), #ff00c8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -66,7 +66,7 @@
 }
 
 .wh-banner-text p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 20px;
   font-weight: 500;
   max-width: 600px;
@@ -82,7 +82,7 @@
 
 .wh-matrix-item {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 16px 24px;
   display: flex;
@@ -117,7 +117,7 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 /* Grid Layout */
@@ -143,7 +143,7 @@
 .wh-panel {
   background: rgba(18, 18, 30, 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-radius: 24px;
   padding: 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
@@ -160,7 +160,7 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -182,7 +182,7 @@
 
 .wh-log-card {
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-left: 3px solid #ff00c8;
   border-radius: 12px;
   padding: 16px 20px;
@@ -199,7 +199,7 @@
 }
 
 .wh-log-card:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--border-subtle);
 }
 
 .wh-log-text {
@@ -226,7 +226,7 @@
 
 .wh-shortcut-card {
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-radius: 16px;
   padding: 20px;
   text-align: center;
@@ -253,7 +253,7 @@
 .wh-shortcut-card h4 {
   font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .wh-shortcut-card p {
@@ -271,7 +271,7 @@
 
 .wh-queue-card {
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: "1px solid var(--border-color)";
   border-radius: 14px;
   padding: 18px;
   display: flex;
@@ -293,7 +293,7 @@
 
 .wh-queue-details {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .wh-queue-actions {
@@ -315,7 +315,7 @@
 
 .wh-btn-approve:hover {
   background: #39ff14;
-  color: #000000;
+  color: var(--bg-primary);
 }
 
 .wh-btn-reject {
@@ -332,7 +332,7 @@
 
 .wh-btn-reject:hover {
   background: #ff00c8;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .wh-queue-status-text {

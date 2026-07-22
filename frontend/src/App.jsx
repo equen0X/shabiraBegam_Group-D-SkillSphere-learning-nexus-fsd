@@ -42,7 +42,7 @@ function ProtectedRoute({ children }) {
     return (
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        height: '100vh', background: '#05060b', color: '#00e5ff',
+        height: '100vh', background: 'var(--bg-primary)', color: 'var(--accent)',
         fontFamily: 'Orbitron, sans-serif', fontSize: '16px'
       }}>
         Loading...

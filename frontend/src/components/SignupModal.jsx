@@ -100,7 +100,7 @@ export default function SignupModal({ isOpen, onClose }) {
         <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '6px', background: 'linear-gradient(135deg, #a5b4fc, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Create Account
         </h2>
-        <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '20px' }}>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
           Sign up to join the SkillSphere platform
         </p>
 
@@ -115,7 +115,7 @@ export default function SignupModal({ isOpen, onClose }) {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none' }}
+            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none' }}
           />
 
           <label style={{ fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '500' }}>Full Name</label>
@@ -125,7 +125,7 @@ export default function SignupModal({ isOpen, onClose }) {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none' }}
+            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none' }}
           />
 
           <label style={{ fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '500' }}>Email Address</label>
@@ -135,7 +135,7 @@ export default function SignupModal({ isOpen, onClose }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none' }}
+            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none' }}
           />
 
           <label style={{ fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '500' }}>Password</label>
@@ -145,14 +145,14 @@ export default function SignupModal({ isOpen, onClose }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none' }}
+            style={{ width: '100%', padding: '10px 12px', marginBottom: '10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none' }}
           />
 
           <label style={{ fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '500' }}>I want to sign up as a:</label>
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            style={{ width: '100%', padding: '10px 12px', marginBottom: '15px', background: '#12121e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#fff', outline: 'none' }}
+            style={{ width: '100%', padding: '10px 12px', marginBottom: '15px', background: '#12121e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none' }}
           >
             <option value="STUDENT">Student (Portal Access)</option>
             <option value="EMPLOYEE">Workforce (Employee/Team Access)</option>
@@ -160,7 +160,7 @@ export default function SignupModal({ isOpen, onClose }) {
 
           <button
             type="submit"
-            style={{ width: '100%', padding: '12px', background: '#ff00c8', border: 'none', borderRadius: '8px', color: '#fff', fontWeight: '600', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px' }}
+            style={{ width: '100%', padding: '12px', background: '#ff00c8', border: 'none', borderRadius: '8px', color: 'var(--text-primary)', fontWeight: '600', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px' }}
           >
             Create Account
           </button>
@@ -179,7 +179,7 @@ export default function SignupModal({ isOpen, onClose }) {
             <p style={{ fontSize: '11px', color: '#fbbf24', margin: '10px 0 5px 0' }}>⚠️ Mock Dev Mode Bypass for Google Signup:</p>
             <button
               onClick={handleDevBypass}
-              style={{ width: '100%', padding: '10px', background: '#4f46e5', border: 'none', borderRadius: '6px', color: '#fff', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}
+              style={{ width: '100%', padding: '10px', background: '#4f46e5', border: 'none', borderRadius: '6px', color: 'var(--text-primary)', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}
             >
               Bypass Google Sign-Up (Uses Email field + Role selection)
             </button>

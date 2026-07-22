@@ -1,6 +1,6 @@
 .contactHero{
     min-height:100vh;
-    background:#07070d;
+    background:var(--bg-primary);
     color:white;
     display:flex;
     justify-content:space-between;
@@ -98,7 +98,7 @@
 
 .contactCard{
     width:380px;
-    background:#12121a;
+    background:var(--bg-primary);
     border-radius:20px;
     padding:35px;
     border:1px solid rgba(0,212,255,.25);

@@ -72,8 +72,8 @@ export default function StudentDashboard() {
 
     // Draw dark background gradient
     const grad = ctx.createLinearGradient(0, 0, 1000, 700);
-    grad.addColorStop(0, "#0d0f19");
-    grad.addColorStop(1, "#05060b");
+    grad.addColorStop(0, "var(--bg-secondary)");
+    grad.addColorStop(1, "var(--bg-primary)");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1000, 700);
 
@@ -108,7 +108,7 @@ export default function StudentDashboard() {
     ctx.textAlign = "center";
     ctx.fillText("⬢", 500, 100);
 
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "var(--text-primary)";
     ctx.font = "bold 24px sans-serif";
     ctx.fillText("SkillSphere", 500, 145);
 
@@ -117,12 +117,12 @@ export default function StudentDashboard() {
     ctx.font = "bold 36px sans-serif";
     ctx.fillText("CERTIFICATE OF COMPLETION", 500, 215);
 
-    ctx.fillStyle = "#94a3b8";
+    ctx.fillStyle = "var(--text-secondary)";
     ctx.font = "bold 14px sans-serif";
     ctx.fillText("THIS IS PROUDLY PRESENTED TO", 500, 265);
 
     // Student Name
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "var(--text-primary)";
     ctx.font = "bold 44px sans-serif";
     const name = user?.full_name || user?.username || "SkillSphere Graduate";
     ctx.fillText(name, 500, 335);
@@ -145,20 +145,20 @@ export default function StudentDashboard() {
     ctx.fillText(cert.title, 500, 440);
 
     // Footer - Date of Issue
-    ctx.fillStyle = "#94a3b8";
+    ctx.fillStyle = "var(--text-secondary)";
     ctx.font = "12px sans-serif";
     ctx.textAlign = "left";
     ctx.fillText("DATE OF ISSUE", 100, 535);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "var(--text-primary)";
     ctx.font = "bold 16px sans-serif";
     ctx.fillText(cert.date, 100, 565);
 
     // Footer - Verification ID
-    ctx.fillStyle = "#94a3b8";
+    ctx.fillStyle = "var(--text-secondary)";
     ctx.font = "12px sans-serif";
     ctx.textAlign = "right";
     ctx.fillText("VERIFICATION ID", 900, 535);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "var(--text-primary)";
     ctx.font = "bold 16px monospace";
     ctx.fillText(cert.id, 900, 565);
 
@@ -425,7 +425,7 @@ export default function StudentDashboard() {
                 onClick={() => navigate('/settings')}
                 style={{
                   background: 'linear-gradient(90deg, #00e5ff, #8a2eff)',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   border: 'none',
                   padding: '10px 20px',
                   borderRadius: '24px',
@@ -523,7 +523,7 @@ export default function StudentDashboard() {
                       className="course-action-btn"
                       onClick={() => handleStudy(course.id)}
                       disabled={course.progress >= 100}
-                      style={course.progress >= 100 ? { background: "rgba(255,255,255,0.05)", color: "#64748b", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "none", cursor: "not-allowed" } : {}}
+                      style={course.progress >= 100 ? { background: "rgba(255,255,255,0.05)", color: "#64748b", border: "1px solid var(--border-color)", boxShadow: "none", cursor: "not-allowed" } : {}}
                     >
                       {course.progress >= 100 ? "Completed" : "Study +5%"}
                     </button>
@@ -537,7 +537,7 @@ export default function StudentDashboard() {
               <div className="section-title-wrapper" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2 className="section-title">Online Code Sandbox</h2>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                  <label htmlFor="lang-select" style={{ fontSize: '13px', color: '#94a3b8' }}>Language:</label>
+                  <label htmlFor="lang-select" style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Language:</label>
                   <select 
                     id="lang-select"
                     value={selectedLanguage}
@@ -546,7 +546,7 @@ export default function StudentDashboard() {
                       background: 'rgba(18, 18, 30, 0.75)',
                       border: '1px solid rgba(0, 229, 255, 0.2)',
                       borderRadius: '8px',
-                      color: '#ffffff',
+                      color: 'var(--text-primary)',
                       padding: '6px 12px',
                       fontFamily: 'Orbitron, sans-serif',
                       cursor: 'pointer',
@@ -571,8 +571,8 @@ export default function StudentDashboard() {
                     style={{
                       width: '100%',
                       height: '220px',
-                      background: '#0d0e15',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      background: 'var(--bg-secondary)',
+                      border: "1px solid var(--border-color)",
                       borderRadius: '12px',
                       padding: '15px',
                       color: '#39ff14',
@@ -591,7 +591,7 @@ export default function StudentDashboard() {
                         background: 'rgba(255,255,255,0.05)',
                         border: '1px solid rgba(255,255,255,0.1)',
                         borderRadius: '6px',
-                        color: '#94a3b8',
+                        color: 'var(--text-secondary)',
                         padding: '6px 12px',
                         fontSize: '12px',
                         cursor: 'pointer'
@@ -622,7 +622,7 @@ export default function StudentDashboard() {
 
                 {/* Console Output Screen */}
                 <div style={{
-                  background: '#040508',
+                  background: 'var(--bg-secondary)',
                   border: '1px solid rgba(0, 229, 255, 0.1)',
                   borderRadius: '12px',
                   padding: '15px',
@@ -742,7 +742,7 @@ export default function StudentDashboard() {
                     ) : (
                       <button 
                         className="quest-btn-claim" 
-                        style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8" }}
+                        style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--text-secondary)" }}
                         onClick={() => handleStudy(1)} // Redirect interaction to studying
                       >
                         Start
@@ -797,7 +797,7 @@ export default function StudentDashboard() {
                   ))}
                   {isChatLoading && (
                     <div className="chat-bubble assistant" style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(138, 46, 255, 0.08)' }}>
-                      <span style={{ fontSize: '11px', color: '#94a3b8' }}>SphereAI is thinking...</span>
+                      <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>SphereAI is thinking...</span>
                     </div>
                   )}
                   <div ref={chatEndRef}></div>
@@ -865,7 +865,7 @@ export default function StudentDashboard() {
           <div style={{
             width: '100%',
             maxWidth: '800px',
-            background: 'linear-gradient(135deg, #0d0f19 0%, #05060b 100%)',
+            background: 'linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)',
             border: '2px solid #00e5ff',
             borderRadius: '28px',
             boxShadow: '0 0 50px rgba(0, 229, 255, 0.3)',
@@ -923,7 +923,7 @@ export default function StudentDashboard() {
                   fontFamily: 'Orbitron, sans-serif',
                   fontSize: '22px',
                   fontWeight: '800',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   letterSpacing: '1px'
                 }}>
                   <span>Skill</span>
@@ -936,7 +936,7 @@ export default function StudentDashboard() {
                 fontFamily: 'Orbitron, sans-serif',
                 fontSize: '28px',
                 fontWeight: '800',
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 textTransform: 'uppercase',
                 letterSpacing: '3px',
                 marginBottom: '20px',
@@ -949,7 +949,7 @@ export default function StudentDashboard() {
 
               <p style={{
                 fontSize: '16px',
-                color: '#94a3b8',
+                color: 'var(--text-secondary)',
                 textTransform: 'uppercase',
                 letterSpacing: '2px',
                 marginBottom: '25px'
@@ -962,7 +962,7 @@ export default function StudentDashboard() {
                 fontFamily: 'Orbitron, sans-serif',
                 fontSize: '42px',
                 fontWeight: '800',
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 textShadow: '0 0 20px rgba(0, 229, 255, 0.4)',
                 margin: '10px 0 25px 0',
                 borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
@@ -996,11 +996,11 @@ export default function StudentDashboard() {
                 borderTop: '1px solid rgba(255, 255, 255, 0.05)',
                 paddingTop: '25px',
                 fontSize: '14px',
-                color: '#94a3b8'
+                color: 'var(--text-secondary)'
               }}>
                 <div>
                   <span style={{ display: 'block', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px' }}>Date of Issue</span>
-                  <strong style={{ color: '#ffffff' }}>{previewedCert.date}</strong>
+                  <strong style={{ color: 'var(--text-primary)' }}>{previewedCert.date}</strong>
                 </div>
                 
                 {/* Decorative Circular Seal Medallion */}
@@ -1022,7 +1022,7 @@ export default function StudentDashboard() {
 
                 <div style={{ textAlign: 'right' }}>
                   <span style={{ display: 'block', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px' }}>Verification ID</span>
-                  <strong style={{ color: '#ffffff', fontFamily: 'monospace' }}>{previewedCert.id}</strong>
+                  <strong style={{ color: 'var(--text-primary)', fontFamily: 'monospace' }}>{previewedCert.id}</strong>
                 </div>
               </div>
             </div>
@@ -1036,7 +1036,7 @@ export default function StudentDashboard() {
                   borderRadius: '12px',
                   border: 'none',
                   background: 'linear-gradient(90deg, #00e5ff, #8a2eff)',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   fontFamily: 'Orbitron',
                   fontWeight: '700',
                   fontSize: '14px',
@@ -1057,7 +1057,7 @@ export default function StudentDashboard() {
                   borderRadius: '12px',
                   border: '2px solid rgba(255, 255, 255, 0.2)',
                   background: 'transparent',
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   fontFamily: 'Orbitron',
                   fontWeight: '700',
                   fontSize: '14px',

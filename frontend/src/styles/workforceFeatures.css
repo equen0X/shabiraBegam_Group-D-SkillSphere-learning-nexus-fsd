@@ -4,8 +4,8 @@
   position: relative;
   min-height: 100vh;
   padding-bottom: 60px;
-  background: #050505;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Rajdhani', sans-serif;
   z-index: 5;
   overflow-x: hidden;
@@ -28,7 +28,7 @@
   font-size: 48px;
   font-weight: 800;
   margin-bottom: 15px;
-  background: linear-gradient(90deg, #ffffff, #ff00c8);
+  background: linear-gradient(90deg, var(--text-primary), #ff00c8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -37,7 +37,7 @@
 
 .wf-features-header p {
   font-size: 20px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.5;
@@ -82,7 +82,7 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .wf-feature-card p {
@@ -102,7 +102,7 @@
 
 .wf-feature-bullets li {
   font-size: 14.5px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -134,13 +134,13 @@
 
 .wf-features-cta p {
   font-size: 16px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 20px;
 }
 
 .wf-cta-btn {
   background: linear-gradient(90deg, #ff00c8, #8a2eff);
-  color: #ffffff;
+  color: var(--text-primary);
   border: none;
   padding: 12px 30px;
   border-radius: 10px;

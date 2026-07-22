@@ -1,7 +1,7 @@
 .footer{
-    background:#090909;
+    background:var(--bg-primary);
     padding:70px 10%;
-    border-top:1px solid rgba(255,255,255,.08);
+    border-top:1px solid var(--border-color);
     position: relative;
     z-index: 10;
 }
@@ -60,7 +60,7 @@
 .footerBottom{
     text-align:center;
     margin-top:60px;
-    color:#888;
-    border-top:1px solid rgba(255,255,255,.08);
+    color:var(--text-secondary);
+    border-top:1px solid var(--border-color);
     padding-top:30px;
 }
