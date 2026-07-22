@@ -21,6 +21,7 @@ import DiscussionsPage from "./pages/DiscussionsPage";
 import ProfileSettingsPage from "./pages/ProfileSettingsPage";
 import ProgressPage from "./pages/ProgressPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
+import TeamSpace from "./pages/TeamSpace";
 import FloatingChatbot from "./components/FloatingChatbot";
 
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -59,8 +60,10 @@ function ProtectedRoute({ children }) {
 
 function App() {
   const location = useLocation();
-  const isDashboardRoute = location.pathname === "/workforce-dashboard";
+  const { themeMode, themeAccent } = useAuth();
+  const isDashboardRoute = ["/workforce-dashboard", "/workforce-home", "/student-home", "/team-space"].includes(location.pathname);
 
+  // Re-apply theme CSS vars on every route change so theme persists globally
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -92,6 +95,7 @@ function App() {
         <Route path="/workforce-features" element={<ProtectedRoute><WorkforceFeatures /></ProtectedRoute>} />
         <Route path="/sandbox" element={<ProtectedRoute><SandboxPage /></ProtectedRoute>} />
         <Route path="/discussions" element={<ProtectedRoute><DiscussionsPage /></ProtectedRoute>} />
+        <Route path="/team-space"   element={<ProtectedRoute><TeamSpace /></ProtectedRoute>} />
         <Route path="/resources" element={<ProtectedRoute><ComingSoonPage title="Resources" /></ProtectedRoute>} />
         <Route path="/certificate" element={<ProtectedRoute><CertificatesPage /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />

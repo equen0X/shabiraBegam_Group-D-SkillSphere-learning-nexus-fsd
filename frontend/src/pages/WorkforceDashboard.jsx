@@ -7,8 +7,15 @@ import Footer from "../components/Footer";
 import "../styles/workforceDashboard.css";
 
 export default function WorkforceDashboard() {
-  const { user } = useAuth();
+  const { user, workforceTheme } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-wf-theme", workforceTheme || "dark");
+    return () => {
+      document.documentElement.removeAttribute("data-wf-theme");
+    };
+  }, [workforceTheme]);
 
   // Employee Directory State
   const [employees, setEmployees] = useState([
@@ -207,34 +214,93 @@ export default function WorkforceDashboard() {
 
         {/* Stats Grid */}
         <section className="wf-stats-grid">
-          <div className="wf-stat-card">
-            <div className="wf-stat-icon" style={{ background: "rgba(0, 229, 255, 0.1)", color: "#00e5ff" }}>👥</div>
+          {/* Active Headcount */}
+          <div className="wf-stat-card theme-cyan">
+            <div className="wf-stat-card-top-bar" />
+            <div className="wf-stat-header">
+              <div className="wf-stat-icon">👥</div>
+              <span className="wf-stat-badge cyan">Active Team</span>
+            </div>
             <div className="wf-stat-info">
               <h3>Active Headcount</h3>
-              <div className="wf-stat-value">{employees.length} Members</div>
+              <div className="wf-stat-value">
+                <span className="stat-number">{employees.length}</span>
+                <span className="stat-label">Members</span>
+              </div>
+            </div>
+            <div className="wf-stat-progress-bg">
+              <div className="wf-stat-progress-bar cyan" style={{ width: "100%" }} />
             </div>
           </div>
-          <div className="wf-stat-card">
-            <div className="wf-stat-icon" style={{ background: "rgba(138, 46, 255, 0.1)", color: "#8a2eff" }}>🚀</div>
+
+          {/* Projects Active */}
+          <div className="wf-stat-card theme-purple">
+            <div className="wf-stat-card-top-bar" />
+            <div className="wf-stat-header">
+              <div className="wf-stat-icon">🚀</div>
+              <span className="wf-stat-badge purple">On Track</span>
+            </div>
             <div className="wf-stat-info">
               <h3>Projects Active</h3>
-              <div className="wf-stat-value">{projects.length} Ongoing</div>
+              <div className="wf-stat-value">
+                <span className="stat-number">{projects.length}</span>
+                <span className="stat-label">Ongoing</span>
+              </div>
+            </div>
+            <div className="wf-stat-progress-bg">
+              <div className="wf-stat-progress-bar purple" style={{ width: "75%" }} />
             </div>
           </div>
-          <div className="wf-stat-card">
-            <div className="wf-stat-icon" style={{ background: "rgba(57, 255, 20, 0.1)", color: "#39ff14" }}>⚡</div>
+
+          {/* Average Performance */}
+          <div className="wf-stat-card theme-emerald">
+            <div className="wf-stat-card-top-bar" />
+            <div className="wf-stat-header">
+              <div className="wf-stat-icon">⚡</div>
+              <span className="wf-stat-badge emerald">Optimal</span>
+            </div>
             <div className="wf-stat-info">
               <h3>Average Performance</h3>
               <div className="wf-stat-value">
-                {Math.round(employees.reduce((acc, emp) => acc + emp.score, 0) / employees.length)}% Rating
+                <span className="stat-number">
+                  {Math.round(employees.reduce((acc, emp) => acc + emp.score, 0) / (employees.length || 1))}%
+                </span>
+                <span className="stat-label">Rating</span>
               </div>
             </div>
+            <div className="wf-stat-progress-bg">
+              <div
+                className="wf-stat-progress-bar emerald"
+                style={{
+                  width: `${Math.round(employees.reduce((acc, emp) => acc + emp.score, 0) / (employees.length || 1))}%`
+                }}
+              />
+            </div>
           </div>
-          <div className="wf-stat-card">
-            <div className="wf-stat-icon" style={{ background: "rgba(255, 0, 200, 0.1)", color: "#ff00c8" }}>📋</div>
+
+          {/* Pending Leaves */}
+          <div className="wf-stat-card theme-pink">
+            <div className="wf-stat-card-top-bar" />
+            <div className="wf-stat-header">
+              <div className="wf-stat-icon">📋</div>
+              <span className="wf-stat-badge pink">
+                {leaveRequests.filter(r => r.status === "PENDING").length > 0 ? "Action Req" : "All Clear"}
+              </span>
+            </div>
             <div className="wf-stat-info">
               <h3>Pending Leaves</h3>
-              <div className="wf-stat-value">{leaveRequests.filter(r => r.status === "PENDING").length} Requests</div>
+              <div className="wf-stat-value">
+                <span className="stat-number">{leaveRequests.filter(r => r.status === "PENDING").length}</span>
+                <span className="stat-label">Requests</span>
+              </div>
+            </div>
+            <div className="wf-stat-progress-bg">
+              <div
+                className="wf-stat-progress-bar pink"
+                style={{
+                  width: leaveRequests.filter(r => r.status === "PENDING").length > 0 ? "50%" : "0%"
+                }}
+              />
             </div>
           </div>
         </section>

@@ -14,12 +14,17 @@ const THEME_VARS = {
     '--bg-card':        'rgba(10, 14, 30, 0.9)',
     '--text-primary':   '#ffffff',
     '--text-secondary': '#94a3b8',
-    '--text-muted':     '#475569',
+    '--text-muted':     '#64748b',
     '--border-color':   'rgba(255,255,255,0.08)',
     '--border-subtle':  'rgba(255,255,255,0.04)',
     '--navbar-bg':      'rgba(12,12,16,0.75)',
     '--input-bg':       'rgba(0,0,0,0.5)',
     '--shadow-panel':   '0 10px 35px rgba(0,0,0,0.5)',
+    '--btn-primary-bg': 'linear-gradient(135deg, #00e5ff, #8a2eff)',
+    '--btn-primary-text': '#ffffff',
+    '--btn-secondary-bg': 'rgba(255,255,255,0.06)',
+    '--btn-secondary-text': '#ffffff',
+    '--btn-secondary-border': 'rgba(255,255,255,0.15)',
   },
   light: {
     '--bg-primary':     '#f0f4f8',
@@ -28,21 +33,26 @@ const THEME_VARS = {
     '--bg-card':        'rgba(248,250,252,0.98)',
     '--text-primary':   '#0f172a',
     '--text-secondary': '#475569',
-    '--text-muted':     '#94a3b8',
+    '--text-muted':     '#64748b',
     '--border-color':   'rgba(0,0,0,0.12)',
     '--border-subtle':  'rgba(0,0,0,0.05)',
-    '--navbar-bg':      'rgba(240,244,248,0.92)',
+    '--navbar-bg':      'rgba(255,255,255,0.92)',
     '--input-bg':       'rgba(255,255,255,0.9)',
-    '--shadow-panel':   '0 10px 35px rgba(0,0,0,0.12)',
+    '--shadow-panel':   '0 10px 35px rgba(0,0,0,0.08)',
+    '--btn-primary-bg': 'linear-gradient(135deg, #0284c7, #7c3aed)',
+    '--btn-primary-text': '#ffffff',
+    '--btn-secondary-bg': '#ffffff',
+    '--btn-secondary-text': '#0f172a',
+    '--btn-secondary-border': 'rgba(0,0,0,0.15)',
   }
 };
 
-function applyTheme(mode, accent) {
-  const vars = THEME_VARS[mode] || THEME_VARS.dark;
+function applyGlobalTheme(accent) {
+  const vars = THEME_VARS.dark;
   const root = document.documentElement;
   Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
   root.style.setProperty('--accent', accent || '#00e5ff');
-  root.setAttribute('data-theme', mode);
+  root.setAttribute('data-theme', 'dark');
 }
 
 export function AuthProvider({ children }) {
@@ -53,22 +63,30 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   // ─── Theme state ──────────────────────────────────────────────────────
-  const [themeMode, setThemeMode] = useState(() =>
-    localStorage.getItem('skillsphere_theme_mode') || 'dark'
-  );
+  // Landing and Student pages are strictly kept in Dark theme
+  const themeMode = 'dark';
   const [themeAccent, setThemeAccent] = useState(() =>
     localStorage.getItem('skillsphere_theme_accent') || '#00e5ff'
   );
 
-  // Apply on mount + whenever theme changes
+  // Workforce theme is scoped specifically to Workforce pages
+  const [workforceTheme, setWorkforceTheme] = useState(() =>
+    localStorage.getItem('skillsphere_wf_theme') || 'dark'
+  );
+
+  // Always enforce dark theme globally for Landing & Student pages
   useEffect(() => {
-    applyTheme(themeMode, themeAccent);
-    localStorage.setItem('skillsphere_theme_mode', themeMode);
+    applyGlobalTheme(themeAccent);
     localStorage.setItem('skillsphere_theme_accent', themeAccent);
-  }, [themeMode, themeAccent]);
+  }, [themeAccent]);
+
+  const updateWorkforceTheme = (mode) => {
+    setWorkforceTheme(mode);
+    localStorage.setItem('skillsphere_wf_theme', mode);
+  };
 
   const updateTheme = ({ mode, accent }) => {
-    if (mode !== undefined) setThemeMode(mode);
+    if (mode !== undefined) updateWorkforceTheme(mode);
     if (accent !== undefined) setThemeAccent(accent);
   };
 
@@ -272,6 +290,7 @@ export function AuthProvider({ children }) {
     completedTopics, completeTopic,
     updateUserProfile,
     themeMode, themeAccent, updateTheme,
+    workforceTheme, updateWorkforceTheme,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

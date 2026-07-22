@@ -237,7 +237,7 @@ export default function ProfileSettingsPage() {
             ⚙️ Profile Settings
           </h1>
           <p style={{ color: "var(--text-muted)", fontSize: "14px", margin: 0 }}>
-            Manage your personal info, social links, skills, and customize your dashboard theme.
+            Manage your personal info, social links, and skills.
           </p>
         </div>
 
@@ -249,9 +249,7 @@ export default function ProfileSettingsPage() {
           borderBottom:  `2px solid ${"var(--border-subtle)"}`,
         }}>
           {[
-            { id: "profile",      label: "👤 Profile Info" },
-            { id: "theme",        label: "🎨 Theme & Appearance" },
-            { id: "certificates", label: "🏆 Certificates" },
+            { id: "profile", label: "👤 Profile Info" },
           ].map(tab => (
             <button
               key={tab.id}
@@ -509,159 +507,8 @@ export default function ProfileSettingsPage() {
           </div>
         )}
 
-        {/* ════════════════════ THEME TAB ══════════════════════════════ */}
-        {activeTab === "theme" && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
-
-            {/* Dark / Light mode */}
-            <div style={{ ...panel, borderRadius: "16px", padding: "26px" }}>
-              <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: "var(--text-primary)", margin: "0 0 20px" }}>
-                🌗 Display Mode
-              </h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                {[
-                  { mode: "dark",  icon: <FiMoon size={28} />,  label: "DARK",  sub: "Cyberpunk default" },
-                  { mode: "light", icon: <FiSun  size={28} />,  label: "LIGHT", sub: "Clean professional" },
-                ].map(({ mode, icon, label, sub }) => {
-                  const active = selectedMode === mode;
-                  return (
-                    <button
-                      key={mode}
-                      type="button"
-                      onClick={() => handleModeChange(mode)}
-                      style={{
-                        background:   active ? `${accent}18` : ("var(--bg-secondary)"),
-                        border:       active ? `2px solid ${accent}` : `2px solid ${"var(--border-color)"}`,
-                        borderRadius: "14px",
-                        padding:      "20px 14px",
-                        cursor:       "pointer",
-                        textAlign:    "center",
-                        transition:   "all 0.25s",
-                        boxShadow:    active ? `0 0 18px ${accent}35` : "none",
-                      }}
-                    >
-                      <div style={{ color: active ? accent : ("var(--text-muted)"), display: "flex", justifyContent: "center", marginBottom: "10px" }}>
-                        {icon}
-                      </div>
-                      <div style={{ fontFamily: "Orbitron, sans-serif", fontSize: "12px", color: active ? accent : ("var(--text-muted)"), fontWeight: "700" }}>
-                        {label}
-                      </div>
-                      <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "4px" }}>{sub}</div>
-                      {active && <FiCheck size={13} style={{ color: accent, marginTop: "8px" }} />}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Mini preview strip */}
-              <div style={{ marginTop: "18px", borderRadius: "10px", overflow: "hidden", border: `1px solid ${accent}30` }}>
-                <div style={{ background: "var(--bg-primary)", padding: "10px 14px", display: "flex", gap: "8px", alignItems: "center" }}>
-                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#ef4444" }} />
-                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#facc15" }} />
-                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#22c55e" }} />
-                  <span style={{ marginLeft: "6px", fontSize: "10px", color: "var(--text-muted)", fontFamily: "Orbitron, sans-serif" }}>PREVIEW</span>
-                </div>
-                <div style={{ background: "var(--bg-card)", padding: "14px", display: "flex", flexDirection: "column", gap: "7px" }}>
-                  <div style={{ height: "9px", borderRadius: "4px", background: "var(--border-color)", width: "60%" }} />
-                  <div style={{ height: "7px", borderRadius: "4px", background: accent, width: "40%" }} />
-                  <div style={{ height: "7px", borderRadius: "4px", background: "var(--border-subtle)", width: "80%" }} />
-                </div>
-              </div>
-            </div>
-
-            {/* Accent color */}
-            <div style={{ ...panel, borderRadius: "16px", padding: "26px" }}>
-              <h3 style={{ fontFamily: "Orbitron, sans-serif", fontSize: "15px", color: "var(--text-primary)", margin: "0 0 20px" }}>
-                🎨 Accent Color
-              </h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                {ACCENTS.map(item => {
-                  const active = selectedAccent === item.color;
-                  return (
-                    <button
-                      key={item.color}
-                      type="button"
-                      onClick={() => handleAccentChange(item.color)}
-                      style={{
-                        background:    active ? `${item.color}18` : "transparent",
-                        border:        active ? `2px solid ${item.color}` : `1px solid ${"var(--border-color)"}`,
-                        borderRadius:  "12px",
-                        padding:       "11px 13px",
-                        cursor:        "pointer",
-                        display:       "flex",
-                        alignItems:    "center",
-                        justifyContent:"space-between",
-                        transition:    "all 0.2s",
-                        boxShadow:     active ? `0 0 12px ${item.color}40` : "none",
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
-                        <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: item.color, boxShadow: `0 0 8px ${item.color}80`, flexShrink: 0 }} />
-                        <span style={{ fontSize: "12px", fontWeight: "700", color: "var(--text-secondary)" }}>
-                          {item.label}
-                        </span>
-                      </div>
-                      {active && <FiCheck style={{ color: item.color, flexShrink: 0 }} size={13} />}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Accent preview */}
-              <div style={{ marginTop: "16px", background: "var(--bg-secondary)", borderRadius: "10px", padding: "12px" }}>
-                <div style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px" }}>Accent Preview</div>
-                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                  {[
-                    { label: "Button",  bg: accent,          color: "var(--bg-primary)",  border: "none",                        shadow: "none" },
-                    { label: "Badge",   bg: `${accent}20`,   color: accent,  border: `1px solid ${accent}40`,       shadow: "none" },
-                    { label: "Outline", bg: "transparent",   color: accent,  border: `1px solid ${accent}`,         shadow: "none" },
-                    { label: "Glow",    bg: "transparent",   color: accent,  border: `1px solid ${accent}`,         shadow: `0 0 10px ${accent}60` },
-                  ].map(s => (
-                    <div key={s.label} style={{ background: s.bg, color: s.color, border: s.border, boxShadow: s.shadow, padding: "5px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "700" }}>
-                      {s.label}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Save theme — full width */}
-            <div style={{ gridColumn: "1 / -1" }}>
-              <button
-                type="button"
-                onClick={handleSaveTheme}
-                style={{
-                  width:         "100%",
-                  background:    `linear-gradient(90deg, ${accent}, #8a2eff)`,
-                  color:         "var(--text-primary)",
-                  border:        "none",
-                  padding:       "14px",
-                  borderRadius:  "12px",
-                  fontSize:      "15px",
-                  fontWeight:    "700",
-                  cursor:        "pointer",
-                  fontFamily:    "Orbitron, sans-serif",
-                  boxShadow:     `0 0 20px ${accent}40`,
-                  letterSpacing: "0.4px",
-                  display:       "flex",
-                  alignItems:    "center",
-                  justifyContent:"center",
-                  gap:           "8px",
-                }}
-              >
-                <FiSave size={17} />
-                Apply &amp; Save Theme
-              </button>
-              <p style={{ textAlign: "center", color: "var(--text-muted)", fontSize: "12px", marginTop: "10px" }}>
-                Theme is previewed live above. Click Save to persist across sessions.
-              </p>
-            </div>
-
-          </div>
-        )}
-
-        {/* ════════════════════ CERTIFICATES TAB ══════════════════════════ */}
-        {activeTab === "certificates" && (() => {
+        {/* certificates tab removed */}
+        {activeTab === "__removed__" && (() => {
           const CERTS = [
             { id: "CERT-REACT-8942",  title: "React Web Architecture & Masterclass",    courseName: "React Developer",      trackKey: "react",      color: "#00e5ff", date: "2026-07-15", topics: ["Hooks","Context","Routing","State Mgmt","Performance","Testing"] },
             { id: "CERT-JAVA-3310",   title: "Core Java OOPs & Enterprise Systems",      courseName: "Java Master",           trackKey: "java",       color: "#f97316", date: "2026-07-18", topics: ["OOP","Collections","Streams","Generics","Concurrency","JVM"] },

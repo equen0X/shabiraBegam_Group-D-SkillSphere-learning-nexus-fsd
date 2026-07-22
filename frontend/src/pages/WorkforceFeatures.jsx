@@ -1,12 +1,21 @@
-import React from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Background from "../components/Background";
 import "../styles/workforceFeatures.css";
 
 export default function WorkforceFeatures() {
+  const { workforceTheme } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-wf-theme", workforceTheme || "dark");
+    return () => {
+      document.documentElement.removeAttribute("data-wf-theme");
+    };
+  }, [workforceTheme]);
 
   const features = [
     {

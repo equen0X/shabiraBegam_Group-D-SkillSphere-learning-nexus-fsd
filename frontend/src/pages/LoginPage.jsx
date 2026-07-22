@@ -42,16 +42,6 @@ export default function LoginPage() {
                 // Pass current selected role to login verification
                 const user = await loginWithGoogle(response.credential, roleRef.current);
                 if (user) {
-                  if (roleRef.current === 'EMPLOYEE' && user.role === 'STUDENT') {
-                    setError('Enter valid workplace email id');
-                    await logout();
-                    return;
-                  }
-                  if (roleRef.current === 'STUDENT' && user.role === 'EMPLOYEE') {
-                    setError('This account is registered as a Workforce user. Please use the Workforce Portal.');
-                    await logout();
-                    return;
-                  }
                   if (user.role === 'STUDENT') {
                     navigate('/student-home');
                   } else if (user.role === 'EMPLOYEE') {
@@ -90,24 +80,10 @@ export default function LoginPage() {
       setError("Please fill in all fields");
       return;
     }
-    if (role === 'EMPLOYEE' && (email.toLowerCase().includes('student') || email.toLowerCase().endsWith('.edu'))) {
-      setError('Enter valid workplace email id');
-      return;
-    }
     try {
       setError("");
       const user = await loginLocal(email, password);
       if (user) {
-        if (role === 'EMPLOYEE' && user.role === 'STUDENT') {
-          setError('Enter valid workplace email id');
-          await logout();
-          return;
-        }
-        if (role === 'STUDENT' && user.role === 'EMPLOYEE') {
-          setError('This account is registered as a Workforce user. Please use the Workforce Portal.');
-          await logout();
-          return;
-        }
         if (user.role === 'STUDENT') {
           navigate('/student-home');
         } else if (user.role === 'EMPLOYEE') {
@@ -124,25 +100,10 @@ export default function LoginPage() {
   const handleDevBypass = async (e) => {
     e.preventDefault();
     if (!devEmail) return;
-    if (role === 'EMPLOYEE' && (devEmail.toLowerCase().includes('student') || devEmail.toLowerCase().endsWith('.edu'))) {
-      setError('Enter valid workplace email id');
-      return;
-    }
     try {
       setError("");
-      // Pass dynamic role to support registering new bypass accounts under correct roles
       const user = await loginWithGoogle(`mock_google_token_${devEmail}`, role);
       if (user) {
-        if (role === 'EMPLOYEE' && user.role === 'STUDENT') {
-          setError('Enter valid workplace email id');
-          await logout();
-          return;
-        }
-        if (role === 'STUDENT' && user.role === 'EMPLOYEE') {
-          setError('This account is registered as a Workforce user. Please use the Workforce Portal.');
-          await logout();
-          return;
-        }
         if (user.role === 'STUDENT') {
           navigate('/student-home');
         } else if (user.role === 'EMPLOYEE') {

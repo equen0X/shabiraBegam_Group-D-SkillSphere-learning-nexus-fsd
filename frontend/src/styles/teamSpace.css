@@ -1,0 +1,543 @@
+/* ============================================================
+   Team Space — Collaborative Workspace
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Root layout ── */
+.ts-root {
+  min-height: 100vh;
+  background: var(--bg-primary, #05060b);
+  color: var(--text-primary, #fff);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.ts-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: calc(100vh - 120px);
+  margin-top: 110px;
+  position: relative;
+  z-index: 10;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px 24px;
+  gap: 16px;
+}
+
+/* ── Left Sidebar ── */
+.ts-sidebar {
+  background: var(--bg-panel, rgba(15,23,42,0.85));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.07));
+  border-radius: 18px;
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  backdrop-filter: blur(16px);
+}
+
+.ts-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px 16px;
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.06));
+  margin-bottom: 10px;
+}
+
+.ts-workspace-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff00c8, #8a2eff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  box-shadow: 0 0 14px rgba(255, 0, 200, 0.4);
+}
+
+.ts-workspace-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+}
+
+.ts-workspace-sub {
+  font-size: 11px;
+  color: #ff00c8;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.ts-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted, #475569);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 8px 6px;
+}
+
+.ts-channel-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+}
+
+.ts-channel-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary, #fff);
+}
+
+.ts-channel-btn.active {
+  background: rgba(255, 0, 200, 0.10);
+  color: #ff00c8;
+  font-weight: 700;
+  border: 1px solid rgba(255, 0, 200, 0.2);
+}
+
+.ts-channel-icon { font-size: 14px; flex-shrink: 0; }
+
+/* Members */
+.ts-member-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: default;
+  transition: background 0.15s;
+}
+
+.ts-member-row:hover { background: rgba(255,255,255,0.03); }
+
+.ts-member-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-primary, #fff);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ts-member-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-panel, #0a0e1e);
+}
+
+.ts-member-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-member-role {
+  font-size: 11px;
+  color: var(--text-muted, #475569);
+}
+
+/* ── Main Content ── */
+.ts-main {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-panel, rgba(15,23,42,0.85));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.07));
+  border-radius: 18px;
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+}
+
+/* Channel Header */
+.ts-channel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.07));
+  background: rgba(255, 0, 200, 0.02);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ts-channel-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+  margin: 0 0 3px;
+}
+
+.ts-channel-desc {
+  font-size: 12px;
+  color: var(--text-muted, #64748b);
+  margin: 0;
+}
+
+.ts-header-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.ts-tab-btn {
+  padding: 7px 16px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.ts-tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-primary, #fff); }
+
+.ts-tab-btn.active {
+  background: rgba(255, 0, 200, 0.12);
+  border-color: #ff00c8;
+  color: #ff00c8;
+}
+
+/* ── Chat Messages ── */
+.ts-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.08) transparent;
+}
+
+.ts-msg {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.ts-msg.own { flex-direction: row-reverse; }
+
+.ts-msg-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff00c8, #8a2eff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(255, 0, 200, 0.3);
+}
+
+.ts-msg.own .ts-msg-avatar {
+  background: linear-gradient(135deg, #00e5ff, #8a2eff);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+}
+
+.ts-msg-body { max-width: 70%; }
+
+.ts-msg.own .ts-msg-body { align-items: flex-end; display: flex; flex-direction: column; }
+
+.ts-msg-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.ts-msg.own .ts-msg-meta { flex-direction: row-reverse; }
+
+.ts-msg-author {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ff00c8;
+}
+
+.ts-msg.own .ts-msg-author { color: #00e5ff; }
+
+.ts-msg-time {
+  font-size: 11px;
+  color: var(--text-muted, #475569);
+}
+
+.ts-msg-text {
+  background: var(--bg-card, rgba(15,23,42,0.6));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.06));
+  border-radius: 14px 14px 14px 4px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-primary, #e2e8f0);
+  line-height: 1.55;
+}
+
+.ts-msg.own .ts-msg-text {
+  border-radius: 14px 14px 4px 14px;
+  background: rgba(255, 0, 200, 0.08);
+  border-color: rgba(255, 0, 200, 0.2);
+}
+
+.ts-msg-reactions {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+
+.ts-reaction {
+  background: var(--bg-card, rgba(255,255,255,0.04));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: var(--text-secondary, #94a3b8);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ts-reaction:hover { background: rgba(255,0,200,0.08); border-color: rgba(255,0,200,0.2); }
+
+/* Input Bar */
+.ts-input-bar {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-color, rgba(255,255,255,0.06));
+  background: var(--bg-card, rgba(10,14,30,0.5));
+  flex-shrink: 0;
+}
+
+.ts-input {
+  flex: 1;
+  background: var(--bg-panel, rgba(15,23,42,0.7));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--text-primary, #fff);
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.ts-input:focus { border-color: rgba(255, 0, 200, 0.4); box-shadow: 0 0 0 2px rgba(255,0,200,0.06); }
+.ts-input::placeholder { color: var(--text-muted, #475569); }
+
+.ts-send-btn {
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #ff00c8, #8a2eff);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+  box-shadow: 0 0 14px rgba(255,0,200,0.3);
+  white-space: nowrap;
+}
+
+.ts-send-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.ts-send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+/* ── Tasks Panel ── */
+.ts-tasks-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.ts-tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ts-tasks-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+  margin: 0;
+}
+
+.ts-tasks-stats {
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ts-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ts-task-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--bg-card, rgba(255,255,255,0.02));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.06));
+  border-radius: 12px;
+  transition: all 0.2s;
+  gap: 12px;
+}
+
+.ts-task-card:hover {
+  border-color: rgba(255,0,200,0.2);
+  background: rgba(255,0,200,0.02);
+}
+
+.ts-task-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.ts-task-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.ts-task-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  margin-bottom: 3px;
+}
+
+.ts-task-meta {
+  font-size: 12px;
+  color: var(--text-muted, #64748b);
+}
+
+.ts-task-right {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ts-task-priority,
+.ts-task-status-badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+/* ── Files Panel ── */
+.ts-files-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.ts-file-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-card, rgba(255,255,255,0.02));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.06));
+  border-radius: 12px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
+
+.ts-file-card:hover {
+  border-color: rgba(255,0,200,0.2);
+  background: rgba(255,0,200,0.02);
+}
+
+.ts-file-icon { font-size: 26px; flex-shrink: 0; }
+
+.ts-file-info { flex: 1; }
+
+.ts-file-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  margin-bottom: 3px;
+}
+
+.ts-file-meta { font-size: 12px; color: var(--text-muted, #64748b); }
+
+.ts-file-download {
+  padding: 7px 16px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 8px;
+  color: #00e5ff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.ts-file-download:hover { background: rgba(0,229,255,0.14); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+
+/* ── Light theme support ── */
+[data-theme="light"] .ts-root { background: #f0f4f8; }
+[data-theme="light"] .ts-msg-text { color: #0f172a; background: #ffffff; border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .ts-channel-btn.active { background: rgba(124, 58, 237, 0.1); color: #7c3aed; border-color: rgba(124, 58, 237, 0.25); }
+[data-theme="light"] .ts-tab-btn.active { background: rgba(124, 58, 237, 0.12); border-color: #7c3aed; color: #7c3aed; }
+[data-theme="light"] .ts-send-btn { background: linear-gradient(135deg, #0284c7, #7c3aed); box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25); }
+[data-theme="light"] .ts-file-download { background: rgba(2, 132, 199, 0.08); border-color: rgba(2, 132, 199, 0.3); color: #0284c7; }
+[data-theme="light"] .ts-file-download:hover { background: rgba(2, 132, 199, 0.16); }
+[data-theme="light"] .ts-msg-author { color: #7c3aed; }
+[data-theme="light"] .ts-msg.own .ts-msg-author { color: #0284c7; }
+[data-theme="light"] .ts-msg.own .ts-msg-text { background: rgba(2, 132, 199, 0.1); border-color: rgba(2, 132, 199, 0.22); }
+
