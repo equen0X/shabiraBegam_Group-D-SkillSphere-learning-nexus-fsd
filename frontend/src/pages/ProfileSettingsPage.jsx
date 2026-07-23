@@ -63,6 +63,43 @@ export default function ProfileSettingsPage() {
     setSelectedAccent(themeAccent);
   }, [themeMode, themeAccent]);
 
+  // Cleanup theme preview on unmount to prevent unsaved previews from sticking
+  useEffect(() => {
+    return () => {
+      const root = document.documentElement;
+      root.setAttribute("data-theme", themeMode);
+      const vars = themeMode === "light" ? {
+        "--bg-primary":     "#f0f4f8",
+        "--bg-secondary":   "#e2e8f0",
+        "--bg-panel":       "rgba(255,255,255,0.95)",
+        "--bg-card":        "rgba(248,250,252,0.98)",
+        "--text-primary":   "#0f172a",
+        "--text-secondary": "#475569",
+        "--text-muted":     "#94a3b8",
+        "--border-color":   "rgba(0,0,0,0.12)",
+        "--border-subtle":  "rgba(0,0,0,0.05)",
+        "--navbar-bg":      "rgba(240,244,248,0.92)",
+        "--input-bg":       "rgba(255,255,255,0.9)",
+        "--shadow-panel":   "0 10px 35px rgba(0,0,0,0.12)",
+      } : {
+        "--bg-primary":     "#05060b",
+        "--bg-secondary":   "#0a0e1e",
+        "--bg-panel":       "rgba(15,23,42,0.85)",
+        "--bg-card":        "rgba(10,14,30,0.9)",
+        "--text-primary":   "#ffffff",
+        "--text-secondary": "#94a3b8",
+        "--text-muted":     "#475569",
+        "--border-color":   "rgba(255,255,255,0.08)",
+        "--border-subtle":  "rgba(255,255,255,0.04)",
+        "--navbar-bg":      "rgba(12,12,16,0.75)",
+        "--input-bg":       "rgba(0,0,0,0.5)",
+        "--shadow-panel":   "0 10px 35px rgba(0,0,0,0.5)",
+      };
+      Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+      root.style.setProperty("--accent", themeAccent);
+    };
+  }, [themeMode, themeAccent]);
+
   // Toast helper
   const showToast = useCallback((msg, type = "success") => {
     setToastMsg(msg);
@@ -106,23 +143,27 @@ export default function ProfileSettingsPage() {
       "--bg-secondary":   "#e2e8f0",
       "--bg-panel":       "rgba(255,255,255,0.95)",
       "--bg-card":        "rgba(248,250,252,0.98)",
-      "--text-primary":   "var(--bg-secondary)",
+      "--text-primary":   "#0f172a",
       "--text-secondary": "#475569",
-      "--text-muted":     "var(--text-secondary)",
+      "--text-muted":     "#94a3b8",
       "--border-color":   "rgba(0,0,0,0.12)",
+      "--border-subtle":  "rgba(0,0,0,0.05)",
       "--navbar-bg":      "rgba(240,244,248,0.92)",
       "--input-bg":       "rgba(255,255,255,0.9)",
+      "--shadow-panel":   "0 10px 35px rgba(0,0,0,0.12)",
     } : {
-      "--bg-primary":     "var(--bg-primary)",
-      "--bg-secondary":   "var(--bg-secondary)",
+      "--bg-primary":     "#05060b",
+      "--bg-secondary":   "#0a0e1e",
       "--bg-panel":       "rgba(15,23,42,0.85)",
       "--bg-card":        "rgba(10,14,30,0.9)",
-      "--text-primary":   "var(--text-primary)",
-      "--text-secondary": "var(--text-secondary)",
+      "--text-primary":   "#ffffff",
+      "--text-secondary": "#94a3b8",
       "--text-muted":     "#475569",
       "--border-color":   "rgba(255,255,255,0.08)",
+      "--border-subtle":  "rgba(255,255,255,0.04)",
       "--navbar-bg":      "rgba(12,12,16,0.75)",
       "--input-bg":       "rgba(0,0,0,0.5)",
+      "--shadow-panel":   "0 10px 35px rgba(0,0,0,0.5)",
     };
     const root = document.documentElement;
     Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));

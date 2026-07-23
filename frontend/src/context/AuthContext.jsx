@@ -60,6 +60,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [xp, setXp] = useState(0);
   const [completedTopics, setCompletedTopics] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
   const navigate = useNavigate();
 
   // ─── Theme state ──────────────────────────────────────────────────────
@@ -92,34 +93,108 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (user) {
-      const savedXp = localStorage.getItem(`xp_${user.email || user.username}`);
-      const savedTopics = localStorage.getItem(`completed_topics_${user.email || user.username}`);
-      setXp(savedXp ? parseInt(savedXp, 10) : 0);
-      setCompletedTopics(savedTopics ? JSON.parse(savedTopics) : []);
+      setXp(user.xp !== undefined ? user.xp : 0);
+      setCompletedTopics(user.completed_topics || []);
+      
+      // Sync enrolled courses (ensure IDs are string types for consistent matching)
+      const coursesFromDb = user.enrolled_courses || [];
+      setEnrolledCourses(coursesFromDb.map(id => id.toString()));
     } else {
       setXp(0);
       setCompletedTopics([]);
+      setEnrolledCourses([]);
     }
   }, [user]);
 
-  const earnXp = (amount) => {
+  const earnXp = async (amount) => {
     if (!user) return;
-    setXp(prev => {
-      const next = prev + amount;
-      localStorage.setItem(`xp_${user.email || user.username}`, next.toString());
-      return next;
-    });
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/xp/add`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ points: amount }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setXp(data.xp);
+        setUser(prev => ({ ...prev, xp: data.xp }));
+      }
+    } catch (err) {
+      console.error('Failed to save XP to database:', err);
+      // Fallback local storage
+      setXp(prev => {
+        const next = prev + amount;
+        localStorage.setItem(`xp_${user.email || user.username}`, next.toString());
+        return next;
+      });
+    }
   };
 
-  const completeTopic = (topicId, xpReward) => {
+  const enrollCourse = async (courseId) => {
     if (!user) return;
-    setCompletedTopics(prev => {
-      if (prev.includes(topicId)) return prev;
-      const next = [...prev, topicId];
-      localStorage.setItem(`completed_topics_${user.email || user.username}`, JSON.stringify(next));
-      earnXp(xpReward);
-      return next;
-    });
+    const stringId = courseId.toString();
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/course/enroll`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId: stringId }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setEnrolledCourses(prev => {
+          if (prev.includes(stringId)) return prev;
+          return [...prev, stringId];
+        });
+        setUser(prev => {
+          const currentCourses = prev.enrolled_courses || [];
+          const updatedCourses = currentCourses.includes(stringId) ? currentCourses : [...currentCourses, stringId];
+          return { ...prev, enrolled_courses: updatedCourses };
+        });
+      }
+    } catch (err) {
+      console.error('Failed to enroll in course in database:', err);
+      // Fallback local storage
+      setEnrolledCourses(prev => {
+        if (prev.includes(stringId)) return prev;
+        const next = [...prev, stringId];
+        localStorage.setItem(`enrolled_courses_${user.email || user.username}`, JSON.stringify(next));
+        return next;
+      });
+    }
+  };
+
+  const completeTopic = async (topicId, xpReward) => {
+    if (!user) return;
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/topic/complete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topicId, xpReward }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setXp(data.xp);
+        setCompletedTopics(prev => {
+          if (prev.includes(topicId)) return prev;
+          return [...prev, topicId];
+        });
+        setUser(prev => {
+          const currentTopics = prev.completed_topics || [];
+          const updatedTopics = currentTopics.includes(topicId) ? currentTopics : [...currentTopics, topicId];
+          return { ...prev, xp: data.xp, completed_topics: updatedTopics };
+        });
+      }
+    } catch (err) {
+      console.error('Failed to complete topic in database:', err);
+      // Fallback local storage
+      setCompletedTopics(prev => {
+        if (prev.includes(topicId)) return prev;
+        const next = [...prev, topicId];
+        localStorage.setItem(`completed_topics_${user.email || user.username}`, JSON.stringify(next));
+        earnXp(xpReward);
+        return next;
+      });
+    }
   };
 
   const clearSession = () => {
@@ -149,7 +224,7 @@ export function AuthProvider({ children }) {
     return data.accessToken;
   };
 
-  const fetchProfile = async (token, isRetry = false) => {
+  const fetchProfile = async (token, isRetry = false, throwOnError = false) => {
     try {
       const response = await fetch(`${API_URL}/me`, {
         headers: { 'Authorization': `Bearer ${token}` },
@@ -164,32 +239,42 @@ export function AuthProvider({ children }) {
 
       if ((response.status === 401 || response.status === 403) && !isRetry) {
         const newToken = await refreshSession();
-        return fetchProfile(newToken, true);
+        return fetchProfile(newToken, true, throwOnError);
       }
 
       if (!response.ok || !data.success) {
         throw new Error(data.message || 'Failed to fetch profile');
       }
 
-      const storedOverride = localStorage.getItem(`profile_override_${data.user.email || data.user.username}`);
-      if (storedOverride) {
-        setUser({ ...data.user, ...JSON.parse(storedOverride) });
-      } else {
-        setUser(data.user);
-      }
+      setUser(data.user);
     } catch (err) {
       console.error('Session restore failed:', err.message);
       clearSession();
+      if (throwOnError) throw err;
     }
   };
 
-  const updateUserProfile = (details) => {
+  const updateUserProfile = async (details) => {
     if (!user) return;
-    setUser(prev => {
-      const updated = { ...prev, ...details };
-      localStorage.setItem(`profile_override_${prev.email || prev.username}`, JSON.stringify(updated));
-      return updated;
-    });
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/profile/update`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(details),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setUser(prev => ({ ...prev, ...details }));
+      }
+    } catch (err) {
+      console.error('Failed to update profile in database:', err);
+      // Fallback local storage
+      setUser(prev => {
+        const updated = { ...prev, ...details };
+        localStorage.setItem(`profile_override_${prev.email || prev.username}`, JSON.stringify(updated));
+        return updated;
+      });
+    }
   };
 
   useEffect(() => {
@@ -211,7 +296,7 @@ export function AuthProvider({ children }) {
     if (!response.ok || !data.success) throw new Error(data.message || 'Authentication failed');
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
-    setUser(data.user);
+    await fetchProfile(data.accessToken, false, true);
     return data.user;
   };
 
@@ -226,7 +311,7 @@ export function AuthProvider({ children }) {
     if (!response.ok || !data.success) throw new Error(data.message || 'Registration failed');
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
-    setUser(data.user);
+    await fetchProfile(data.accessToken, false, true);
     return data.user;
   };
 
@@ -241,7 +326,7 @@ export function AuthProvider({ children }) {
     if (!response.ok || !data.success) throw new Error(data.message || 'Login failed');
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
-    setUser(data.user);
+    await fetchProfile(data.accessToken, false, true);
     return data.user;
   };
 
@@ -283,12 +368,42 @@ export function AuthProvider({ children }) {
     return response;
   };
 
+  const unlockBadge = async (badgeId) => {
+    if (!user) return;
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/badge/unlock`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ badgeId }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setUser(prev => {
+          const currentBadges = prev.badges || [];
+          const updatedBadges = currentBadges.includes(badgeId) ? currentBadges : [...currentBadges, badgeId];
+          return { ...prev, badges: updatedBadges };
+        });
+      }
+    } catch (err) {
+      console.error('Failed to unlock badge in database:', err);
+      // Fallback local storage
+      localStorage.setItem(`badge_${badgeId}_badge_${user.email || user.username}`, 'true');
+      setUser(prev => {
+        const currentBadges = prev.badges || [];
+        const updatedBadges = currentBadges.includes(badgeId) ? currentBadges : [...currentBadges, badgeId];
+        return { ...prev, badges: updatedBadges };
+      });
+    }
+  };
+
   const value = {
     user, loading,
     loginWithGoogle, signupLocal, loginLocal, logout, authenticatedFetch,
     xp, earnXp,
     completedTopics, completeTopic,
+    enrolledCourses, enrollCourse,
     updateUserProfile,
+    unlockBadge,
     themeMode, themeAccent, updateTheme,
     workforceTheme, updateWorkforceTheme,
   };

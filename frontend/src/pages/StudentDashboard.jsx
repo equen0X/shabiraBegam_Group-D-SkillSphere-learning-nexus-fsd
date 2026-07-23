@@ -8,7 +8,7 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/dashboard.css";
 
 export default function StudentDashboard() {
-  const { user, xp, earnXp, completedTopics } = useAuth();
+  const { user, xp, earnXp, completedTopics, completeTopic } = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
@@ -193,66 +193,168 @@ export default function StudentDashboard() {
     setEditorCode(languageTemplates[lang]);
   };
 
+  const translatePythonToJS = (code) => {
+    let jsLines = [];
+    const lines = code.split("\n");
+    let indentLevels = [];
+
+    for (let line of lines) {
+      const rawLine = line;
+      const trimmed = line.trim();
+      if (!trimmed) {
+        jsLines.push("");
+        continue;
+      }
+      if (trimmed.startsWith("#")) {
+        jsLines.push("// " + trimmed.slice(1));
+        continue;
+      }
+
+      const indentCount = rawLine.length - rawLine.trimStart().length;
+
+      while (indentLevels.length > 0 && indentCount <= indentLevels[indentLevels.length - 1]) {
+        jsLines.push(" ".repeat(indentLevels[indentLevels.length - 1]) + "}");
+        indentLevels.pop();
+      }
+
+      let translated = trimmed;
+
+      const defMatch = trimmed.match(/^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\((.*?)\)\s*:/);
+      if (defMatch) {
+        translated = `function ${defMatch[1]}(${defMatch[2]}) {`;
+        indentLevels.push(indentCount);
+      } else {
+        if (trimmed.endsWith(":")) {
+          if (trimmed.startsWith("if ")) {
+            translated = `if (${trimmed.slice(3, -1).trim()}) {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("elif ")) {
+            translated = `else if (${trimmed.slice(5, -1).trim()}) {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("else")) {
+            translated = `else {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("for ") && trimmed.includes(" in ")) {
+            const forMatch = trimmed.match(/^for\s+([a-zA-Z_][a-zA-Z0-9_]*)\s+in\s+range\((.*?)\)\s*:/);
+            if (forMatch) {
+              const varName = forMatch[1];
+              const rangeVal = forMatch[2].trim();
+              translated = `for (let ${varName} = 0; ${varName} < ${rangeVal}; ${varName}++) {`;
+              indentLevels.push(indentCount);
+            }
+          }
+        }
+      }
+
+      translated = translated.replace(/\bf(['"])(.*?)\1/g, (match, quote, content) => {
+        return '`' + content.replace(/\{(.*?)\}/g, '${$1}') + '`';
+      });
+
+      translated = translated.replace(/\bprint\(([\s\S]*?)\)/g, "console.log($1)");
+      translated = translated.replace(/\bTrue\b/g, "true").replace(/\bFalse\b/g, "false");
+      translated = translated.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||").replace(/\bnot\b/g, "!");
+
+      jsLines.push(" ".repeat(indentCount) + translated);
+    }
+
+    while (indentLevels.length > 0) {
+      jsLines.push(" ".repeat(indentLevels[indentLevels.length - 1]) + "}");
+      indentLevels.pop();
+    }
+
+    return jsLines.join("\n");
+  };
+
+  const translateCPlusPlusJavaToJS = (code, language) => {
+    let js = code;
+
+    js = js.replace(/\/\*[\s\S]*?\*\//g, ""); // multi-line comments
+    js = js.replace(/\/\/.*/g, ""); // single-line comments
+
+    js = js.replace(/#include\s*<.*?>/g, "");
+    js = js.replace(/using\s+namespace\s+\w+\s*;/g, "");
+    js = js.replace(/import\s+[\w.]+(\.\*)?\s*;/g, "");
+    js = js.replace(/package\s+[\w.]+\s*;/g, "");
+    js = js.replace(/\bstd::/g, "");
+
+    js = js.replace(/\b(?:public|private|protected|static|final|class)\s+\w+\s*\{([\s\S]*)\}/g, "$1");
+    js = js.replace(/\b(?:public|private|protected|static|final)\b/g, "");
+
+    js = js.replace(/System\.out\.println\s*\(([\s\S]*?)\)\s*;/g, "console.log($1);");
+    js = js.replace(/System\.out\.print\s*\(([\s\S]*?)\)\s*;/g, "console.log($1);");
+
+    js = js.replace(/printf\s*\(\s*(['"])(.*?)\1\s*(?:,\s*([\s\S]*?))?\)\s*;/g, (match, quote, fmt, args) => {
+      let fmtStr = fmt.replace(/\\n/g, "");
+      if (!args) return `console.log(${quote}${fmtStr}${quote});`;
+      
+      const argList = args.split(",");
+      let jsExpr = `${quote}${fmtStr}${quote}`;
+      for (let arg of argList) {
+        arg = arg.trim();
+        jsExpr = jsExpr.replace(/%[d|f|s|c|x]/, `" + ${arg} + "`);
+      }
+      jsExpr = jsExpr.replace(/^""\s*\+\s*/, "").replace(/\s*\+\s*""$/, "");
+      return `console.log(${jsExpr});`;
+    });
+
+    js = js.replace(/cout\s*<<\s*([\s\S]*?)\s*;/g, (match, content) => {
+      const parts = content.split("<<");
+      const evalParts = [];
+      for (let part of parts) {
+        part = part.trim();
+        if (part === "endl") {
+          evalParts.push('""');
+        } else {
+          evalParts.push(part);
+        }
+      }
+      return `console.log(${evalParts.filter(p => p !== "").join(" + ")});`;
+    });
+
+    const types = ["int", "float", "double", "char", "String", "boolean", "bool", "void"];
+    for (let type of types) {
+      js = js.replace(new RegExp(`\\b${type}(?:\\s*\\[\\s*\\])?\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b`, 'g'), "let $1");
+    }
+
+    js = js.replace(/let\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(([\s\S]*?)\)\s*\{/g, "function $1($2) {");
+
+    js = js.replace(/\(([\s\S]*?)\)/g, (match, params) => {
+      return `(${params.replace(/\blet\s*\[\s*\]\s+/g, "").replace(/\blet\s+/g, "")})`;
+    });
+
+    js += "\nif (typeof main === 'function') { main(); }";
+
+    return js;
+  };
+
   const handleRunCode = () => {
     setIsRunning(true);
     setConsoleOutput("Compiling and executing code...");
 
     setTimeout(() => {
-      let output = "";
       const code = editorCode;
+      const logLines = [];
+      const originalLog = console.log;
+      console.log = (...args) => {
+        logLines.push(args.join(" "));
+      };
 
-      if (selectedLanguage === "python") {
-        const printRegex = /print\((['"])(.*?)\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = printRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
+      try {
+        if (selectedLanguage === "python") {
+          const translatedJs = translatePythonToJS(code);
+          Function(`"use strict"; ${translatedJs}`)();
         } else {
-          output = "Process exited with code 0 (No output produced).";
+          const translatedJs = translateCPlusPlusJavaToJS(code, selectedLanguage);
+          Function(`"use strict"; ${translatedJs}`)();
         }
-      } else if (selectedLanguage === "cpp") {
-        const coutRegex = /cout\s*<<\s*(['"])(.*?)\1/g;
-        let match;
-        const matches = [];
-        while ((match = coutRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
-        } else {
-          output = "Process exited with code 0 (No output produced).";
-        }
-      } else if (selectedLanguage === "c") {
-        const printfRegex = /printf\((['"])(.*?)\\n?\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = printfRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
-        } else {
-          output = "Process exited with code 0 (No output produced).";
-        }
-      } else if (selectedLanguage === "java") {
-        const javaRegex = /System\.out\.println\((['"])(.*?)\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = javaRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
-        } else {
-          output = "Process exited with code 0 (No output produced).";
-        }
+        const output = logLines.join("\n");
+        setConsoleOutput(output || "Process exited with code 0.");
+      } catch (err) {
+        setConsoleOutput("Runtime Error: " + err.message);
+      } finally {
+        console.log = originalLog;
+        setIsRunning(false);
       }
-
-      setConsoleOutput(output);
-      setIsRunning(false);
     }, 1000);
   };
 
@@ -270,8 +372,25 @@ export default function StudentDashboard() {
   }, [chatMessages, isChatLoading]);
 
   // Action: Redirect to learning portal to allow actual GFG-style study
-  const handleStudy = (courseId) => {
-    navigate('/learning', { state: { activeTrack: courseId } });
+  const handleStudy = async (courseId) => {
+    const trackTopics = {
+      react: ["react_intro", "react_jsx", "react_components", "react_props_state", "react_hooks", "react_lifecycle"],
+      java: ["java_intro", "java_datatypes", "java_oops", "java_exceptions", "java_collections", "java_multithreading"],
+      springboot: ["springboot_intro", "springboot_mvc", "springboot_di", "springboot_jpa", "springboot_rest", "springboot_security"]
+    };
+
+    const topics = trackTopics[courseId];
+    if (topics && completeTopic && completedTopics) {
+      const nextUncompleted = topics.find(t => !completedTopics.includes(t));
+      if (nextUncompleted) {
+        try {
+          await completeTopic(nextUncompleted, 100);
+        } catch (err) {
+          console.error("Failed to update progress on study click:", err);
+        }
+      }
+    }
+    navigate(`/learning?track=${courseId}`);
   };
 
   // Action: Claim Quest Rewards

@@ -37,6 +37,8 @@ class BackendApplicationTests {
     @Test
     @SuppressWarnings("unchecked")
     void testFullAuthFlow() throws Exception {
+
+
         // 1. Get server status check
         ResponseEntity<Map> statusRes = restTemplate.getForEntity(getBaseUrl() + "/status", Map.class);
         assertEquals(HttpStatus.OK, statusRes.getStatusCode());
@@ -159,5 +161,51 @@ class BackendApplicationTests {
         assertEquals(true, localLoginRes.getBody().get("success"));
         assertNotNull(localLoginRes.getBody().get("accessToken"));
         assertNotNull(localLoginRes.getBody().get("refreshToken"));
+
+        // Setup a local RestTemplate to handle 401 response statuses without throwing HttpRetryException
+        org.springframework.web.client.RestTemplate rt = new org.springframework.web.client.RestTemplate();
+        rt.setRequestFactory(new org.springframework.http.client.JdkClientHttpRequestFactory());
+        rt.setErrorHandler(new org.springframework.web.client.DefaultResponseErrorHandler() {
+            @Override
+            public boolean hasError(org.springframework.http.client.ClientHttpResponse response) throws java.io.IOException {
+                return false;
+            }
+        });
+
+        // 12. Local login with incorrect email
+        Map<String, String> wrongEmailRequest = new HashMap<>();
+        wrongEmailRequest.put("email", "wrongemail@skillsphere.com");
+        wrongEmailRequest.put("password", "secure_password_123");
+
+        ResponseEntity<Map> wrongEmailRes = rt.postForEntity(getBaseUrl() + "/auth/login", wrongEmailRequest, Map.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, wrongEmailRes.getStatusCode());
+        assertNotNull(wrongEmailRes.getBody());
+        assertEquals(false, wrongEmailRes.getBody().get("success"));
+        assertEquals("Incorrect email ID", wrongEmailRes.getBody().get("message"));
+
+        // 13. Local login with incorrect password
+        Map<String, String> wrongPasswordRequest = new HashMap<>();
+        wrongPasswordRequest.put("email", "local@skillsphere.com");
+        wrongPasswordRequest.put("password", "wrong_password");
+
+        ResponseEntity<Map> wrongPasswordRes = rt.postForEntity(getBaseUrl() + "/auth/login", wrongPasswordRequest, Map.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, wrongPasswordRes.getStatusCode());
+        assertNotNull(wrongPasswordRes.getBody());
+        assertEquals(false, wrongPasswordRes.getBody().get("success"));
+        assertEquals("Incorrect password", wrongPasswordRes.getBody().get("message"));
+
+        // 14. Local signup with too short password (less than 6 characters)
+        Map<String, String> shortPasswordSignupRequest = new HashMap<>();
+        shortPasswordSignupRequest.put("username", "shortpassuser");
+        shortPasswordSignupRequest.put("full_name", "Short Password User");
+        shortPasswordSignupRequest.put("email", "shortpass@skillsphere.com");
+        shortPasswordSignupRequest.put("password", "12345");
+        shortPasswordSignupRequest.put("role", "STUDENT");
+
+        ResponseEntity<Map> shortPasswordSignupRes = rt.postForEntity(getBaseUrl() + "/auth/signup", shortPasswordSignupRequest, Map.class);
+        assertEquals(HttpStatus.BAD_REQUEST, shortPasswordSignupRes.getStatusCode());
+        assertNotNull(shortPasswordSignupRes.getBody());
+        assertEquals(false, shortPasswordSignupRes.getBody().get("success"));
+        assertEquals("Password must be at least 6 characters long", shortPasswordSignupRes.getBody().get("message"));
     }
 }

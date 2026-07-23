@@ -151,40 +151,67 @@ const initialWorkforceData = [
 ];
 
 export function AdminProvider({ children }) {
-  const [courses, setCourses] = useState(() => {
-    const saved = localStorage.getItem('admin_courses');
-    return saved ? JSON.parse(saved) : initialCoursesData;
-  });
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-  const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem('admin_users');
-    return saved ? JSON.parse(saved) : initialUsersData;
-  });
-
-  const [workforce, setWorkforce] = useState(() => {
-    const saved = localStorage.getItem('admin_workforce');
-    return saved ? JSON.parse(saved) : initialWorkforceData;
-  });
+  const [courses, setCourses] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [workforce, setWorkforce] = useState([]);
   
   const [isAdminAuth, setIsAdminAuth] = useState(() => {
     return localStorage.getItem('admin_session') === 'true';
   });
 
-  // Keep localStorage in sync
-  useEffect(() => {
-    localStorage.setItem('admin_courses', JSON.stringify(courses));
-  }, [courses]);
+  const fetchData = async () => {
+    try {
+      // 1. Fetch Courses
+      const coursesRes = await fetch(`${API_URL}/api/admin/courses`);
+      if (coursesRes.ok) {
+        const coursesData = await coursesRes.json();
+        if (coursesData.success) {
+          setCourses(coursesData.courses || []);
+        }
+      }
+
+      // 2. Fetch Users
+      const usersRes = await fetch(`${API_URL}/api/admin/users`);
+      if (usersRes.ok) {
+        const usersData = await usersRes.json();
+        if (usersData.success) {
+          const allUsers = usersData.users || [];
+          
+          // Filter students
+          const students = allUsers.filter(u => u.role === "STUDENT").map(u => ({
+            id: u.id,
+            name: u.fullName || u.username,
+            email: u.email,
+            role: u.role,
+            status: u.isActive ? 'Active' : 'Blocked'
+          }));
+          setUsers(students);
+
+          // Filter workforce
+          const wf = allUsers.filter(u => u.role === "EMPLOYEE" || u.role === "MANAGER").map(u => ({
+            id: u.id,
+            name: u.fullName || u.username,
+            email: u.email,
+            role: u.role,
+            status: u.isActive ? 'Approved' : 'Pending'
+          }));
+          setWorkforce(wf);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch admin data:", err);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem('admin_users', JSON.stringify(users));
-  }, [users]);
-
-  useEffect(() => {
-    localStorage.setItem('admin_workforce', JSON.stringify(workforce));
-  }, [workforce]);
+    if (isAdminAuth) {
+      fetchData();
+    }
+  }, [isAdminAuth]);
 
   const loginAdmin = (email, password) => {
-    // Hardcoded simple check for admin
     if (email === "admin@skillsphere.com" && password === "admin123") {
       setIsAdminAuth(true);
       localStorage.setItem('admin_session', 'true');
@@ -199,35 +226,92 @@ export function AdminProvider({ children }) {
   };
 
   // Course Management
-  const addCourse = (course) => {
-    setCourses(prev => [...prev, { ...course, id: Date.now() }]);
+  const addCourse = async (course) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/courses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(course)
+      });
+      if (res.ok) {
+        fetchData();
+      }
+    } catch (err) {
+      console.error("Failed to add course:", err);
+    }
   };
-  const updateCourse = (id, updatedCourse) => {
-    setCourses(prev => prev.map(c => c.id === id ? { ...c, ...updatedCourse } : c));
+
+  const updateCourse = async (id, updatedCourse) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/courses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...updatedCourse, id })
+      });
+      if (res.ok) {
+        fetchData();
+      }
+    } catch (err) {
+      console.error("Failed to update course:", err);
+    }
   };
-  const deleteCourse = (id) => {
-    setCourses(prev => prev.filter(c => c.id !== id));
+
+  const deleteCourse = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/courses/${id}`, {
+        method: "DELETE"
+      });
+      if (res.ok) {
+        fetchData();
+      }
+    } catch (err) {
+      console.error("Failed to delete course:", err);
+    }
   };
 
   // Student Management
-  const toggleStudentStatus = (id) => {
-    setUsers(prev => prev.map(u => {
-      if (u.id === id) {
-        return { ...u, status: u.status === 'Active' ? 'Blocked' : 'Active' };
+  const toggleStudentStatus = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/users/${id}/toggle-status`, {
+        method: "POST"
+      });
+      if (res.ok) {
+        fetchData();
       }
-      return u;
-    }));
+    } catch (err) {
+      console.error("Failed to toggle student status:", err);
+    }
   };
-  const updateStudent = (id, updated) => {
-    setUsers(prev => prev.map(u => u.id === id ? { ...u, ...updated } : u));
+
+  const updateStudent = async (id, updated) => {
+    // No-op / mock placeholder
   };
-  const deleteStudent = (id) => {
-    setUsers(prev => prev.filter(u => u.id !== id));
+
+  const deleteStudent = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/users/${id}`, {
+        method: "DELETE"
+      });
+      if (res.ok) {
+        fetchData();
+      }
+    } catch (err) {
+      console.error("Failed to delete student:", err);
+    }
   };
 
   // Workforce Management
-  const changeWorkforceStatus = (id, status) => {
-    setWorkforce(prev => prev.map(w => w.id === id ? { ...w, status } : w));
+  const changeWorkforceStatus = async (id, status) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/users/${id}/toggle-status`, {
+        method: "POST"
+      });
+      if (res.ok) {
+        fetchData();
+      }
+    } catch (err) {
+      console.error("Failed to change workforce status:", err);
+    }
   };
 
   const value = {

@@ -7,8 +7,10 @@ import Footer from "../components/Footer";
 import "../styles/workforceDashboard.css";
 
 export default function WorkforceDashboard() {
-  const { user, workforceTheme } = useAuth();
+  const { user, workforceTheme, authenticatedFetch } = useAuth();
   const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
     document.documentElement.setAttribute("data-wf-theme", workforceTheme || "dark");
@@ -18,25 +20,47 @@ export default function WorkforceDashboard() {
   }, [workforceTheme]);
 
   // Employee Directory State
-  const [employees, setEmployees] = useState([
-    { id: 1, name: "Jane Doe", role: "Full-Stack Engineer", dept: "Engineering", status: "Active", score: 92 },
-    { id: 2, name: "Mark Smith", role: "Product Manager", dept: "Product", status: "Active", score: 88 },
-    { id: 3, name: "NeonCoder", role: "UX Developer", dept: "Design", status: "Active", score: 95 },
-    { id: 4, name: "Sarah Jenkins", role: "DevOps specialist", dept: "Infrastructure", status: "On Leave", score: 85 }
-  ]);
-
+  const [employees, setEmployees] = useState([]);
   // Project Allocation State
-  const [projects, setProjects] = useState([
-    { id: 1, title: "SkillSphere Mobile Platform Upgrade", assignee: "NeonCoder", progress: 60, priority: "High" },
-    { id: 2, title: "OAuth2 & JWT Token Upgrades", assignee: "Jane Doe", progress: 35, priority: "Medium" },
-    { id: 3, title: "Vite 6 Migration Strategy", assignee: "Sarah Jenkins", progress: 80, priority: "Low" }
-  ]);
-
+  const [projects, setProjects] = useState([]);
   // Leave Requests State
-  const [leaveRequests, setLeaveRequests] = useState([
-    { id: 1, name: "Sarah Jenkins", type: "Sick Leave", details: "Requires 2 days off following dental surgery. (June 18-19)", status: "PENDING" },
-    { id: 2, name: "Mark Smith", type: "Casual Leave", details: "Annual family getaway (3 days). (July 2-4)", status: "PENDING" }
-  ]);
+  const [leaveRequests, setLeaveRequests] = useState([]);
+
+  const fetchEmployees = async () => {
+    try {
+      const res = await authenticatedFetch(`${API_URL}/api/workforce/employees`);
+      const data = await res.json();
+      if (res.ok && data.success) setEmployees(data.employees);
+    } catch (e) {
+      console.error("Error fetching employees:", e);
+    }
+  };
+
+  const fetchProjects = async () => {
+    try {
+      const res = await authenticatedFetch(`${API_URL}/api/workforce/projects`);
+      const data = await res.json();
+      if (res.ok && data.success) setProjects(data.projects);
+    } catch (e) {
+      console.error("Error fetching projects:", e);
+    }
+  };
+
+  const fetchLeaves = async () => {
+    try {
+      const res = await authenticatedFetch(`${API_URL}/api/workforce/leaves`);
+      const data = await res.json();
+      if (res.ok && data.success) setLeaveRequests(data.leaveRequests);
+    } catch (e) {
+      console.error("Error fetching leaves:", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+    fetchProjects();
+    fetchLeaves();
+  }, []);
 
   // Modal States
   const [showEmployeeModal, setShowEmployeeModal] = useState(false);
@@ -59,60 +83,75 @@ export default function WorkforceDashboard() {
   }, [chatMessages, isChatLoading]);
 
   // Form Actions: Add Employee
-  const handleAddEmployeeSubmit = (e) => {
+  const handleAddEmployeeSubmit = async (e) => {
     e.preventDefault();
     if (!newEmp.name || !newEmp.role || !newEmp.dept) return;
 
-    setEmployees(prev => [
-      ...prev,
-      {
-        id: Date.now(),
-        name: newEmp.name,
-        role: newEmp.role,
-        dept: newEmp.dept,
-        status: newEmp.status,
-        score: parseInt(newEmp.score) || 80
+    try {
+      const res = await authenticatedFetch(`${API_URL}/api/workforce/employees`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newEmp.name,
+          role: newEmp.role,
+          dept: newEmp.dept,
+          status: newEmp.status,
+          score: parseInt(newEmp.score) || 85
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        fetchEmployees();
+        setNewEmp({ name: "", role: "", dept: "", status: "Active", score: 85 });
+        setShowEmployeeModal(false);
       }
-    ]);
-    // Reset and close
-    setNewEmp({ name: "", role: "", dept: "", status: "Active", score: 85 });
-    setShowEmployeeModal(false);
+    } catch (err) {
+      console.error("Failed to add employee:", err);
+    }
   };
 
   // Form Actions: Assign Project
-  const handleAssignProjectSubmit = (e) => {
+  const handleAssignProjectSubmit = async (e) => {
     e.preventDefault();
     if (!newProj.title || !newProj.assignee) return;
 
-    setProjects(prev => [
-      ...prev,
-      {
-        id: Date.now(),
-        title: newProj.title,
-        assignee: newProj.assignee,
-        progress: parseInt(newProj.progress) || 10,
-        priority: newProj.priority
+    try {
+      const res = await authenticatedFetch(`${API_URL}/api/workforce/projects`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newProj.title,
+          assignee: newProj.assignee,
+          progress: parseInt(newProj.progress) || 10,
+          priority: newProj.priority
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        fetchProjects();
+        setNewProj({ title: "", assignee: "", progress: 10, priority: "Medium" });
+        setShowProjectModal(false);
       }
-    ]);
-    // Reset and close
-    setNewProj({ title: "", assignee: "", progress: 10, priority: "Medium" });
-    setShowProjectModal(false);
+    } catch (err) {
+      console.error("Failed to assign project:", err);
+    }
   };
 
   // Action: Approve/Reject Leave Request
-  const handleLeaveDecision = (id, decision) => {
-    setLeaveRequests(prev => prev.map(req => 
-      req.id === id ? { ...req, status: decision } : req
-    ));
-
-    // If approved and the requester is in directory, set status to On Leave
-    if (decision === "APPROVED") {
-      const targetReq = leaveRequests.find(r => r.id === id);
-      if (targetReq) {
-        setEmployees(prev => prev.map(emp => 
-          emp.name === targetReq.name ? { ...emp, status: "On Leave" } : emp
-        ));
+  const handleLeaveDecision = async (id, decision) => {
+    try {
+      const res = await authenticatedFetch(`${API_URL}/api/workforce/leaves/${id}/decision`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ decision })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        fetchLeaves();
+        fetchEmployees(); // In case status was updated to "On Leave"
       }
+    } catch (err) {
+      console.error("Failed to update leave request:", err);
     }
   };
 

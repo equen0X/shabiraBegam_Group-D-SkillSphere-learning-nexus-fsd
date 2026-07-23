@@ -8,7 +8,7 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/dashboard.css";
 
 export default function StudentHome() {
-  const { user, xp, earnXp, completedTopics } = useAuth();
+  const { user, xp, earnXp, completedTopics, completeTopic } = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -31,34 +31,51 @@ export default function StudentHome() {
     { id: "springboot", title: "Spring Boot Microservices", category: "Backend Dev", progress: Math.round((springbootCompleted / 6) * 100), color: "#22c55e" }
   ];
 
-  // Quests & Challenges
-  const [quests, setQuests] = useState([
-    { id: 1, title: "Log in and maintain your daily streak", xpReward: 50, status: "COMPLETED" },
-    { id: 2, title: "Complete the React architecture practice quiz", xpReward: 150, status: "CLAIMABLE" },
-    { id: 3, title: "Solve the Spring Boot security challenge", xpReward: 200, status: "IN_PROGRESS" }
-  ]);
-
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const [quests, setQuests] = useState([]);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [certificatesList, setCertificatesList] = useState([]);
   const [previewedCert, setPreviewedCert] = useState(null);
 
-  // Leaderboard data (dynamic based on student's XP)
-  const initialLeaderboard = [
-    { rank: 1, username: "CypherLearner", xp: 3500, isSelf: false },
-    { rank: 2, username: "NeonCoder", xp: 2900, isSelf: false },
-    { rank: 3, username: "ByteKnight", xp: 2600, isSelf: false },
-    { rank: 4, username: "You", xp: 2450, isSelf: true },
-    { rank: 5, username: "PixelPioneer", xp: 2100, isSelf: false },
-    { rank: 6, username: "SynthGuru", xp: 1800, isSelf: false }
-  ];
-  const [leaderboard, setLeaderboard] = useState(initialLeaderboard);
+  const fetchDashboardData = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      // 1. Fetch Leaderboard
+      const leaderboardRes = await fetch(`${API_URL}/api/leaderboard`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const leaderboardData = await leaderboardRes.json();
+      if (leaderboardData.success) {
+        setLeaderboard(leaderboardData.leaderboard);
+      }
+
+      // 2. Fetch Quests
+      const questsRes = await fetch(`${API_URL}/api/quests`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const questsData = await questsRes.json();
+      if (questsData.success) {
+        setQuests(questsData.quests);
+      }
+
+      // 3. Fetch Certificates
+      const certsRes = await fetch(`${API_URL}/api/certificates`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const certsData = await certsRes.json();
+      if (certsData.success) {
+        setCertificatesList(certsData.certificates);
+      }
+    } catch (err) {
+      console.error("Error fetching dashboard data:", err);
+    }
+  };
 
   useEffect(() => {
-    const updated = initialLeaderboard.map(member =>
-      member.isSelf ? { ...member, xp: xp } : member
-    );
-    updated.sort((a, b) => b.xp - a.xp);
-    const ranked = updated.map((item, idx) => ({ ...item, rank: idx + 1 }));
-    setLeaderboard(ranked);
-  }, [xp]);
+    fetchDashboardData();
+  }, [xp, completedTopics]);
 
   const handleDownloadCertificate = (cert) => {
     const canvas = document.createElement("canvas");
@@ -176,50 +193,168 @@ export default function StudentHome() {
     setEditorCode(languageTemplates[lang]);
   };
 
+  const translatePythonToJS = (code) => {
+    let jsLines = [];
+    const lines = code.split("\n");
+    let indentLevels = [];
+
+    for (let line of lines) {
+      const rawLine = line;
+      const trimmed = line.trim();
+      if (!trimmed) {
+        jsLines.push("");
+        continue;
+      }
+      if (trimmed.startsWith("#")) {
+        jsLines.push("// " + trimmed.slice(1));
+        continue;
+      }
+
+      const indentCount = rawLine.length - rawLine.trimStart().length;
+
+      while (indentLevels.length > 0 && indentCount <= indentLevels[indentLevels.length - 1]) {
+        jsLines.push(" ".repeat(indentLevels[indentLevels.length - 1]) + "}");
+        indentLevels.pop();
+      }
+
+      let translated = trimmed;
+
+      const defMatch = trimmed.match(/^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\((.*?)\)\s*:/);
+      if (defMatch) {
+        translated = `function ${defMatch[1]}(${defMatch[2]}) {`;
+        indentLevels.push(indentCount);
+      } else {
+        if (trimmed.endsWith(":")) {
+          if (trimmed.startsWith("if ")) {
+            translated = `if (${trimmed.slice(3, -1).trim()}) {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("elif ")) {
+            translated = `else if (${trimmed.slice(5, -1).trim()}) {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("else")) {
+            translated = `else {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("for ") && trimmed.includes(" in ")) {
+            const forMatch = trimmed.match(/^for\s+([a-zA-Z_][a-zA-Z0-9_]*)\s+in\s+range\((.*?)\)\s*:/);
+            if (forMatch) {
+              const varName = forMatch[1];
+              const rangeVal = forMatch[2].trim();
+              translated = `for (let ${varName} = 0; ${varName} < ${rangeVal}; ${varName}++) {`;
+              indentLevels.push(indentCount);
+            }
+          }
+        }
+      }
+
+      translated = translated.replace(/\bf(['"])(.*?)\1/g, (match, quote, content) => {
+        return '`' + content.replace(/\{(.*?)\}/g, '${$1}') + '`';
+      });
+
+      translated = translated.replace(/\bprint\(([\s\S]*?)\)/g, "console.log($1)");
+      translated = translated.replace(/\bTrue\b/g, "true").replace(/\bFalse\b/g, "false");
+      translated = translated.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||").replace(/\bnot\b/g, "!");
+
+      jsLines.push(" ".repeat(indentCount) + translated);
+    }
+
+    while (indentLevels.length > 0) {
+      jsLines.push(" ".repeat(indentLevels[indentLevels.length - 1]) + "}");
+      indentLevels.pop();
+    }
+
+    return jsLines.join("\n");
+  };
+
+  const translateCPlusPlusJavaToJS = (code, language) => {
+    let js = code;
+
+    js = js.replace(/\/\*[\s\S]*?\*\//g, ""); // multi-line comments
+    js = js.replace(/\/\/.*/g, ""); // single-line comments
+
+    js = js.replace(/#include\s*<.*?>/g, "");
+    js = js.replace(/using\s+namespace\s+\w+\s*;/g, "");
+    js = js.replace(/import\s+[\w.]+(\.\*)?\s*;/g, "");
+    js = js.replace(/package\s+[\w.]+\s*;/g, "");
+    js = js.replace(/\bstd::/g, "");
+
+    js = js.replace(/\b(?:public|private|protected|static|final|class)\s+\w+\s*\{([\s\S]*)\}/g, "$1");
+    js = js.replace(/\b(?:public|private|protected|static|final)\b/g, "");
+
+    js = js.replace(/System\.out\.println\s*\(([\s\S]*?)\)\s*;/g, "console.log($1);");
+    js = js.replace(/System\.out\.print\s*\(([\s\S]*?)\)\s*;/g, "console.log($1);");
+
+    js = js.replace(/printf\s*\(\s*(['"])(.*?)\1\s*(?:,\s*([\s\S]*?))?\)\s*;/g, (match, quote, fmt, args) => {
+      let fmtStr = fmt.replace(/\\n/g, "");
+      if (!args) return `console.log(${quote}${fmtStr}${quote});`;
+      
+      const argList = args.split(",");
+      let jsExpr = `${quote}${fmtStr}${quote}`;
+      for (let arg of argList) {
+        arg = arg.trim();
+        jsExpr = jsExpr.replace(/%[d|f|s|c|x]/, `" + ${arg} + "`);
+      }
+      jsExpr = jsExpr.replace(/^""\s*\+\s*/, "").replace(/\s*\+\s*""$/, "");
+      return `console.log(${jsExpr});`;
+    });
+
+    js = js.replace(/cout\s*<<\s*([\s\S]*?)\s*;/g, (match, content) => {
+      const parts = content.split("<<");
+      const evalParts = [];
+      for (let part of parts) {
+        part = part.trim();
+        if (part === "endl") {
+          evalParts.push('""');
+        } else {
+          evalParts.push(part);
+        }
+      }
+      return `console.log(${evalParts.filter(p => p !== "").join(" + ")});`;
+    });
+
+    const types = ["int", "float", "double", "char", "String", "boolean", "bool", "void"];
+    for (let type of types) {
+      js = js.replace(new RegExp(`\\b${type}(?:\\s*\\[\\s*\\])?\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b`, 'g'), "let $1");
+    }
+
+    js = js.replace(/let\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(([\s\S]*?)\)\s*\{/g, "function $1($2) {");
+
+    js = js.replace(/\(([\s\S]*?)\)/g, (match, params) => {
+      return `(${params.replace(/\blet\s*\[\s*\]\s+/g, "").replace(/\blet\s+/g, "")})`;
+    });
+
+    js += "\nif (typeof main === 'function') { main(); }";
+
+    return js;
+  };
+
   const handleRunCode = () => {
     setIsRunning(true);
     setConsoleOutput("Compiling and executing code...");
 
     setTimeout(() => {
-      let output = "";
       const code = editorCode;
+      const logLines = [];
+      const originalLog = console.log;
+      console.log = (...args) => {
+        logLines.push(args.join(" "));
+      };
 
-      if (selectedLanguage === "python") {
-        const printRegex = /print\((['"])(.*?)\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = printRegex.exec(code)) !== null) {
-          matches.push(match[2]);
+      try {
+        if (selectedLanguage === "python") {
+          const translatedJs = translatePythonToJS(code);
+          Function(`"use strict"; ${translatedJs}`)();
+        } else {
+          const translatedJs = translateCPlusPlusJavaToJS(code, selectedLanguage);
+          Function(`"use strict"; ${translatedJs}`)();
         }
-        output = matches.length > 0 ? matches.join("\n") : "Process exited with code 0 (No output produced).";
-      } else if (selectedLanguage === "cpp") {
-        const coutRegex = /cout\s*<<\s*(['"])(.*?)\1/g;
-        let match;
-        const matches = [];
-        while ((match = coutRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        output = matches.length > 0 ? matches.join("\n") : "Process exited with code 0 (No output produced).";
-      } else if (selectedLanguage === "c") {
-        const printfRegex = /printf\((['"])(.*?)\\n?\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = printfRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        output = matches.length > 0 ? matches.join("\n") : "Process exited with code 0 (No output produced).";
-      } else if (selectedLanguage === "java") {
-        const javaRegex = /System\.out\.println\((['"])(.*?)\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = javaRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        output = matches.length > 0 ? matches.join("\n") : "Process exited with code 0 (No output produced).";
+        const output = logLines.join("\n");
+        setConsoleOutput(output || "Process exited with code 0.");
+      } catch (err) {
+        setConsoleOutput("Runtime Error: " + err.message);
+      } finally {
+        console.log = originalLog;
+        setIsRunning(false);
       }
-
-      setConsoleOutput(output);
-      setIsRunning(false);
     }, 1000);
   };
 
@@ -235,15 +370,51 @@ export default function StudentHome() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages, isChatLoading]);
 
-  const handleStudy = (courseId) => {
-    navigate('/learning', { state: { activeTrack: courseId } });
+  const handleStudy = async (courseId) => {
+    const trackTopics = {
+      react: ["react_intro", "react_jsx", "react_components", "react_props_state", "react_hooks", "react_lifecycle"],
+      java: ["java_intro", "java_datatypes", "java_oops", "java_exceptions", "java_collections", "java_multithreading"],
+      springboot: ["springboot_intro", "springboot_mvc", "springboot_di", "springboot_jpa", "springboot_rest", "springboot_security"]
+    };
+
+    const topics = trackTopics[courseId];
+    if (topics && completeTopic && completedTopics) {
+      const nextUncompleted = topics.find(t => !completedTopics.includes(t));
+      if (nextUncompleted) {
+        try {
+          await completeTopic(nextUncompleted, 100);
+        } catch (err) {
+          console.error("Failed to update progress on study click:", err);
+        }
+      }
+    }
+    navigate(`/learning?track=${courseId}`);
   };
 
-  const handleClaimReward = (questId, reward) => {
-    setQuests(prev => prev.map(q =>
-      q.id === questId ? { ...q, status: "COMPLETED" } : q
-    ));
-    earnXp(reward);
+  const handleClaimReward = async (questId, reward) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      const response = await fetch(`${API_URL}/api/quests/claim`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ questId })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        earnXp(reward);
+        fetchDashboardData();
+      } else {
+        alert(data.message || "Failed to claim reward");
+      }
+    } catch (err) {
+      console.error("Error claiming reward:", err);
+    }
   };
 
   const handleSendChat = async (text) => {
@@ -312,16 +483,16 @@ export default function StudentHome() {
     "Recommend my next course."
   ];
 
-  const isReactBadgeUnlocked = user && localStorage.getItem(`badge_react_badge_${user.email || user.username}`) === "true";
-  const isJavaBadgeUnlocked = user && localStorage.getItem(`badge_java_badge_${user.email || user.username}`) === "true";
-  const isSpringBootBadgeUnlocked = user && localStorage.getItem(`badge_springboot_badge_${user.email || user.username}`) === "true";
-  const isAiBadgeUnlocked = user && localStorage.getItem(`badge_ai_badge_${user.email || user.username}`) === "true";
-  const isDsaBadgeUnlocked = user && localStorage.getItem(`badge_dsa_badge_${user.email || user.username}`) === "true";
-  const isPythonBadgeUnlocked = user && localStorage.getItem(`badge_python_badge_${user.email || user.username}`) === "true";
-  const isWebDevBadgeUnlocked = user && localStorage.getItem(`badge_webdev_badge_${user.email || user.username}`) === "true";
-  const isCyberBadgeUnlocked = user && localStorage.getItem(`badge_cyber_badge_${user.email || user.username}`) === "true";
-  const isCloudBadgeUnlocked = user && localStorage.getItem(`badge_cloud_badge_${user.email || user.username}`) === "true";
-  const isDbmsBadgeUnlocked = user && localStorage.getItem(`badge_dbms_badge_${user.email || user.username}`) === "true";
+  const isReactBadgeUnlocked = user && (user.badges?.includes("react_badge") || localStorage.getItem(`badge_react_badge_${user.email || user.username}`) === "true");
+  const isJavaBadgeUnlocked = user && (user.badges?.includes("java_badge") || localStorage.getItem(`badge_java_badge_${user.email || user.username}`) === "true");
+  const isSpringBootBadgeUnlocked = user && (user.badges?.includes("springboot_badge") || localStorage.getItem(`badge_springboot_badge_${user.email || user.username}`) === "true");
+  const isAiBadgeUnlocked = user && (user.badges?.includes("ai_badge") || localStorage.getItem(`badge_ai_badge_${user.email || user.username}`) === "true");
+  const isDsaBadgeUnlocked = user && (user.badges?.includes("dsa_badge") || localStorage.getItem(`badge_dsa_badge_${user.email || user.username}`) === "true");
+  const isPythonBadgeUnlocked = user && (user.badges?.includes("python_badge") || localStorage.getItem(`badge_python_badge_${user.email || user.username}`) === "true");
+  const isWebDevBadgeUnlocked = user && (user.badges?.includes("webdev_badge") || localStorage.getItem(`badge_webdev_badge_${user.email || user.username}`) === "true");
+  const isCyberBadgeUnlocked = user && (user.badges?.includes("cyber_badge") || localStorage.getItem(`badge_cyber_badge_${user.email || user.username}`) === "true");
+  const isCloudBadgeUnlocked = user && (user.badges?.includes("cloud_badge") || localStorage.getItem(`badge_cloud_badge_${user.email || user.username}`) === "true");
+  const isDbmsBadgeUnlocked = user && (user.badges?.includes("dbms_badge") || localStorage.getItem(`badge_dbms_badge_${user.email || user.username}`) === "true");
 
   const badgesList = [
     { name: "🔥 Daily Streak", desc: "Logged in 5 days straight", unlocked: true, icon: "🔥" },
@@ -343,10 +514,7 @@ export default function StudentHome() {
     { name: "🌟 Perfect Quizzer", desc: "Scored 100% on any final track assessment", unlocked: false, icon: "🌟" }
   ];
 
-  const certificatesList = [
-    { id: "CERT-SS-889A", title: "Modern Frontend Engineering (React & Vite)", date: "June 14, 2026" },
-    { id: "CERT-SS-214B", title: "Decentralized Networks & Architecture Basics", date: "May 28, 2026" }
-  ];
+  // Loaded dynamically from certificatesList state
 
   return (
     <div className={`dashboard-page ${isSidebarOpen ? 'with-sidebar' : ''}`}>
@@ -430,7 +598,7 @@ export default function StudentHome() {
             <div className="stat-icon" style={{ background: "rgba(138, 46, 255, 0.1)", color: "#8a2eff" }}>🔥</div>
             <div className="stat-info">
               <h3>Daily Streak</h3>
-              <div className="stat-value">7 Days</div>
+              <div className="stat-value">{user?.streak !== undefined ? user.streak : 1} Days</div>
             </div>
           </div>
         </section>

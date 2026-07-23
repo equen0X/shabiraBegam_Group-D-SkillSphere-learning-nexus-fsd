@@ -23,6 +23,7 @@ import ProgressPage from "./pages/ProgressPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
 import TeamSpace from "./pages/TeamSpace";
 import FloatingChatbot from "./components/FloatingChatbot";
+import HomePage from "./pages/HomePage";
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -91,6 +92,7 @@ function App() {
         <Route path="/workforce-dashboard" element={<ProtectedRoute><WorkforceDashboard /></ProtectedRoute>} />
         <Route path="/student-home" element={<ProtectedRoute><StudentHome /></ProtectedRoute>} />
         <Route path="/workforce-home" element={<ProtectedRoute><WorkforceHome /></ProtectedRoute>} />
+        <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/student-features" element={<ProtectedRoute><StudentFeatures /></ProtectedRoute>} />
         <Route path="/workforce-features" element={<ProtectedRoute><WorkforceFeatures /></ProtectedRoute>} />
         <Route path="/sandbox" element={<ProtectedRoute><SandboxPage /></ProtectedRoute>} />

@@ -45,9 +45,10 @@ public class DatabaseConfig {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             // Attempt to establish a brief connection to verify server availability
-            DriverManager.setLoginTimeout(3); // 3 seconds timeout
+            DriverManager.setLoginTimeout(15); // 15 seconds timeout
             try (Connection conn = DriverManager.getConnection(mysqlUrl, username, password)) {
                 System.out.println("✅ Connected to MySQL database successfully.");
+                DriverManager.setLoginTimeout(0); // Reset to default for subsequent connections
                 DriverManagerDataSource dataSource = new DriverManagerDataSource();
                 dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
                 dataSource.setUrl(mysqlUrl);
@@ -56,6 +57,7 @@ public class DatabaseConfig {
                 return dataSource;
             }
         } catch (Exception e) {
+            try { DriverManager.setLoginTimeout(0); } catch (Exception ignored) {}
             System.err.println("❌ Database connection failed. Falling back to MOCK in-memory H2 database.");
             System.err.println("Error details: " + e.getMessage());
         }

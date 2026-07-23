@@ -8,7 +8,7 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/learningPage.css";
 
 export default function LearningPage() {
-  const { user, completedTopics, completeTopic, earnXp } = useAuth();
+  const { user, completedTopics, completeTopic, earnXp, unlockBadge } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -1045,6 +1045,9 @@ public class SecurityConfig {
     // Badge Unlock: 85% score threshold (>= 17 marks, i.e. 5/5 correct)
     if (pct >= 85) {
       localStorage.setItem(`badge_${currentTrack.badgeKey}_${user.email || user.username}`, "true");
+      if (unlockBadge) {
+        unlockBadge(currentTrack.badgeKey);
+      }
       setBadgeUnlocked(true);
     } else {
       setBadgeUnlocked(false);

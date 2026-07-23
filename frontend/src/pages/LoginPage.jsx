@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/loginPage.css";
 
 export default function LoginPage() {
-  const { loginLocal, loginWithGoogle, logout } = useAuth();
+  const { user, loginLocal, loginWithGoogle, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,6 +17,10 @@ export default function LoginPage() {
     roleRef.current = role;
   }, [role]);
 
+  if (user) {
+    return <Navigate to={user.role === 'EMPLOYEE' ? '/workforce-home' : '/student-home'} replace />;
+  }
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -27,9 +31,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-    if (!clientId || clientId === 'google_mock_client_id_for_testing') {
-      setShowDevBypass(true);
-    }
+    setShowDevBypass(true);
 
     const initGoogleSignIn = () => {
       if (window.google) {
@@ -84,12 +86,20 @@ export default function LoginPage() {
       setError("");
       const user = await loginLocal(email, password);
       if (user) {
+        if (role === 'EMPLOYEE' && user.role === 'STUDENT') {
+          setError('Enter valid workplace email id');
+          await logout();
+          return;
+        }
+        if (role === 'STUDENT' && user.role !== 'STUDENT') {
+          setError('This account is registered as a Workforce user. Please use the Workforce Portal.');
+          await logout();
+          return;
+        }
         if (user.role === 'STUDENT') {
           navigate('/student-home');
-        } else if (user.role === 'EMPLOYEE') {
-          navigate('/workforce-home');
         } else {
-          navigate("/");
+          navigate('/workforce-home');
         }
       }
     } catch (err) {
@@ -104,12 +114,20 @@ export default function LoginPage() {
       setError("");
       const user = await loginWithGoogle(`mock_google_token_${devEmail}`, role);
       if (user) {
+        if (role === 'EMPLOYEE' && user.role === 'STUDENT') {
+          setError('Enter valid workplace email id');
+          await logout();
+          return;
+        }
+        if (role === 'STUDENT' && user.role !== 'STUDENT') {
+          setError('This account is registered as a Workforce user. Please use the Workforce Portal.');
+          await logout();
+          return;
+        }
         if (user.role === 'STUDENT') {
           navigate('/student-home');
-        } else if (user.role === 'EMPLOYEE') {
-          navigate('/workforce-home');
         } else {
-          navigate("/");
+          navigate('/workforce-home');
         }
       }
     } catch (err) {

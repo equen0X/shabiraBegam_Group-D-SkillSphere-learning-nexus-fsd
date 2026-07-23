@@ -8,7 +8,7 @@ public class BackendApplication {
 
     public static void main(String[] args) {
         // Force mock profile/env when starting the dev server or test runner
-        if (System.getenv("NODE_ENV") != null) {
+        if ("test".equalsIgnoreCase(System.getenv("NODE_ENV"))) {
             System.setProperty("spring.profiles.active", "test");
         }
         

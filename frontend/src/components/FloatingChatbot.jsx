@@ -129,51 +129,40 @@ export default function FloatingChatbot() {
     return selectedReply;
   };
 
+  const isQueryRelevantToPortal = (queryText) => {
+    const q = queryText.toLowerCase().trim();
+    
+    // Allow basic greetings and identity checks
+    const allowedGreetings = [
+      "hello", "hi", "hey", "greetings", "yo", "good morning", "good afternoon", "good evening",
+      "who are you", "what is your name", "what are you", "introduce yourself", "how are you"
+    ];
+
+    if (allowedGreetings.some(g => q === g || q.startsWith(g + " ") || q.includes(" " + g))) {
+      return true;
+    }
+
+    // Portal features, topics, and pages keywords
+    const portalKeywords = [
+      "skillsphere", "sphereai", "portal", "platform", "website", "site", "nexus",
+      "course", "track", "roadmap", "chapter", "module", "enroll", "scholarship",
+      "xp", "streak", "level", "point", "score",
+      "badge", "achievement", "trophy", "unlock",
+      "sandbox", "compiler",
+      "workforce", "employee", "manager", "sprint", "leave", "team",
+      "price", "cost", "fee", "free", "pay",
+      "cert", "blockchain", "diploma", "hash",
+      "contact", "help", "support", "email", "bug",
+      "overview", "about"
+    ];
+
+    return portalKeywords.some(keyword => q.includes(keyword));
+  };
+
   const getUniversalTechnicalAnswer = (queryText) => {
-    const q = queryText.toLowerCase();
-
-    // Check for specific tech topics outside/inside platform
-    if (q.includes("c++") || q.includes("cpp")) {
-      return "💡 C++ Technical Overview:\nC++ is a high-performance, compiled object-oriented language with manual memory management. Key concepts:\n1. RAII (Resource Acquisition Is Initialization) for automatic memory cleanup using smart pointers (std::unique_ptr, std::shared_ptr).\n2. STL Containers: std::vector, std::unordered_map (O(1) average lookup).\n3. Compiling: `g++ main.cpp -o main -O3`.\n\nCode Example:\n```cpp\n#include <iostream>\n#include <memory>\n\nint main() {\n    auto ptr = std::make_unique<int>(42);\n    std::cout << \"Val: \" << *ptr << std::endl;\n    return 0;\n}\n```";
+    if (!isQueryRelevantToPortal(queryText)) {
+      return "Please ask something related to this portal.";
     }
-
-    if (q.includes("rust")) {
-      return "💡 Rust Technical Overview:\nRust provides memory safety without garbage collection through its strict Ownership & Borrowing system:\n1. Ownership Rules: Each value has one owner; value is dropped when owner goes out of scope.\n2. Borrowing: References (&T for immutable, &mut T for mutable) prevent data races at compile time.\n3. Cargo Build System: `cargo build --release`.\n\nCode Example:\n```rust\nfn main() {\n    let mut msg = String::from(\"Hello Rust\");\n    modify_str(&mut msg);\n    println!(\"{}\", msg);\n}\nfn modify_str(s: &mut String) {\n    s.push_str(\" - Zero Cost Abstraction!\");\n}\n```";
-    }
-
-    if (q.includes("docker") || q.includes("container")) {
-      return "💡 Docker & Containerization:\nDocker packages applications and dependencies into standardized containers:\n1. Dockerfile: Blueprints defining base OS, environment, and run commands.\n2. Container vs Image: Images are read-only templates; Containers are runnable instances.\n3. Essential Commands: `docker build -t myapp .` and `docker run -p 8080:8080 myapp`.\n\nSample Dockerfile:\n```dockerfile\nFROM node:18-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nCMD [\"npm\", \"start\"]\n```";
-    }
-
-    if (q.includes("kubernetes") || q.includes("k8s")) {
-      return "💡 Kubernetes (K8s) Architecture:\nKubernetes automates deployment, scaling, and management of containerized apps:\n1. Pod: Smallest deployable unit hosting one or more containers.\n2. Service: Exposes pods to internal/external networks using ClusterIP, NodePort, or LoadBalancer.\n3. Deployment: Manages rolling updates and replica sets (`kubectl apply -f deployment.yaml`).";
-    }
-
-    if (q.includes("sql") || q.includes("database") || q.includes("postgres") || q.includes("mysql")) {
-      return "💡 SQL & Relational Databases:\nRelational DBs store data in structured tables using ACID transactions (Atomicity, Consistency, Isolation, Durability):\n1. Joins: INNER JOIN (matching rows), LEFT JOIN (all left rows + matching right rows).\n2. Indexing: B-Tree indexes accelerate SELECT queries from O(N) full table scans to O(log N).\n\nSQL Example:\n```sql\nSELECT u.username, COUNT(o.id) AS total_orders\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nGROUP BY u.id\nHAVING total_orders > 5;\n```";
-    }
-
-    if (q.includes("golang") || q.includes("go ")) {
-      return "💡 Go (Golang) Microservices:\nGo is designed by Google for high-concurrency microservices:\n1. Goroutines: Lightweight threads managed by Go runtime (`go worker()`).\n2. Channels: Type-safe pipes for communicating between goroutines (`ch <- data`).\n\nCode Example:\n```go\npackage main\nimport (\"fmt\"; \"time\")\n\nfn worker(ch chan string) {\n    ch <- \"Worker Finished\"\n}\nfn main() {\n    ch := make(chan string)\n    go worker(ch)\n    fmt.Println(<-ch)\n}\n```";
-    }
-
-    if (q.includes("git") || q.includes("github")) {
-      return "💡 Git Version Control:\nGit is a distributed version control system:\n1. `git rebase main`: Applies local commits on top of updated main branch for linear commit history.\n2. `git stash`: Temporarily shelves uncommitted changes (`git stash pop` to restore).\n3. `git cherry-pick <commit>`: Applies a specific commit from another branch.";
-    }
-
-    if (q.includes("operating system") || q.includes("os") || q.includes("linux") || q.includes("kernel")) {
-      return "💡 Operating Systems & Linux Architecture:\n1. Process vs Thread: Processes have independent virtual memory spaces; Threads share memory within the same process.\n2. Memory Paging: Translates virtual memory addresses to physical RAM using Page Tables.\n3. Linux Essential Commands: `grep -rnw '/path/' -e 'pattern'` (search text), `netstat -tulpn` (check active ports).";
-    }
-
-    if (q.includes("networking") || q.includes("http") || q.includes("tcp") || q.includes("dns")) {
-      return "💡 Computer Networking:\n1. OSI 7 Layers: Physical, Data Link, Network (IP), Transport (TCP/UDP), Session, Presentation, Application (HTTP).\n2. TCP 3-Way Handshake: SYN -> SYN-ACK -> ACK before data transfer.\n3. HTTP Status Codes: 200 OK, 201 Created, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Error.";
-    }
-
-    if (q.includes("system design") || q.includes("microservice") || q.includes("architecture")) {
-      return "💡 System Design Architecture:\n1. Load Balancer: Distributes incoming web traffic across NGINX or HAProxy server clusters.\n2. Distributed Caching: Uses Redis/Memcached to cache DB queries, reducing latency to < 5ms.\n3. Message Queues: Asynchronous decoupling using Apache Kafka or RabbitMQ for high throughput.";
-    }
-
-    // Default dynamic responder for platform & general tech questions
     return getDynamicSkillSphereReply(queryText);
   };
 
@@ -185,9 +174,20 @@ export default function FloatingChatbot() {
     const userMsg = { sender: "user", text };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
+
+    // Check relevance first
+    if (!isQueryRelevantToPortal(text)) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setMessages(prev => [...prev, { sender: "assistant", text: "Please ask something related to this portal." }]);
+        setIsLoading(false);
+      }, 500);
+      return;
+    }
+
     setIsLoading(true);
 
-    const systemPrompt = "You are SphereAI, a world-class AI Technical Mentor and Senior Software Architect. You answer ANY technical question on ANY computer science topic, programming language, software architecture, database, cloud, DevOps, operating system, or algorithm (e.g. C++, Rust, Go, Python, React, Java, Docker, Kubernetes, SQL, Data Structures, System Design, AI/ML, Cybersecurity, Linux, Git, etc.), regardless of whether it is officially on the SkillSphere platform syllabus or not. Always provide valid, accurate, highly detailed technical answers with code examples, architectural breakdowns, and best practices in a friendly, helpful, futuristic tone.";
+    const systemPrompt = "You are SphereAI, a virtual assistant for the SkillSphere portal. You must ONLY answer questions directly related to the SkillSphere portal (its features, courses, modules, sandbox, certificates, workforce management, etc.). If the user asks a question that is irrelevant to the portal or a general coding/technical question not about this portal's offerings, you must respond exactly with: 'Please ask something related to this portal.'";
 
     try {
       const response = await fetch("https://text.pollinations.ai/", {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
@@ -7,72 +7,30 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import "../styles/dashboard.css";
 
 export default function DiscussionsPage() {
-  const { user } = useAuth();
+  const { user, authenticatedFetch } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: "Alexis Mangin",
-      avatar: "A",
-      role: "Frontend Architect",
-      time: "2 hours ago",
-      category: "System Design",
-      title: "How do you handle micro-frontend state sync across independent React apps?",
-      content: "When splitting a large monolithic web application into micro-frontends using Webpack Module Federation, what is your preferred approach for sharing global auth tokens and theme states without tight coupling?",
-      upvotes: 24,
-      isUpvoted: false,
-      comments: [
-        { id: 101, author: "CypherLearner", time: "1 hour ago", text: "We use CustomEvent bus on the window object combined with RxJS behavior subjects for decoupled pub/sub events!" },
-        { id: 102, author: "NeonCoder", time: "45 mins ago", text: "Single-SPA with shared React Context wrappers works great for auth headers." }
-      ]
-    },
-    {
-      id: 2,
-      author: "Hitesh Choudhary",
-      avatar: "H",
-      role: "Senior Educator",
-      time: "5 hours ago",
-      category: "React & Frontend",
-      title: "Common React 19 useActionState gotchas for beginners",
-      content: "React 19 introduces useActionState and Server Actions. Make sure you return structured objects containing error messages and pending states instead of mutating local component state manually!",
-      upvotes: 42,
-      isUpvoted: false,
-      comments: [
-        { id: 201, author: "ByteKnight", time: "3 hours ago", text: "Super helpful tip! The optimistic UI updates with useOptimistic are also incredible." }
-      ]
-    },
-    {
-      id: 3,
-      author: "Andrew Ng",
-      avatar: "A",
-      role: "AI Lead",
-      time: "1 day ago",
-      category: "Generative AI",
-      title: "RAG vs Fine-Tuning: Which should you choose for enterprise docs?",
-      content: "If your underlying knowledge base changes daily or weekly, RAG (Retrieval Augmented Generation) with Vector DBs like Pinecone/FAISS is far superior and more cost-effective than continuous LLM fine-tuning.",
-      upvotes: 56,
-      isUpvoted: false,
-      comments: [
-        { id: 301, author: "SynthGuru", time: "18 hours ago", text: "Agreed! HyDE (Hypothetical Document Embeddings) improved our RAG precision by 30%." }
-      ]
-    },
-    {
-      id: 4,
-      author: "Java Guru",
-      avatar: "J",
-      role: "Backend Lead",
-      time: "2 days ago",
-      category: "Java & Backend",
-      title: "Spring Boot Virtual Threads (Project Loom) performance benchmark",
-      content: "Switching from standard Tomcat thread pools to Spring Boot 3.2 Virtual Threads handled 10,000 concurrent HTTP requests with 80% less memory allocation on JRE 21!",
-      upvotes: 31,
-      isUpvoted: false,
-      comments: []
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const [posts, setPosts] = useState([]);
+
+  const fetchDiscussions = async () => {
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/discussions`);
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setPosts(data.posts);
+      }
+    } catch (err) {
+      console.error("Failed to fetch discussions:", err);
     }
-  ]);
+  };
+
+  useEffect(() => {
+    fetchDiscussions();
+  }, []);
 
   // New Post Form State
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -83,25 +41,49 @@ export default function DiscussionsPage() {
   // Add new comment state per post
   const [commentInputs, setCommentInputs] = useState({});
 
-  const handleToggleUpvote = (postId) => {
+  const handleToggleUpvote = async (postId) => {
+    // Optimistic UI update
     setPosts(prev => prev.map(p => {
       if (p.id === postId) {
         return {
           ...p,
-          upvotes: p.isUpvoted ? p.upvotes - 1 : p.upvotes + 1,
+          upvotes: p.isUpvoted ? Math.max(0, p.upvotes - 1) : p.upvotes + 1,
           isUpvoted: !p.isUpvoted
         };
       }
       return p;
     }));
+
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/discussions/${postId}/upvote`, {
+        method: "POST"
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setPosts(prev => prev.map(p => {
+          if (p.id === postId) {
+            return {
+              ...p,
+              upvotes: data.upvotes,
+              isUpvoted: data.isUpvoted
+            };
+          }
+          return p;
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to toggle upvote:", err);
+    }
   };
 
-  const handleAddComment = (postId) => {
+  const handleAddComment = async (postId) => {
     const text = commentInputs[postId];
     if (!text || !text.trim()) return;
 
+    // Optimistic UI update
+    const tempCommentId = Date.now();
     const newCommentObj = {
-      id: Date.now(),
+      id: tempCommentId,
       author: user?.full_name || user?.username || "SkillSphere Learner",
       time: "Just now",
       text: text.trim()
@@ -116,25 +98,40 @@ export default function DiscussionsPage() {
       }
       return p;
     }));
-
     setCommentInputs(prev => ({ ...prev, [postId]: "" }));
+
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/discussions/${postId}/comment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text.trim() })
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        fetchDiscussions();
+      }
+    } catch (err) {
+      console.error("Failed to add comment:", err);
+    }
   };
 
-  const handleCreatePost = (e) => {
+  const handleCreatePost = async (e) => {
     e.preventDefault();
     if (!newTitle.trim() || !newContent.trim()) return;
 
+    const authorName = user?.full_name || user?.username || "SkillSphere Learner";
+    const tempPostId = Date.now();
     const newPostObj = {
-      id: Date.now(),
-      author: user?.full_name || user?.username || "SkillSphere Learner",
-      avatar: (user?.full_name || user?.username || "S").charAt(0).toUpperCase(),
+      id: tempPostId,
+      author: authorName,
+      avatar: authorName.charAt(0).toUpperCase(),
       role: user?.role || "Student",
       time: "Just now",
       category: newCategory,
       title: newTitle.trim(),
       content: newContent.trim(),
-      upvotes: 1,
-      isUpvoted: true,
+      upvotes: 0,
+      isUpvoted: false,
       comments: []
     };
 
@@ -142,6 +139,24 @@ export default function DiscussionsPage() {
     setNewTitle("");
     setNewContent("");
     setShowCreateModal(false);
+
+    try {
+      const response = await authenticatedFetch(`${API_URL}/api/discussions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newTitle.trim(),
+          content: newContent.trim(),
+          category: newCategory
+        })
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        fetchDiscussions();
+      }
+    } catch (err) {
+      console.error("Failed to create post:", err);
+    }
   };
 
   const filteredPosts = posts.filter(p => {

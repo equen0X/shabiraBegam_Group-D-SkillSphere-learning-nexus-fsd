@@ -35,8 +35,10 @@ const MONTH_NAMES = ["January","February","March","April","May","June","July","A
 const DAY_NAMES   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 export default function WorkforceHome() {
-  const { user, workforceTheme, updateWorkforceTheme } = useAuth();
+  const { user, workforceTheme, updateWorkforceTheme, authenticatedFetch } = useAuth();
   const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   // ─── Scoped Workforce Theme ───────────────────────────────────────────────
   const theme = workforceTheme || "dark";
@@ -66,6 +68,69 @@ export default function WorkforceHome() {
     for (let d = 1; d <= daysInMonth; d++) cells.push(d);
     while (cells.length % 7 !== 0) cells.push(null);
     return cells;
+  };
+
+  const [leaveQueue, setLeaveQueue] = useState([]);
+  const [employeeCount, setEmployeeCount] = useState(0);
+  const [projectCount, setProjectCount] = useState(0);
+
+  const fetchDashboardData = async () => {
+    try {
+      const leavesRes = await authenticatedFetch(`${API_URL}/api/workforce/leaves`);
+      if (leavesRes.ok) {
+        const leavesData = await leavesRes.json();
+        if (leavesData.success) {
+          const lRequests = (leavesData.leaveRequests || []).map(r => ({
+            id: r.id,
+            name: r.name,
+            type: r.type,
+            details: r.details || r.desc,
+            status: r.status
+          }));
+          setLeaveRequests(lRequests);
+          setLeaveQueue(lRequests);
+        }
+      }
+
+      const empRes = await authenticatedFetch(`${API_URL}/api/workforce/employees`);
+      if (empRes.ok) {
+        const empData = await empRes.json();
+        if (empData.success) {
+          setEmployeeCount(empData.employees ? empData.employees.length : 0);
+          setEmployees(empData.employees || []);
+        }
+      }
+
+      const projRes = await authenticatedFetch(`${API_URL}/api/workforce/projects`);
+      if (projRes.ok) {
+        const projData = await projRes.json();
+        if (projData.success) {
+          setProjectCount(projData.projects ? projData.projects.length : 0);
+          setProjects(projData.projects || []);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch workforce dashboard data:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const handleProcessLeave = async (id, decision) => {
+    try {
+      const res = await authenticatedFetch(`${API_URL}/api/workforce/leaves/${id}/decision`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ decision })
+      });
+      if (res.ok) {
+        fetchDashboardData();
+      }
+    } catch (err) {
+      console.error("Failed to process leave decision:", err);
+    }
   };
 
   const getHoliday = (day) => {
@@ -160,12 +225,8 @@ export default function WorkforceHome() {
     setShowProjectModal(false);
   };
 
-  const handleLeaveDecision = (id, decision) => {
-    setLeaveRequests(prev => prev.map(req => req.id === id ? { ...req, status: decision } : req));
-    if (decision === "APPROVED") {
-      const target = leaveRequests.find(r => r.id === id);
-      if (target) setEmployees(prev => prev.map(emp => emp.name === target.name ? { ...emp, status: "On Leave" } : emp));
-    }
+  const handleLeaveDecision = async (id, decision) => {
+    await handleProcessLeave(id, decision);
   };
 
   const handleSendChat = async (text) => {
@@ -263,7 +324,7 @@ export default function WorkforceHome() {
             <div className="wf-home-stat-info">
               <h3>Active Headcount</h3>
               <div className="wf-home-stat-value">
-                <span className="stat-number">{employees.length}</span>
+                <span className="stat-number">{employeeCount}</span>
                 <span className="stat-label">Members</span>
               </div>
             </div>
@@ -282,7 +343,7 @@ export default function WorkforceHome() {
             <div className="wf-home-stat-info">
               <h3>Projects Active</h3>
               <div className="wf-home-stat-value">
-                <span className="stat-number">{projects.length}</span>
+                <span className="stat-number">{projectCount}</span>
                 <span className="stat-label">Ongoing</span>
               </div>
             </div>

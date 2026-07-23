@@ -56,6 +56,12 @@ public class AuthController {
             return ResponseEntity.status(400).body(response);
         }
 
+        if (password.length() < 6) {
+            response.put("success", false);
+            response.put("message", "Password must be at least 6 characters long");
+            return ResponseEntity.status(400).body(response);
+        }
+
         if (userRepository.findByEmail(email).isPresent()) {
             response.put("success", false);
             response.put("message", "Email is already registered");
@@ -124,7 +130,7 @@ public class AuthController {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
             response.put("success", false);
-            response.put("message", "Invalid email or password");
+            response.put("message", "Incorrect email ID");
             return ResponseEntity.status(401).body(response);
         }
 
@@ -138,7 +144,7 @@ public class AuthController {
 
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
             response.put("success", false);
-            response.put("message", "Invalid email or password");
+            response.put("message", "Incorrect password");
             return ResponseEntity.status(401).body(response);
         }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
 import Footer from "../components/Footer";
@@ -6,8 +6,32 @@ import DashboardSidebar from "../components/DashboardSidebar";
 
 export default function SandboxPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    // Load Skulpt dynamically for full Python support in the browser
+    const script1 = document.createElement("script");
+    script1.src = "https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js";
+    script1.async = true;
+    
+    script1.onload = () => {
+      const script2 = document.createElement("script");
+      script2.src = "https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js";
+      script2.async = true;
+      document.body.appendChild(script2);
+      window._skulptStdLibScript = script2;
+    };
+
+    document.body.appendChild(script1);
+
+    return () => {
+      if (document.body.contains(script1)) document.body.removeChild(script1);
+      if (window._skulptStdLibScript && document.body.contains(window._skulptStdLibScript)) {
+        document.body.removeChild(window._skulptStdLibScript);
+      }
+    };
+  }, []);
   const languageTemplates = {
-    python: `# Python 3 execution sandbox\ndef greet(name):\n    return f"Hello, {name}! Welcome to SkillSphere."\n\nprint(greet("Student"))`,
+    python: `# Python 3 execution sandbox\ndef greet(name):\n    return "Hello, " + name + "! Welcome to SkillSphere."\n\nprint(greet("Student"))`,
     cpp: `// C++ execution sandbox\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello from C++ compiler!" << endl;\n    return 0;\n}`,
     c: `// C execution sandbox\n#include <stdio.h>\n\nint main() {\n    printf("Hello from C compiler!\\n");\n    return 0;\n}`,
     java: `// Java execution sandbox\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello from Java compiler!");\n    }\n}`
@@ -23,66 +47,235 @@ export default function SandboxPage() {
     setEditorCode(languageTemplates[lang]);
   };
 
+  const translatePythonToJS = (code) => {
+    let jsLines = [];
+    const lines = code.split("\n");
+    let indentLevels = [];
+
+    for (let line of lines) {
+      const rawLine = line;
+      const trimmed = line.trim();
+      if (!trimmed) {
+        jsLines.push("");
+        continue;
+      }
+      if (trimmed.startsWith("#")) {
+        jsLines.push("// " + trimmed.slice(1));
+        continue;
+      }
+
+      const indentCount = rawLine.length - rawLine.trimStart().length;
+
+      while (indentLevels.length > 0 && indentCount <= indentLevels[indentLevels.length - 1]) {
+        jsLines.push(" ".repeat(indentLevels[indentLevels.length - 1]) + "}");
+        indentLevels.pop();
+      }
+
+      let translated = trimmed;
+
+      const defMatch = trimmed.match(/^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\((.*?)\)\s*:/);
+      if (defMatch) {
+        translated = `function ${defMatch[1]}(${defMatch[2]}) {`;
+        indentLevels.push(indentCount);
+      } else {
+        if (trimmed.endsWith(":")) {
+          if (trimmed.startsWith("if ")) {
+            translated = `if (${trimmed.slice(3, -1).trim()}) {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("elif ")) {
+            translated = `else if (${trimmed.slice(5, -1).trim()}) {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("else")) {
+            translated = `else {`;
+            indentLevels.push(indentCount);
+          } else if (trimmed.startsWith("for ") && trimmed.includes(" in ")) {
+            const forMatch = trimmed.match(/^for\s+([a-zA-Z_][a-zA-Z0-9_]*)\s+in\s+range\((.*?)\)\s*:/);
+            if (forMatch) {
+              const varName = forMatch[1];
+              const rangeVal = forMatch[2].trim();
+              translated = `for (let ${varName} = 0; ${varName} < ${rangeVal}; ${varName}++) {`;
+              indentLevels.push(indentCount);
+            }
+          }
+        }
+      }
+
+      translated = translated.replace(/\bf(['"])(.*?)\1/g, (match, quote, content) => {
+        return '`' + content.replace(/\{(.*?)\}/g, '${$1}') + '`';
+      });
+
+      translated = translated.replace(/\bprint\(([\s\S]*?)\)/g, "console.log($1)");
+      translated = translated.replace(/\bTrue\b/g, "true").replace(/\bFalse\b/g, "false");
+      translated = translated.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||").replace(/\bnot\b/g, "!");
+
+      jsLines.push(" ".repeat(indentCount) + translated);
+    }
+
+    while (indentLevels.length > 0) {
+      jsLines.push(" ".repeat(indentLevels[indentLevels.length - 1]) + "}");
+      indentLevels.pop();
+    }
+
+    return jsLines.join("\n");
+  };
+
+  const translateCPlusPlusJavaToJS = (code, language) => {
+    let js = code;
+
+    // 1. Remove comments
+    js = js.replace(/\/\*[\s\S]*?\*\//g, ""); // multi-line comments
+    js = js.replace(/\/\/.*/g, ""); // single-line comments
+
+    // 2. Remove standard namespaces, libraries and headers
+    js = js.replace(/#include\s*<.*?>/g, "");
+    js = js.replace(/using\s+namespace\s+\w+\s*;/g, "");
+    js = js.replace(/import\s+[\w.]+(\.\*)?\s*;/g, "");
+    js = js.replace(/package\s+[\w.]+\s*;/g, "");
+    js = js.replace(/\bstd::/g, "");
+
+    // Remove Java static modifiers and class headers
+    js = js.replace(/\b(?:public|private|protected|static|final|class)\s+\w+\s*\{([\s\S]*)\}/g, "$1");
+    js = js.replace(/\b(?:public|private|protected|static|final)\b/g, "");
+
+    // 3. Translate print functions to console.log
+    js = js.replace(/System\.out\.println\s*\(([\s\S]*?)\)\s*;/g, "console.log($1);");
+    js = js.replace(/System\.out\.print\s*\(([\s\S]*?)\)\s*;/g, "console.log($1);");
+
+    // Replace printf(...)
+    js = js.replace(/printf\s*\(\s*(['"])(.*?)\1\s*(?:,\s*([\s\S]*?))?\)\s*;/g, (match, quote, fmt, args) => {
+      let fmtStr = fmt.replace(/\\n/g, "");
+      if (!args) return `console.log(${quote}${fmtStr}${quote});`;
+      
+      const argList = args.split(",");
+      let jsExpr = `${quote}${fmtStr}${quote}`;
+      for (let arg of argList) {
+        arg = arg.trim();
+        jsExpr = jsExpr.replace(/%[d|f|s|c|x]/, `" + ${arg} + "`);
+      }
+      jsExpr = jsExpr.replace(/^""\s*\+\s*/, "").replace(/\s*\+\s*""$/, "");
+      return `console.log(${jsExpr});`;
+    });
+
+    // Replace cout << ... << endl;
+    js = js.replace(/cout\s*<<\s*([\s\S]*?)\s*;/g, (match, content) => {
+      const parts = content.split("<<");
+      const evalParts = [];
+      for (let part of parts) {
+        part = part.trim();
+        if (part === "endl") {
+          evalParts.push('""');
+        } else {
+          evalParts.push(part);
+        }
+      }
+      return `console.log(${evalParts.filter(p => p !== "").join(" + ")});`;
+    });
+
+    // 4. Replace type definitions (including array types): int, float, double, char, String, boolean, bool, void
+    const types = ["int", "float", "double", "char", "String", "boolean", "bool", "void"];
+    for (let type of types) {
+      js = js.replace(new RegExp(`\\b${type}(?:\\s*\\[\\s*\\])?\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b`, 'g'), "let $1");
+    }
+
+    // Replace function definitions
+    js = js.replace(/let\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(([\s\S]*?)\)\s*\{/g, "function $1($2) {");
+
+    // Clean up "let" and array brackets inside parentheses (function parameter types)
+    js = js.replace(/\(([\s\S]*?)\)/g, (match, params) => {
+      return `(${params.replace(/\blet\s*\[\s*\]\s+/g, "").replace(/\blet\s+/g, "")})`;
+    });
+
+    // 5. Auto call main
+    js += "\nif (typeof main === 'function') { main(); }";
+
+    return js;
+  };
+
   const handleRunCode = () => {
     setIsRunning(true);
     setConsoleOutput("Compiling and executing code...");
 
     setTimeout(() => {
-      let output = "";
       const code = editorCode;
+      const outputLines = [];
 
+      // 1. Python Execution via Skulpt if loaded, else fallback to Python-to-JS translator
       if (selectedLanguage === "python") {
-        const printRegex = /print\((['"])(.*?)\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = printRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
+        if (window.Sk) {
+          let preprocessedCode = code;
+          
+          // Preprocess and mock missing system modules (sys, os) for Skulpt sandbox compatibility
+          if (preprocessedCode.includes("sys")) {
+            preprocessedCode = preprocessedCode.replace(/import\s+sys/g, "# Mock sys\nclass DummySys:\n    argv = ['main.py']\n    def exit(self, code=0):\n        pass\nsys = DummySys()");
+            preprocessedCode = preprocessedCode.replace(/from\s+sys\s+import\s+\*/g, "# Mock sys\nargv = ['main.py']");
+            preprocessedCode = preprocessedCode.replace(/from\s+sys\s+import\s+([\w,\s]+)/g, (match, imports) => {
+              return imports.split(",").map(imp => `${imp.trim()} = None`).join("\n");
+            });
+          }
+          if (preprocessedCode.includes("os")) {
+            preprocessedCode = preprocessedCode.replace(/import\s+os/g, "# Mock os\nclass DummyOs:\n    name = 'posix'\n    environ = {}\n    def getcwd(self):\n        return '/'\nos = DummyOs()");
+          }
+
+          window.Sk.configure({
+            output: (text) => {
+              outputLines.push(text);
+            },
+            read: (x) => {
+              if (window.Sk.builtinFiles === undefined || window.Sk.builtinFiles["files"][x] === undefined) {
+                throw "File not found: '" + x + "'";
+              }
+              return window.Sk.builtinFiles["files"][x];
+            }
+          });
+          try {
+            window.Sk.importMainWithBody("<stdin>", false, preprocessedCode, true);
+            const output = outputLines.join("");
+            setConsoleOutput(output || "Process exited with code 0.");
+          } catch (err) {
+            setConsoleOutput("Runtime Error: " + err.toString());
+          }
+          setIsRunning(false);
+          return;
         } else {
-          output = "Process exited with code 0 (No output produced).";
-        }
-      } else if (selectedLanguage === "cpp") {
-        const coutRegex = /cout\s*<<\s*(['"])(.*?)\1/g;
-        let match;
-        const matches = [];
-        while ((match = coutRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
-        } else {
-          output = "Process exited with code 0 (No output produced).";
-        }
-      } else if (selectedLanguage === "c") {
-        const printfRegex = /printf\((['"])(.*?)\\n?\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = printfRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
-        } else {
-          output = "Process exited with code 0 (No output produced).";
-        }
-      } else if (selectedLanguage === "java") {
-        const javaRegex = /System\.out\.println\((['"])(.*?)\1\)/g;
-        let match;
-        const matches = [];
-        while ((match = javaRegex.exec(code)) !== null) {
-          matches.push(match[2]);
-        }
-        if (matches.length > 0) {
-          output = matches.join("\n");
-        } else {
-          output = "Process exited with code 0 (No output produced).";
+          // Fallback to client-side JS translation of Python code (runs offline/no-CDN/no-API-key)
+          const logLines = [];
+          const originalLog = console.log;
+          console.log = (...args) => {
+            logLines.push(args.join(" "));
+          };
+          try {
+            const translatedJs = translatePythonToJS(code);
+            Function(`"use strict"; ${translatedJs}`)();
+            const output = logLines.join("\n");
+            setConsoleOutput(output || "Process exited with code 0.");
+          } catch (err) {
+            setConsoleOutput("Runtime Error: " + err.message);
+          } finally {
+            console.log = originalLog;
+            setIsRunning(false);
+          }
+          return;
         }
       }
 
-      setConsoleOutput(output);
-      setIsRunning(false);
+      // 2. C/C++/Java Execution via Translation to JS
+      const logLines = [];
+      const originalLog = console.log;
+      console.log = (...args) => {
+        logLines.push(args.join(" "));
+      };
+
+      try {
+        const translatedJs = translateCPlusPlusJavaToJS(code, selectedLanguage);
+        Function(`"use strict"; ${translatedJs}`)();
+        const output = logLines.join("\n");
+        setConsoleOutput(output || "Process exited with code 0 (No output produced).");
+      } catch (err) {
+        setConsoleOutput("Runtime Error: " + err.message);
+      } finally {
+        console.log = originalLog;
+        setIsRunning(false);
+      }
     }, 1000);
   };
 

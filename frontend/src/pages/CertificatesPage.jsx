@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
@@ -17,52 +17,70 @@ export default function CertificatesPage() {
     return completedTopics.filter(id => id.startsWith(`${trackKey}_`)).length;
   };
 
-  const certificatesList = [
-    {
-      id: "CERT-REACT-8942",
-      title: "React Web Architecture & Masterclass",
-      courseName: "React Developer",
-      trackKey: "react",
-      date: "2026-07-15",
-      color: "#00e5ff"
-    },
-    {
-      id: "CERT-JAVA-3310",
-      title: "Core Java OOPs & Enterprise Systems",
-      courseName: "Java Master",
-      trackKey: "java",
-      date: "2026-07-18",
-      color: "#f97316"
-    },
-    {
-      id: "CERT-SPRING-7721",
-      title: "Spring Boot Microservices & Security",
-      courseName: "Spring Boot Pro",
-      trackKey: "springboot",
-      date: "2026-07-20",
-      color: "#22c55e"
-    },
-    {
-      id: "CERT-FSD-1092",
-      title: "Frontend System Design & Scalability",
-      courseName: "Frontend System Design",
-      trackKey: "fsd",
-      date: "2026-07-21",
-      color: "#8a2eff"
-    },
-    {
-      id: "CERT-JS-5541",
-      title: "Modern JavaScript Ninja & ES6+",
-      courseName: "JavaScript",
-      trackKey: "javascript",
-      date: "2026-07-21",
-      color: "#facc15"
-    }
-  ];
-
-  const [previewedCert, setPreviewedCert] = useState(certificatesList[0]);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const [certificatesList, setCertificatesList] = useState([]);
+  const [previewedCert, setPreviewedCert] = useState(null);
   const [downloadModalInfo, setDownloadModalInfo] = useState(null);
   const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+        const response = await fetch(`${API_URL}/api/certificates`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const data = await response.json();
+        if (data.success) {
+          const mapped = data.certificates.map(c => {
+            let color = "#00e5ff";
+            let courseName = "Technology Graduate";
+            let trackKey = "react";
+            
+            const lowerTitle = c.title.toLowerCase();
+            if (lowerTitle.includes("react")) {
+              color = "#00e5ff";
+              courseName = "React Developer";
+              trackKey = "react";
+            } else if (lowerTitle.includes("java object")) {
+              color = "#f97316";
+              courseName = "Java Master";
+              trackKey = "java";
+            } else if (lowerTitle.includes("spring boot")) {
+              color = "#22c55e";
+              courseName = "Spring Boot Pro";
+              trackKey = "springboot";
+            } else if (lowerTitle.includes("system design")) {
+              color = "#8a2eff";
+              courseName = "Frontend System Design";
+              trackKey = "fsd";
+            } else if (lowerTitle.includes("javascript")) {
+              color = "#facc15";
+              courseName = "JavaScript";
+              trackKey = "javascript";
+            }
+            
+            return {
+              id: c.id,
+              title: c.title,
+              date: c.date,
+              courseName,
+              trackKey,
+              color
+            };
+          });
+          setCertificatesList(mapped);
+          if (mapped.length > 0) {
+            setPreviewedCert(mapped[0]);
+          }
+        }
+      } catch (err) {
+        console.error("Error loading certificates:", err);
+      }
+    };
+    fetchCertificates();
+  }, []);
 
   const handleDownloadCertificate = (cert) => {
     const completedCount = getCompletedCountForCert(cert.trackKey);
@@ -182,82 +200,119 @@ export default function CertificatesPage() {
         </section>
 
         {/* Certificates Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '25px', marginBottom: '40px' }}>
-          {certificatesList.map(cert => (
-            <div 
-              key={cert.id} 
+        {certificatesList.length === 0 ? (
+          <div style={{
+            background: 'var(--bg-panel)',
+            border: '1px dashed var(--border-color)',
+            borderRadius: '16px',
+            padding: '50px 30px',
+            textAlign: 'center',
+            boxShadow: 'var(--shadow-panel)',
+            maxWidth: '600px',
+            margin: '0 auto 40px auto'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '15px' }}>🔒</div>
+            <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '20px', color: 'var(--text-primary)', marginBottom: '10px' }}>
+              No Certificates Earned Yet
+            </h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '25px', lineHeight: '1.5' }}>
+              You haven't completed any technology tracks yet. Finish all 6 modules of a learning track (such as React, Java, or Spring Boot) in the Learning Portal to automatically generate and unlock your verified certificate!
+            </p>
+            <button
+              onClick={() => navigate('/learning')}
               style={{
-                background: 'var(--bg-panel)',
-                border: `1px solid ${cert.color || 'var(--border-color)'}`,
-                borderRadius: '16px',
-                padding: '25px',
-                boxShadow: 'var(--shadow-panel)',
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
+                background: 'linear-gradient(90deg, #00e5ff, #8a2eff)',
+                color: 'var(--text-primary)',
+                border: 'none',
+                padding: '12px 28px',
+                borderRadius: '24px',
+                fontSize: '14px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 0 15px rgba(0, 229, 255, 0.4)'
               }}
             >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                  <span style={{ fontSize: '12px', fontWeight: '700', color: cert.color, textTransform: 'uppercase', fontFamily: 'Orbitron, sans-serif' }}>
-                    {cert.courseName}
-                  </span>
-                  <span style={{ fontSize: '11px', background: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', padding: '3px 10px', borderRadius: '12px', fontWeight: '700' }}>
-                    ✓ Verified Hash
-                  </span>
+              Start Learning Now
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '25px', marginBottom: '40px' }}>
+            {certificatesList.map(cert => (
+              <div 
+                key={cert.id} 
+                style={{
+                  background: 'var(--bg-panel)',
+                  border: `1px solid ${cert.color || 'var(--border-color)'}`,
+                  borderRadius: '16px',
+                  padding: '25px',
+                  boxShadow: 'var(--shadow-panel)',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: '700', color: cert.color, textTransform: 'uppercase', fontFamily: 'Orbitron, sans-serif' }}>
+                      {cert.courseName}
+                    </span>
+                    <span style={{ fontSize: '11px', background: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', padding: '3px 10px', borderRadius: '12px', fontWeight: '700' }}>
+                      ✓ Verified Hash
+                    </span>
+                  </div>
+                  <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '10px', lineHeight: '1.4' }}>
+                    {cert.title}
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', fontFamily: 'monospace', marginBottom: '20px' }}>
+                    ID: {cert.id} • Issued: {cert.date}
+                  </p>
                 </div>
-                <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '10px', lineHeight: '1.4' }}>
-                  {cert.title}
-                </h3>
-                <p style={{ fontSize: '13px', color: '#64748b', fontFamily: 'monospace', marginBottom: '20px' }}>
-                  ID: {cert.id} • Issued: {cert.date}
-                </p>
-              </div>
 
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button
-                  type="button"
-                  onClick={() => setPreviewedCert(cert)}
-                  style={{
-                    flex: 1,
-                    background: 'var(--bg-secondary)',
-                    border: '1px solid var(--border-color)',
-                    color: 'var(--text-primary)',
-                    padding: '10px',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: '700',
-                    cursor: 'pointer'
-                  }}
-                >
-                  👁 View Modal
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPreviewedCert(cert);
-                    setTimeout(() => handleDownloadCertificate(cert), 100);
-                  }}
-                  style={{
-                    flex: 1,
-                    background: `linear-gradient(90deg, ${cert.color}, #8a2eff)`,
-                    border: 'none',
-                    color: 'var(--text-primary)',
-                    padding: '10px',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    boxShadow: `0 0 15px ${cert.color}40`
-                  }}
-                >
-                  📥 Download PNG
-                </button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewedCert(cert)}
+                    style={{
+                      flex: 1,
+                      background: 'var(--bg-secondary)',
+                      border: '1px solid var(--border-color)',
+                      color: 'var(--text-primary)',
+                      padding: '10px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    👁 View Modal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPreviewedCert(cert);
+                      setTimeout(() => handleDownloadCertificate(cert), 100);
+                    }}
+                    style={{
+                      flex: 1,
+                      background: `linear-gradient(90deg, ${cert.color}, #8a2eff)`,
+                      border: 'none',
+                      color: 'var(--text-primary)',
+                      padding: '10px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      boxShadow: `0 0 15px ${cert.color}40`
+                    }}
+                  >
+                    📥 Download PNG
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Certificate Visual Demo Preview Document */}
         {previewedCert && (

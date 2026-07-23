@@ -10,7 +10,7 @@ import { FiSearch, FiCheckCircle, FiShoppingCart, FiX, FiLock, FiBookOpen, FiAwa
 import "../styles/courses.css";
 
 export default function CoursesPage() {
-  const { user, earnXp, completedTopics } = useAuth();
+  const { user, earnXp, completedTopics, enrolledCourses, enrollCourse } = useAuth();
   const { courses: adminCourses } = useAdmin();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -47,6 +47,21 @@ export default function CoursesPage() {
       setCourses(adminCourses.map(c => ({...c, isEnrolled: false, progress: 0})));
     }
   }, [adminCourses]);
+
+  // Sync state with backend database-backed enrolledCourses when loaded
+  useEffect(() => {
+    if (enrolledCourses && enrolledCourses.length > 0) {
+      setCourses(prevCourses =>
+        prevCourses.map(course => {
+          const isEnrolled = enrolledCourses.includes(course.id.toString());
+          return {
+            ...course,
+            isEnrolled
+          };
+        })
+      );
+    }
+  }, [enrolledCourses]);
 
   // Calculate real-time progress strictly isolated per specific course ID out of 6 modules
   const getDynamicProgress = (courseId, fallbackProgress) => {
@@ -102,7 +117,12 @@ export default function CoursesPage() {
 
       setCourses(updatedCourses);
 
-      // Save to localStorage
+      // Save to database
+      if (enrollCourse) {
+        enrollCourse(courseId);
+      }
+
+      // Save to localStorage (fallback)
       const enrolledIds = updatedCourses.filter(c => c.isEnrolled).map(c => c.id);
       localStorage.setItem("enrolled_course_ids", JSON.stringify(enrolledIds));
       

@@ -33,9 +33,7 @@ export default function RegisterPage() {
     if (step !== 2) return;
 
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-    if (!clientId || clientId === 'google_mock_client_id_for_testing') {
-      setShowDevBypass(true);
-    }
+    setShowDevBypass(true);
 
     const initGoogleSignUp = () => {
       if (window.google) {
@@ -96,10 +94,8 @@ export default function RegisterPage() {
       const registeredUser = await signupLocal(username, fullName, email, password, role);
       if (registeredUser && registeredUser.role === 'STUDENT') {
         navigate('/student-home');
-      } else if (registeredUser && registeredUser.role === 'EMPLOYEE') {
-        navigate('/workforce-home');
       } else {
-        navigate('/');
+        navigate('/workforce-home');
       }
     } catch (err) {
       setError(err.message || 'Registration failed');
@@ -121,10 +117,8 @@ export default function RegisterPage() {
       const registeredUser = await loginWithGoogle(`mock_google_token_${email}`, role);
       if (registeredUser && registeredUser.role === 'STUDENT') {
         navigate('/student-home');
-      } else if (registeredUser && registeredUser.role === 'EMPLOYEE') {
-        navigate('/workforce-home');
       } else {
-        navigate('/');
+        navigate('/workforce-home');
       }
     } catch (err) {
       setError(err.message || 'Developer bypass registration failed');
@@ -361,6 +355,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                minLength={6}
                 style={{ width: '100%', padding: '10px 12px', marginBottom: '15px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }}
               />
 

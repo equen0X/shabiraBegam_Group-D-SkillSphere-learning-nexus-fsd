@@ -44,6 +44,51 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "bio", length = 1000)
+    private String bio;
+
+    @Column(name = "contact_email")
+    private String contactEmail;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "github")
+    private String github;
+
+    @Column(name = "linkedin")
+    private String linkedin;
+
+    @Column(name = "portfolio")
+    private String portfolio;
+
+    @Column(name = "skills", length = 1000)
+    private String skills;
+
+    @Column(name = "xp")
+    private Integer xp = 0;
+
+    @Column(name = "completed_topics", length = 2000)
+    private String completedTopics = "";
+
+    @Column(name = "badges", length = 1000)
+    private String badges = "";
+
+    @Column(name = "enrolled_courses", length = 1000)
+    private String enrolledCourses = "2,4,3,6,10";
+
+    @Column(name = "streak")
+    private Integer streak = 1;
+
+    @Column(name = "claimed_quests", length = 1000)
+    private String claimedQuests = "";
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -56,6 +101,21 @@ public class User {
         }
         if (provider == null) {
             provider = "LOCAL";
+        }
+        if (xp == null) {
+            xp = 0;
+        }
+        if (completedTopics == null) {
+            completedTopics = "";
+        }
+        if (badges == null) {
+            badges = "";
+        }
+        if (enrolledCourses == null) {
+            enrolledCourses = "2,4,3,6,10";
+        }
+        if (streak == null) {
+            streak = 1;
         }
     }
 
@@ -162,5 +222,125 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
+    public String getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(String portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
+
+    public Integer getXp() {
+        return xp;
+    }
+
+    public void setXp(Integer xp) {
+        this.xp = xp;
+    }
+
+    public String getCompletedTopics() {
+        return completedTopics;
+    }
+
+    public void setCompletedTopics(String completedTopics) {
+        this.completedTopics = completedTopics;
+    }
+
+    public String getBadges() {
+        return badges;
+    }
+
+    public void setBadges(String badges) {
+        this.badges = badges;
+    }
+
+    public Integer getStreak() {
+        return streak;
+    }
+
+    public void setStreak(Integer streak) {
+        this.streak = streak;
+    }
+
+    public String getEnrolledCourses() {
+        return enrolledCourses;
+    }
+
+    public void setEnrolledCourses(String enrolledCourses) {
+        this.enrolledCourses = enrolledCourses;
+    }
+
+    public String getClaimedQuests() {
+        return claimedQuests;
+    }
+
+    public void setClaimedQuests(String claimedQuests) {
+        this.claimedQuests = claimedQuests;
     }
 }
